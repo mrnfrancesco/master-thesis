@@ -530,7 +530,14 @@ begin{acronym}[UML]
 
   
 \backslash
-acro{DRY}{Don't Repeat Yourself}
+acro{IPS}{Intrusion Prevention System}
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+acro{VLAN}{Virtual LAN}
 \end_layout
 
 \begin_layout Plain Layout
@@ -538,13 +545,6 @@ acro{DRY}{Don't Repeat Yourself}
   
 \backslash
 acro{API}{Application Programming Interface}
-\end_layout
-
-\begin_layout Plain Layout
-
-  
-\backslash
-acro{UML}{Unified Modeling Language}
 \end_layout
 
 \begin_layout Plain Layout
