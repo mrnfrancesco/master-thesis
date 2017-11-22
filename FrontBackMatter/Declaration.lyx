@@ -1,0 +1,286 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass classicthesis
+\use_default_options true
+\maintain_unincluded_children false
+\language italian
+\language_package default
+\inputencoding utf8
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 0
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine natbib
+\cite_engine_type numerical
+\biblio_style plainnat
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 2
+\tocdepth 2
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+refstepcounter{dummy}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pdfbookmark[0]{Declaration}{declaration}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter*
+Dichiarazione di originalità della tesi di laurea
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+thispagestyle{empty}
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Standard
+Io sottoscritto 
+\begin_inset Flex CT - Spaced Low Small Caps
+status open
+
+\begin_layout Plain Layout
+Francesco Marano
+\end_layout
+
+\end_inset
+
+ nato a 
+\begin_inset Flex CT - Spaced Low Small Caps
+status open
+
+\begin_layout Plain Layout
+Roma
+\end_layout
+
+\end_inset
+
+ il 
+\begin_inset Flex CT - Spaced Low Small Caps
+status open
+
+\begin_layout Plain Layout
+24/02/1992
+\end_layout
+
+\end_inset
+
+ dichiaro che l’elaborato che segue è frutto del mio lavoro originale ,
+ che nessuno lo ha scritto in mia vece, che non ho copiato il lavoro di
+ altri e che ho documentato tutte le fonti che ho utilizzato.
+ Dichiaro anche che ho personalmente consultato tutte le fonti citate.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace bigskip
+\end_inset
+
+Dichiaro di non aver presentato questo elaborato presso altre istituzioni
+ al fine di ottenere diplomi, lauree, certificazioni, ecc., né di averlo
+ pubblicato in precedenza, in parte o per intero.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace bigskip
+\end_inset
+
+Dichiaro di aver letto e compreso che il ‘plagio’ è una “falsa attribuzione
+ a sé di opere o scoperte delle quali spettino ad altri i diritti di invenzione
+ o di proprietà” (Devoto - Oli, Dizionario della Lingua italiana, Milano,
+ Le Monnier, 2001).
+ Dichiaro di aver compreso che quando si elabora un lavoro che incorpori
+ parole o idee di altri, si deve citare appropriatamente la fonte di quell’infor
+mazione.
+ Se non lo si fa, si commette un plagio, che è un reato (legge n.
+ 633 del 1941 sul diritto d'autore).
+ Comprendo che l'individuazione di plagio anche in una sola parte di questa
+ tesi potrebbe pregiudicare la presunzione di autenticità del resto.
+ Dichiaro di aver compreso che il plagio è un atto illecito e che nel caso
+ io abbia plagiato il lavoro altrui in una o più parti di questa tesi, il
+ risultato comprometterà l’esito della mia laurea.
+ Sono consapevole che in caso io abbia commesso plagio, il docente può rifiutars
+i di ammettermi alla discussione della tesi di laurea.
+\begin_inset VSpace bigskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\noindent
+
+\shape italic
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+myLocation
+\end_layout
+
+\end_inset
+
+, 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+myTime
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace smallskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align right
+\begin_inset Tabular
+<lyxtabular version="3" rows="2" columns="1">
+<features tabularvalignment="middle">
+<column alignment="none" valignment="middle" width="5cm">
+<row>
+<cell alignment="none" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="none" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\align center
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+myName
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document
