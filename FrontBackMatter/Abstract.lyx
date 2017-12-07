@@ -123,6 +123,50 @@ pdfbookmark[1]{Abstract}{Abstract}
 \end_inset
 
 
+\begin_inset Separator latexpar
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align right
+
+\end_layout
+
+\begin_layout Standard
+\align right
+
+\shape slanted
+If you think technology can solve your security problems,
+\begin_inset Newline newline
+\end_inset
+
+then you don’t understand the problems
+\begin_inset Newline newline
+\end_inset
+
+and you don’t understand the technology.
+
+\shape default
+ 
+\begin_inset Newline newline
+\end_inset
+
+ 
+\begin_inset VSpace medskip
+\end_inset
+
+ — 
+\series bold
+Bruce Schneier
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace bigskip
+\end_inset
+
+
 \end_layout
 
 \begin_layout Chapter*
@@ -130,15 +174,11 @@ Sommario
 \end_layout
 
 \begin_layout Standard
-Short summary of the contents in English
-\begin_inset ERT
-status collapsed
+\begin_inset Note Note
+status open
 
 \begin_layout Plain Layout
-
-
-\backslash
-dots
+Da fare (probabilmente alla fine della tesi)
 \end_layout
 
 \end_inset
@@ -148,7 +188,7 @@ dots
 
 \begin_layout Standard
 \begin_inset ERT
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
