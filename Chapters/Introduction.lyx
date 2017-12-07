@@ -149,15 +149,16 @@ Bruce Schneier
 
 \begin_layout Chapter
 Introduzione
-\end_layout
-
-\begin_layout Standard
 \begin_inset CommandInset label
 LatexCommand label
 name "ch:Introduction"
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 Fare in modo che la sicurezza entri a far parte del normale ciclo di sviluppo
  del software è ancora oggi una tra le più grandi sfide da affrontare.
  Tutti i sistemi vengono progettati seguendo dei requisiti, elementi misurabili
