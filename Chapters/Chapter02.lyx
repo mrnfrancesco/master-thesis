@@ -136,6 +136,65 @@ TODO
 \end_layout
 
 \begin_layout Chapter
+Vulnerabilità clickless
+\begin_inset CommandInset label
+LatexCommand label
+name "ch:clickless-vulnerabilities"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+TODO
+\end_layout
+
+\begin_layout Section
+Cosa sono
+\end_layout
+
+\begin_layout Standard
+TODO
+\end_layout
+
+\begin_layout Section
+Differenza con le vulnerabilità tradizionali
+\end_layout
+
+\begin_layout Standard
+TODO
+\end_layout
+
+\begin_layout Section
+Alcuni esempi
+\end_layout
+
+\begin_layout Standard
+TODO
+\end_layout
+
+\begin_layout Subsection
+Stagefright
+\end_layout
+
+\begin_layout Standard
+TODO
+\end_layout
+
+\begin_layout Subsection
+Broadpwn
+\end_layout
+
+\begin_layout Standard
+TODO
+\end_layout
+
+\begin_layout Subsection
+KRACK
+\end_layout
+
+\begin_layout Standard
 TODO
 \end_layout
 
