@@ -95,19 +95,15 @@ pdfbookmark[1]{Acknowledgments}{acknowledgments}
 \align right
 
 \shape slanted
-We have seen that computer programming is an art, 
+You might be poor,
 \begin_inset Newline newline
 \end_inset
 
- because it applies accumulated knowledge to the world, 
+your shoes might be broken,
 \begin_inset Newline newline
 \end_inset
 
- because it requires skill and ingenuity, and especially 
-\begin_inset Newline newline
-\end_inset
-
- because it produces objects of beauty.
+but your mind is a palace.
 
 \shape default
  
@@ -120,8 +116,7 @@ We have seen that computer programming is an art,
 
  — 
 \series bold
-Donald E.
- Knuth
+Frank McCourt
 \end_layout
 
 \begin_layout Standard
