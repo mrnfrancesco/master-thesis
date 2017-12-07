@@ -264,16 +264,17 @@ pagenumbering{arabic}
 \end_layout
 
 \begin_layout Part Introduction (ClassicThesis)
-Le vulnerabilità clickless rappresentano un nuovo punto di inizio per le
- aziende e i ricercatori che si occupano di sicurezza.
+La sicurezza informatica è da sempre un tema importante.
+ In particolar modo oggi le vulnerabilità clickless rappresentano un nuovo
+ punto di inizio per le aziende e i ricercatori che si occupano di sicurezza.
  È importante capire che tipo di minaccia ci troviamo a dover affrontare,
  come si differenzia dalle precendenti tipologie di vulnerabilità e perché
- studiarla sia che ci poniamo dalla parte degli attaccanti che da quella
+ studiarle sia che ci poniamo dalla parte degli attaccanti che da quella
  dei difensori.
 \end_layout
 
 \begin_layout Part
-Vulnerabilità clickless
+Sicurezza informatica ieri e oggi
 \end_layout
 
 \begin_layout Standard
