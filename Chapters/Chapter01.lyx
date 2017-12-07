@@ -73,145 +73,339 @@
 
 \begin_layout Standard
 \begin_inset ERT
-
-\begin_layout Plain Layout
-
-
-\backslash
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-\end_layout
-
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-
-\end_inset
-
-\end_inset
-
-\end_inset
-
-
-
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_layout
-
-\begin_layout Standard
-
-\end_inset
-
-\begin_inset Newline newline
-\end_inset
-
-\begin_inset Newline newline
-\end_inset
-
-
-\begin_layout Plain Layout
-
-\end_inset
-
-\end_layout
-
-\end_inset
-
-\end_layout
-
-\begin_layout Standard
-\end_inset
-
-status collapsed
-
-\begin_layout Plain Layout
-\end_layout
-
-\end_inset
-
-.
-status collapsed
-
-\begin_layout Plain Layout
-\end_layout
-
-\end_inset
-
-status collapsed
-
-\begin_layout Plain Layout
-\end_layout
-
-\end_inset
-
-
-\begin_layout Plain Layout
-\end_layout
-
-\end_inset
-
-\begin_inset Newline newline
-\end_inset
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\end_layout
-
-\begin_layout Standard
-\end_layout
-
-\end_layout
-
-\begin_layout Standard
-
-status collapsed
-
-\begin_layout Plain Layout
-\end_layout
-
-\end_inset
-
-.
-\end_layout
-
-\end_layout
-
-\end_layout
-
-\end_layout
-
-\end_layout
-
 status open
 
 \begin_layout Plain Layout
 
 
 \backslash
+begingroup
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+let
+\backslash
+clearpage
+\backslash
+relax
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+let
+\backslash
+cleardoublepage
+\backslash
+relax
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align right
+
+\shape slanted
+One hundred years ago, everyone could have personal privacy.
+\begin_inset Newline newline
+\end_inset
+
+You and your friend could walk into an empty field
+\begin_inset Newline newline
+\end_inset
+
+look around to see that no one else was nearby
+\begin_inset Newline newline
+\end_inset
+
+and have a level of privacy that has forever been lost.
+\begin_inset Newline newline
+\end_inset
+
+
+\shape default
+
+\begin_inset VSpace medskip
+\end_inset
+
+ — 
+\series bold
+Bruce Schneier
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace bigskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter
+Introduzione
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset label
+LatexCommand label
+name "ch:Introduction"
+
+\end_inset
+
+Fare in modo che la sicurezza entri a far parte del normale ciclo di sviluppo
+ del software è ancora oggi una tra le più grandi sfide da affrontare.
+ Tutti i sistemi vengono progettati seguendo dei requisiti, elementi misurabili
+ che determinano se il sistema è in grado di funzionare correttamente rispetto
+ le specifiche di progetto.
+\begin_inset Newline newline
+\end_inset
+
+Prendiamo ad esempio un edificio.
+ Deve essere sicuro (non deve crollare), ma questo non è abbastanza.
+ Deve anche essere utilizzabile, deve essere in grado di essere costruito
+ e manutenuto con delle spese sostenibili per consentire al lavoro di essere
+ redditizio, e infine dovrebbe essere anche attraente per riflettere lo
+ stato dei suoi abitanti e il valore della proprietà.
+ Ogni requisito ha la sua priorità, ma tutti hanno un posto nel progetto.
+\begin_inset Newline newline
+\end_inset
+
+La sicurezza delle persone non ha avuto molta influenza sull'informatica.
+ Molti hanno affermato che un software, per quanto complesso esso sia, non
+ può uccidere, quindi si è lasciata molta tolleranza verso principi di progettaz
+ione del codice opinabili.
+ Dopo tutto, non importa quanto qualcosa sia scritto male, in ogni caso,
+ nessuno morirà.
+ Questo è parzialmente vero
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Il 24 Agosto 2015 la polizia di Toronto riporta due casi di suicidio associati
+ alla divulgazione di milioni di profili personali di iscritti al sito 
+\begin_inset CommandInset href
+LatexCommand href
+name "Ashley Madison"
+target "https://en.wikipedia.org/wiki/Ashley_Madison"
+
+\end_inset
+
+ che promuove relazioni extraconiugali
+\end_layout
+
+\end_inset
+
+, ma non tutte le cose che muoiono sono persone.
+ Un attacco a un'azienda che non cura la propria sicurezza può portare alla
+ bancarotta.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace medskip
+\end_inset
+
+Mentre la ricerca in campo sicurezza continua da decadi, è solo dopo gli
+ anni duemila che le conseguenze di un software non sicuro diventano visibili
+ al grande pubblico.
+ Nell'Agosto del 2003 il numero di worm
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Particolare categoria di malware in grado di autoreplicarsi.
+ È simile ad un virus ma, a differenza di questo, non necessita di legarsi
+ ad altri programmi eseguibili per diffondersi, ma a tale scopo utilizza
+ altri computer, ad esempio tramite e-mail o reti di computer
+\end_layout
+
+\end_inset
+
+ immessi in rete è così alto da portare gli esperti e i media a riferirsi
+ a questo periodo come la 
+\shape italic
+Summer of Worms
+\shape default
+.
+ Nel 2006 un attacco a un sistema della TJX Companies Inc.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Società statunitense di beni casalinghi e d'abbigliamento con sede a Framingham,
+ Massachusetts
+\end_layout
+
+\end_inset
+
+ porta al furto di più di 45 milioni di numeri di carte di credito e di
+ debito, furto costato all'azienda e all'industria delle carte di credito
+ miliardi di dollari.
+ Nel 2008 Verizon Business
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Fornitore di banda larga e di telecomunicazioni statunitense
+\end_layout
+
+\end_inset
+
+ riporta che il numero di dati finanziari personali compromessi nel 2008
+ superano quelli degli anni 2004, 2005, 2006 e 2007 messi assieme.
+ Nel 2010 Stuxnet causa danni sostanziali al programma nucleare iraniano
+ attaccando le centrifughe per separare materiali nucleari.
+ Nel 2014 vengono resi pubblici Heartbleed e Shellshock, vulnerabilità di
+ sicurezza tanto importanti da avere posto nei notiziari, anche quelli non
+ specialistici.
+ Il 2017 è l'anno dei ransomware
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Tipo di malware che limita l'accesso al dispositivo che infetta, richiedendo
+ un riscatto (
+\shape italic
+ransom
+\shape default
+ in inglese) da pagare per rimuovere la limitazione
+\end_layout
+
+\end_inset
+
+ come WannaCry.
+\begin_inset Newline newline
+\end_inset
+
+Le persone continuano a non morire per gli attacchi informatici, ma la sicurezza
+ diventa un problema visibile alle persone, alle aziende, ai governi.
+\begin_inset VSpace medskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Perché allora i software continuano ad essere vulnerabili? Alla fine della
+ catena di produzione del software ci sono gli sviluppatori che trasformano
+ le direttive dei capi-progetto in codice.
+ Ci sono molti requisiti in un software: performance, usabilità e affidabilità
+ per nominarne solo alcuni.
+ Ognuno di questi ha in comune una caratteristica molto importante: il fatto
+ che non vengano rispettati risulta ovvio anche agli occhi dell'utente medio.
+ La sicurezza non condivide questo aspetto.
+\end_layout
+
+\begin_layout Standard
+Facciamo qualche esempio:
+\end_layout
+
+\begin_layout Standard
+Supponiamo che un software abbia problemi di performance.
+ Anche uno sviluppatore alle prime armi può accorgersi che una certa operazione
+ richiede troppo tempo per essere eseguita.
+ Trovare il problema è piuttosto semplice, basta dare come input al programma
+ un 
+\shape italic
+dataset
+\shape default
+ standard e controllare qual'è il codice che causa il rallentamento.
+ Per validare la soluzione proposta basta dare come input al programma lo
+ stesso 
+\shape italic
+dataset
+\shape default
+ precedente e misurare la variazione nel tempo necessario al processo per
+ essere eseguito.
+\end_layout
+
+\begin_layout Standard
+Supponiamo ora problemi di affidabilità: il programma va in 
+\shape italic
+crash
+\shape default
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Quando un software smette di funzionare correttamente e termina in modo
+ inaspettato
+\end_layout
+
+\end_inset
+
+.
+ Non c'è niente di più facile da vedere di questo.
+ Il resoconto del 
+\shape italic
+crash
+\shape default
+ può essere disponibile già durante lo sviluppo o, dopo il rilascio del
+ software, generato e inviato automaticamente o manualmente dall'utente.
+\end_layout
+
+\begin_layout Standard
+Quindi, quando viene chiesto allo sviluppatore di rendere il codice più
+ veloce, più usabile o più stabile, potrebbe non sapere immediatamente come
+ risolvere il problema, ma quantomeno si ha la certezza che abbia compreso
+ cosa gli si sta chiedendo.
+\end_layout
+
+\begin_layout Standard
+La situazione è meno chiara quando chiediamo allo sviluppatore del codice
+ più sicuro.
+ Infatti, fatta eccezione per alcune vulnerabilità che causano la corruzione
+ di dati, quindi il crash dell'intero applicativo, la maggior parte delle
+ vulnerabilità non hanno alcun impatto sui requisiti citati durante un utilizzo
+ normale del software.
+ Ancora peggio quando si pensa che risolvere problemi di sicurezza, a causa
+ del maggior numero di controlli da effettuare sui dati, può intaccare la
+ performance o l'usabilità del programma.
+ La realtà dei fatti è quindi che la maggior parte dei sistemi che non sono
+ messi in sicurezza si comportano esattamente nel modo in cui sono stati
+ progettati fintantochè ogni cosa avviene secondo quanto stabilito dalle
+ specifiche.
+ Il mondo reale però non è così rigido e neanche tanto amichevole.
+\end_layout
+
+\begin_layout Standard
+Anche negli altri mestieri si ha a che fare con un mondo ostile e ricco
+ di minacce, ma anche in quei casi fare dei test è relativamente semplice:
+ Resistenza ai terremoti? Tutti abbiamo familiarità con lo scuotere qualcosa.
+ Infiammabilità? Basta prendere un fiammifero.
+ Danni causati dall'acqua? Immergiamo il sistema da testare e vediamo cosa
+ accade.
+\end_layout
+
+\begin_layout Standard
+Lo sviluppatore medio ha più familiarità con questo tipo di problemi che
+ con quelli legati a come il software che scrive può essere abusato.
+ Dopotutto i nostri genitori ci hanno insegnato a non giocare col fuoco
+ o a non giocare con il parsing delle stringhe?
+\begin_inset CommandInset citation
+LatexCommand nocite
+key "24_deadly_sins_of_software_security"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+endgroup
 \end_layout
 
 \end_inset
