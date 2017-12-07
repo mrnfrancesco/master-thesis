@@ -13,9 +13,6 @@
 \renewcommand{\lstlistlistingname}{Listati di programma}
 \end_preamble
 \use_default_options true
-\begin_modules
-todonotes
-\end_modules
 \maintain_unincluded_children false
 \language italian
 \language_package default
@@ -267,23 +264,12 @@ pagenumbering{arabic}
 \end_layout
 
 \begin_layout Part Introduction (ClassicThesis)
-Lorem ipsum at nusquam appellantur his, ut eos erant homero concludaturque.
- Albucius appellantur deterruisset id eam, vivendum partiendo dissentiet
- ei ius.
- Vis melius facilisis ea, sea id convenire referrentur, takimata adolescens
- ex duo.
- Ei harum argumentum per eam.
-\begin_inset Newline newline
-\end_inset
-
-Errem omnium ea per, pro congue populo ornatus cu, ex qui dicant nemore
- melius.
- No pri diam iriure euismod.
- Graecis eleifend appellantur quo.
- Id corpora inimicus nam, facer nonummy ne pro, kasd repudiandae ei mei.
- Mea menandri mediocrem dissentiet cu, ex nominati imperdiet nec, sea odio
- duis vocent ei.
- Tempor everti appareat cu ius, ridens audiam an qui.
+Le vulnerabilità clickless rappresentano un nuovo punto di inizio per le
+ aziende e i ricercatori che si occupano di sicurezza.
+ È importante capire che tipo di minaccia ci troviamo a dover affrontare,
+ come si differenzia dalle precendenti tipologie di vulnerabilità e perché
+ studiarla sia che ci poniamo dalla parte degli attaccanti che da quella
+ dei difensori.
 \end_layout
 
 \begin_layout Part
@@ -311,23 +297,15 @@ filename "Chapters/Chapter02.lyx"
 \end_layout
 
 \begin_layout Part Introduction (ClassicThesis)
-Lorem ipsum at nusquam appellantur his, ut eos erant homero concludaturque.
- Albucius appellantur deterruisset id eam, vivendum partiendo dissentiet
- ei ius.
- Vis melius facilisis ea, sea id convenire referrentur, takimata adolescens
- ex duo.
- Ei harum argumentum per eam.
+Tra gli attacchi clickless BlueBorne è sicuramente quello che maggiormente
+ mette in allarme.
 \begin_inset Newline newline
 \end_inset
 
-Errem omnium ea per, pro congue populo ornatus cu, ex qui dicant nemore
- melius.
- No pri diam iriure euismod.
- Graecis eleifend appellantur quo.
- Id corpora inimicus nam, facer nonummy ne pro, kasd repudiandae ei mei.
- Mea menandri mediocrem dissentiet cu, ex nominati imperdiet nec, sea odio
- duis vocent ei.
- Tempor everti appareat cu ius, ridens audiam an qui.
+Come vettore d'attacco ha diverse qualità che combinate insieme possono
+ avere effetti devastanti.
+ Imparare a conoscere e sfruttare BlueBorne è lo scopo di questa seconda
+ parte.
 \end_layout
 
 \begin_layout Part
@@ -338,6 +316,32 @@ BlueBorne
 \begin_inset CommandInset include
 LatexCommand include
 filename "Chapters/Chapter03.lyx"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Part Introduction (ClassicThesis)
+Le aziende nel mondo stanno sempre più incrementano l'adozione di programmi
+ di mobilità per aumentare la produttività e il profitto.
+ Di pari passo gli attacchi informatici crescono in complessità e frequenza.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset VSpace medskip
+\end_inset
+
+In questa sezione si vuole analizzare l'impatto causato dagli attacchi ai
+ dispositivi mobili alle aziende evidenziando l'inefficacia o l'inapplicabilità
+ delle normali procedure di sicurezza con particolare riferimento a BlueBorne.
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Rivedi la struttura quindi l'introduzione della parte
+\end_layout
 
 \end_inset
 
