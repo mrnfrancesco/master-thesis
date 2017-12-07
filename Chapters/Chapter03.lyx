@@ -140,17 +140,76 @@ Paul Virilio
 \end_layout
 
 \begin_layout Chapter
-Capire la superficie d'attacco di Android
-\end_layout
-
-\begin_layout Standard
+Cos'è BlueBorne e quali tecnologie affligge
 \begin_inset CommandInset label
 LatexCommand label
-name "ch:understanding-android-attack-surface"
+name "ch:what-blueborne-is"
 
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+TODO
+\end_layout
+
+\begin_layout Section
+Introduzione al Bluetooth
+\begin_inset script superscript
+
+\begin_layout Plain Layout
+®
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+TODO
+\end_layout
+
+\begin_layout Section
+Ricerche pregresse sul Bluetooth
+\begin_inset script superscript
+
+\begin_layout Plain Layout
+®
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+TODO
+\end_layout
+
+\begin_layout Section
+Analisi della superficie d'attacco in Android
+\end_layout
+
+\begin_layout Standard
+TODO
+\end_layout
+
+\begin_layout Section
+CVE-2017-0785
+\end_layout
+
+\begin_layout Standard
+TODO
+\end_layout
+
+\begin_layout Section
+CVE-2017-0781
+\end_layout
+
+\begin_layout Standard
+TODO
 \end_layout
 
 \begin_layout Standard
