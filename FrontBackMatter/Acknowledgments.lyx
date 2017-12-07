@@ -79,6 +79,41 @@ status open
 
 
 \backslash
+begingroup
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+let
+\backslash
+clearpage
+\backslash
+relax
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+let
+\backslash
+cleardoublepage
+\backslash
+relax
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
 pdfbookmark[1]{Acknowledgments}{acknowledgments}
 \end_layout
 
@@ -126,76 +161,30 @@ Frank McCourt
 
 \end_layout
 
-\begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-begingroup
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-let
-\backslash
-clearpage
-\backslash
-relax
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-let
-\backslash
-cleardoublepage
-\backslash
-relax
-\end_layout
-
-\end_inset
-
- 
-\end_layout
-
 \begin_layout Chapter*
 Ringraziamenti
 \end_layout
 
 \begin_layout Standard
-Many thanks to all who already sent me a postcard!
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Rivedi i ringraziamenti
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-Regarding the typography and other help, many thanks go to Marco Kuhlmann,
- Philipp Lehman, Lothar Schlesier, Jim Young, Lorenzo Pantieri and Enrico
- Gregorio
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-Member of GuIT (Gruppo Italiano Utilizzatori di \SpecialChar TeX
-
-\begin_inset space \space{}
-\end_inset
-
-e \SpecialChar LaTeX
-)
-\end_layout
-
-\end_inset
-
-, Jörg Sommer, Joachim Köstler, Daniel Gottschlag, Denis Aydin, Paride Legovini,
- Steffen Prochnow, Nicolas Repp, Hinrich Harms, Roland Winkler, Jörg Weber,
- Henri Menke, Claus Lahiri, Clemens Niederberger, Stefano Bragaglia, Jörn
- Hees, and the whole \SpecialChar LaTeX
--community for support, ideas and some great software.
+Quello per i ringraziamenti è sempre uno spazio dovuto.
+ Non è solo una pagina del template da riempire, è rendersi conto di quanto
+ le persone che abbiamo accanto facciano per noi.
+ Spesso non ce ne rendiamo conto finché non ci fermiamo a pensare a quali
+ sono i nomi da includere nella nostra lista.
+ Ebbene, questa è la mia:
 \end_layout
 
 \begin_layout Standard
@@ -206,15 +195,144 @@ e \SpecialChar LaTeX
 \end_layout
 
 \begin_layout Standard
-The \SpecialChar LyX
- port was initially done by Nicholas Mariette in March 2009 and continued
- by Ivo Pletikosić in 2011.
- Thank you very much for your work and contributions to the original style.
+Devo iniziare sicuramente ringraziando le aziende 
+\begin_inset Flex CT - Spaced Low Small Caps
+status open
+
+\begin_layout Plain Layout
+Elettronica s.p.a
+\end_layout
+
+\end_inset
+
+ e 
+\begin_inset Flex CT - Spaced Low Small Caps
+status open
+
+\begin_layout Plain Layout
+Cy4Gate s.r.l
+\end_layout
+
+\end_inset
+
+ nelle persone di 
+\begin_inset Flex CT - Spaced Low Small Caps
+status open
+
+\begin_layout Plain Layout
+Daniela Pistoia
+\end_layout
+
+\end_inset
+
+ che mi ha guidato e consigliato durante tutto il mio percorso, 
+\begin_inset Flex CT - Spaced Low Small Caps
+status open
+
+\begin_layout Plain Layout
+Graziano Lubello
+\end_layout
+
+\end_inset
+
+ per avermi accolto e seguito durante il tirocinio, 
+\begin_inset Flex CT - Spaced Low Small Caps
+status open
+
+\begin_layout Plain Layout
+Tiziana Michienzi
+\end_layout
+
+\end_inset
+
+ per aver svolto tutte le pratiche necessarie a svolgere il tirocinio, e
+ tutti i colleghi che sono stati presenti e che mi hanno accompagnato durante
+ questo percorso.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace smallskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Proseguo ringraziando 
+\begin_inset Flex CT - Spaced Low Small Caps
+status open
+
+\begin_layout Plain Layout
+Michele Colajanni
+\end_layout
+
+\end_inset
+
+ per aver accettato di seguirmi come relatore.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace smallskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Ovviamente non ci si può dimenticare della 
+\begin_inset Flex CT - Spaced Low Small Caps
+status open
+
+\begin_layout Plain Layout
+famiglia
+\end_layout
+
+\end_inset
+
+ e degli 
+\begin_inset Flex CT - Spaced Low Small Caps
+status open
+
+\begin_layout Plain Layout
+amici
+\end_layout
+
+\end_inset
+
+ che sono sempre presenti per accompagnarci in ogni impresa, non importa
+ quanto folle; pronti a porgere la mano quando cadiamo, a starci vicino
+ quando ci sentiamo soli, a confortarci quando siamo abbattuti, ad ascoltarci
+ quando abbiamo bisogno di sfogarci.
+ Perché loro ci sono, ci sono ora, ma ci saranno anche domani.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace smallskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Per finire un ringraziamento speciale va alla persona che mi è stata accanto
+ e mi ha sopportato e supportato più di chiunque altro, che è stata la mia
+ roccia e senza la quale non avrei raggiunto gli stessi risultati nello
+ studio, nel lavoro, ma anche nella vita: il mio amore 
+\begin_inset Flex CT - Spaced Low Small Caps
+status open
+
+\begin_layout Plain Layout
+Dasha
+\end_layout
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
 \begin_inset ERT
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
