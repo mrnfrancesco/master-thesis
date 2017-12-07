@@ -549,6 +549,13 @@ acro{API}{Application Programming Interface}
 
 \begin_layout Plain Layout
 
+  
+\backslash
+acro{PoC}{Proof of Concept}
+\end_layout
+
+\begin_layout Plain Layout
+
 
 \backslash
 end{acronym}              

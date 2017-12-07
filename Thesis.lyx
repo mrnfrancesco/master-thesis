@@ -323,6 +323,16 @@ filename "Chapters/WhatBlueborneIs.lyx"
 
 \end_layout
 
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand include
+filename "Chapters/BuildBlueborneAttackVector.lyx"
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Part Introduction (ClassicThesis)
 Le aziende nel mondo stanno sempre più incrementano l'adozione di programmi
  di mobilità per aumentare la produttività e il profitto.
