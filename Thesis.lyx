@@ -296,19 +296,19 @@ filename "Chapters/ClicklessVulnerabilities.lyx"
 \end_layout
 
 \begin_layout Part Introduction (ClassicThesis)
-Tra gli attacchi clickless BlueBorne è sicuramente quello che maggiormente
+Tra gli attacchi clickless BlueBorne è sicuramente quello che oggi maggiormente
  mette in allarme.
 \begin_inset Newline newline
 \end_inset
 
 Come vettore d'attacco ha diverse qualità che combinate insieme possono
  avere effetti devastanti.
- Imparare a conoscere e sfruttare BlueBorne è lo scopo di questa seconda
- parte.
+ Imparare a conoscere e sfruttare BlueBorne su dispositivi Android™ è lo
+ scopo di questa seconda parte.
 \end_layout
 
 \begin_layout Part
-BlueBorne & Android
+BlueBorne & Android™
 \end_layout
 
 \begin_layout Standard
