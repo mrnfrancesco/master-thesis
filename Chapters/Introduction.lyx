@@ -161,7 +161,7 @@ name "ch:Introduction"
 \begin_layout Standard
 Fare in modo che la sicurezza entri a far parte del normale ciclo di sviluppo
  del software è ancora oggi una tra le più grandi sfide da affrontare.
- Tutti i sistemi vengono progettati seguendo dei requisiti, elementi misurabili
+ Tutti i sistemi vengono progettati seguendo dei requisiti: elementi misurabili
  che determinano se il sistema è in grado di funzionare correttamente rispetto
  le specifiche di progetto.
 \begin_inset Newline newline
