@@ -556,6 +556,69 @@ acro{PoC}{Proof of Concept}
 
 \begin_layout Plain Layout
 
+  
+\backslash
+acro{BLE}{Bluetooth Low Energy}
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+acro{IoT}{Internet of Things}
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+acro{SIG}{Special Interests Group}
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+acro{SSP}{Secure Simple Pairing}
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+acro{HCI}{Host-Controller Interface}
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+acro{SDP}{Service Discovery Protocol}
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+acro{UUID}{Universal Unique Identifiers}
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+acro{PSM}{Protocol Service Multiplexer}
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+acro{MTU}{Maximum Transfer Unit}
+\end_layout
+
+\begin_layout Plain Layout
+
 
 \backslash
 end{acronym}              
