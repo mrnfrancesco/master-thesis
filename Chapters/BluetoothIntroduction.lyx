@@ -1,0 +1,941 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass classicthesis
+\use_default_options true
+\maintain_unincluded_children false
+\language italian
+\language_package default
+\inputencoding utf8
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine natbib
+\cite_engine_type numerical
+\biblio_style plainnat
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 2
+\tocdepth 2
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begingroup
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+let
+\backslash
+clearpage
+\backslash
+relax
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+let
+\backslash
+cleardoublepage
+\backslash
+relax
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align right
+
+\shape slanted
+TODO
+\begin_inset Newline newline
+\end_inset
+
+
+\shape default
+ 
+\begin_inset VSpace medskip
+\end_inset
+
+ — 
+\series bold
+TODO
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace bigskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter
+Introduzione al Bluetooth
+\begin_inset script superscript
+
+\begin_layout Plain Layout
+®
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "ch:bluetooth-introduction"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Introdotto per la prima volta nel 1998, il Bluetooth è tutt'oggi il protocollo
+ più diffuso per le comunicazioni senza fili a corto raggio.
+ Secondo stime recenti
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "https://www.bluetooth.com/markets"
+target "https://www.bluetooth.com/markets"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ è presente in più di 4 miliardi di dispositivi nei settori automotive,
+ domotica, dispositivi medici, smartphone, smart TV, computer, periferiche,
+ stampanti e wearable per nominarne solo alcuni.
+ Dopo l'introduzione del 
+\begin_inset Flex CT - acronym
+status open
+
+\begin_layout Plain Layout
+
+BLE
+\end_layout
+
+\end_inset
+
+ che permette l'uso del protocollo con un basso consumo energetico e di
+ banda, il numero di dispositivi ad utilizzare il Bluetooth continua a diffonder
+si nel crescente mercato dell'
+\begin_inset Flex CT - acronym
+status open
+
+\begin_layout Plain Layout
+
+IoT
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Con il diffondersi della tecnologia e dei dispositivi che la utilizzano
+ sono andate ad aumentare anche le interconnesioni tra questi, come si può
+ vedere in maniera semplificata in Figura 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:bluetooth-ecosystem"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+center
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{tikzpicture}[auto, thick]
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+let
+\backslash
+ORIincludegraphics
+\backslash
+includegraphics
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+renewcommand{
+\backslash
+includegraphics}[2][]{
+\backslash
+ORIincludegraphics[width=32px, #1]{#2}}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+tikzstyle{BLNode}=[draw=gray!50,circle,node distance=3cm,inner sep=-4pt]
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+tikzstyle{BLBiggerNode}=[draw=gray!50,circle,node distance=4cm,inner sep=-7pt]
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+tikzstyle{BLEdge}=[color=gray!50]
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+% Nodes creation and positioning
+\end_layout
+
+\begin_layout Plain Layout
+
+%
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node[BLBiggerNode](phone_tablet_laptop){
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+includegraphics[width=48px]{gfx/icons/bt_ecosystem/phone_tablet_laptop.png}};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node[BLNode, above of=phone_tablet_laptop](connected_devices){
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+includegraphics{gfx/icons/bt_ecosystem/connected_devices.png}};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node[BLNode, above right  of=phone_tablet_laptop](automotive){
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+includegraphics{gfx/icons/bt_ecosystem/automotive.png}};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node[BLNode, right of=phone_tablet_laptop](smart_industry){
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+includegraphics{gfx/icons/bt_ecosystem/smart_industry.png}};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node[BLBiggerNode, below right of=phone_tablet_laptop](smart_city){
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+includegraphics[width=48px]{gfx/icons/bt_ecosystem/smart_city.png}};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node[BLNode, below left of=phone_tablet_laptop](smart_buildings){
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+includegraphics{gfx/icons/bt_ecosystem/smart_buildings.png}};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node[BLNode, left of=phone_tablet_laptop](smart_home){
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+includegraphics{gfx/icons/bt_ecosystem/smart_home.png}};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node[BLNode, above left of=phone_tablet_laptop](audio_and_entertainment){
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+includegraphics{gfx/icons/bt_ecosystem/audio_and_entertainment.png}};
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node[BLNode, above right of=smart_city](smart_mobility){
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+includegraphics{gfx/icons/bt_ecosystem/smart_mobility.png}};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node[BLNode, right of=smart_city](smart_parking){
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+includegraphics{gfx/icons/bt_ecosystem/smart_parking.png}};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node[BLNode, below right of=smart_city](smart_tourism){
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+includegraphics{gfx/icons/bt_ecosystem/smart_tourism.png}};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node[BLNode, below of=smart_city](smart_utilities){
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+includegraphics{gfx/icons/bt_ecosystem/smart_utilities.png}};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node[BLNode, below left of=smart_city](smart_waste_management){
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+includegraphics{gfx/icons/bt_ecosystem/smart_waste_management.png}};
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+node[BLNode, below of=phone_tablet_laptop, node distance=3.5cm](smart_emergency_s
+ervices){
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+includegraphics{gfx/icons/bt_ecosystem/smart_emergency_services.png}};
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+% Create edges through nodes
+\end_layout
+
+\begin_layout Plain Layout
+
+%
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+foreach 
+\backslash
+dest in {
+\end_layout
+
+\begin_layout Plain Layout
+
+	smart_mobility, smart_parking, smart_tourism, smart_utilities,
+\end_layout
+
+\begin_layout Plain Layout
+
+	smart_waste_management, smart_emergency_services}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+path[BLEdge] (smart_city) edge (
+\backslash
+dest);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+foreach 
+\backslash
+dest in {
+\end_layout
+
+\begin_layout Plain Layout
+
+	connected_devices, automotive, smart_industry, smart_city,
+\end_layout
+
+\begin_layout Plain Layout
+
+	smart_buildings, smart_home, audio_and_entertainment}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+path[BLEdge] (phone_tablet_laptop) edge (
+\backslash
+dest);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+foreach 
+\backslash
+source/
+\backslash
+dest in {
+\end_layout
+
+\begin_layout Plain Layout
+
+	connected_devices/automotive,
+\end_layout
+
+\begin_layout Plain Layout
+
+	automotive/smart_industry,
+\end_layout
+
+\begin_layout Plain Layout
+
+	smart_industry/smart_city,
+\end_layout
+
+\begin_layout Plain Layout
+
+	smart_city/smart_buildings,
+\end_layout
+
+\begin_layout Plain Layout
+
+	smart_buildings/smart_home,
+\end_layout
+
+\begin_layout Plain Layout
+
+	smart_home/audio_and_entertainment,
+\end_layout
+
+\begin_layout Plain Layout
+
+	audio_and_entertainment/connected_devices}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+path[BLEdge] (
+\backslash
+source) edge (
+\backslash
+dest);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+foreach 
+\backslash
+source/
+\backslash
+dest in {
+\end_layout
+
+\begin_layout Plain Layout
+
+	smart_mobility/smart_parking,
+\end_layout
+
+\begin_layout Plain Layout
+
+	smart_parking/smart_tourism,
+\end_layout
+
+\begin_layout Plain Layout
+
+	smart_tourism/smart_utilities,
+\end_layout
+
+\begin_layout Plain Layout
+
+	smart_utilities/smart_waste_management}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+path[BLEdge] (
+\backslash
+source) edge (
+\backslash
+dest);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{tikzpicture} 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\size footnotesize
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:bluetooth-ecosystem"
+
+\end_inset
+
+Ecosistema dei dispositivi Bluetooth e loro interconnessioni
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Il Bluetooth come standard viene gestito e manutenuto dal 
+\begin_inset Flex CT - acronym
+status open
+
+\begin_layout Plain Layout
+
+SIG
+\end_layout
+
+\end_inset
+
+ che include membri da alcune delle maggiori società del settore come Microsoft,
+ Intel, Apple, IBM ed altre.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Nonostante quanto appena detto le recenti scoperte del gruppo Armis
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Startup che si occupa di sviluppare soluzioni per controllare e rilevare
+ attività e minacce su dispositivi IoT e reti
+\end_layout
+
+\end_inset
+
+ relativamente a BlueBorne mostrano che l'implementazione da parte dei vendor
+ dello stack Bluetooth presenta delle importanti falle di sicurezza che
+ affliggono quasi tutti i principali sistemi operativi e i dispositivi che
+ li utilizzano.
+ Il motivo di questo è da attribuire probabilmente alle scelte progettuali
+ fatte nella creazione delle specifiche tecniche che hanno reso il Bluetooth
+ estremamente complesso.
+ Per meglio capire questo punto basti pensare che le specifiche del WiFi
+ (802.11) contano in totale circa 450 pagine, mentre le specifiche del Bluetooth
+ superano le 2800.
+\end_layout
+
+\begin_layout Standard
+Questa complessità ha tenuto i ricercatori lontani dal revisionare e testare
+ le diverse implementazioni dello standard.
+ Il risultato di tutto questo è l'esistenza di un gran numero di vulnerabilità,
+ tra cui quelle esposte nel capitolo 
+\begin_inset CommandInset ref
+LatexCommand nameref
+reference "ch:blueborne"
+
+\end_inset
+
+ 
+\begin_inset CommandInset ref
+LatexCommand vpageref
+reference "ch:blueborne"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Un esempio della complessità dello standard è il meccanismo di frammentazione,
+ una tecnica comune in molti protocolli e un punto debole in ogni implementazion
+e.
+ Le specifiche del Bluetooth presentano principalmente tre differenti livelli
+ di frammentazione (
+\emph on
+L2CAP
+\emph default
+, 
+\emph on
+HCI
+\emph default
+ e 
+\emph on
+Link Controller
+\emph default
+) implementati nello stack (Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:bluetooth-fragmentation"
+
+\end_inset
+
+), più altri livelli in diversi servizi specifici.
+\end_layout
+
+\begin_layout Standard
+La complessità aumenta ancora in alcuni servizi come SDP in cui si aggiunge
+ un ulteriore livello di frammentazione.
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /home/mrnfrancesco/git/master-thesis/gfx/bluetooth-segmentation-and-fragmentation.png
+	display false
+	width 100col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:bluetooth-fragmentation"
+
+\end_inset
+
+
+\size footnotesize
+Esempio dei processi di segmentazione e frammentazione
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+La letteratura mostra che proprio questa complessità è stata oggetto di
+ studio in ricerche passate che miravano a trovare problemi nelle specifiche
+ stesse, ad esempio mostrando delle debolezze nel meccanismo di scambio
+ delle chiavi di cifratura.
+ Nel momento in cui nello standard è stato introdotto il 
+\begin_inset Flex CT - acronym
+status open
+
+\begin_layout Plain Layout
+
+SSP
+\end_layout
+
+\end_inset
+
+, funzionalità che risolveva molti dei problemi noti nel meccanismo di 
+\emph on
+pairing
+\emph default
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Processo di inizializzazione del collegamento tra due dispositivi al fine
+ di permettere la comunicazione tra questi
+\end_layout
+
+\end_inset
+
+, l'interesse della comunità di ricercatori in sicurezza si è allontanato
+ dal Bluetooth per rivolgersi altrove.
+ Altre ricerche sono state fatte dopo l'introduzione del BLE, ma nessuna
+ di queste prevedeva un'analisi approfondita delle diverse implementazioni
+ dello stack Bluetooth.
+\end_layout
+
+\begin_layout Standard
+Lo studio dell'Armis e la scoperta di BlueBorne rappresentano la punta dell'iceb
+erg dei problemi che le implementazioni dello stack Bluetooth possono presentare
+ e mostrano quanto importante sia che i ricercatori rivolgano l'interesse
+ verso questa tecnologia.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+endgroup
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document
