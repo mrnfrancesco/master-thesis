@@ -1,0 +1,798 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass classicthesis
+\use_default_options true
+\maintain_unincluded_children false
+\language italian
+\language_package default
+\inputencoding utf8
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine natbib
+\cite_engine_type numerical
+\biblio_style plainnat
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 2
+\tocdepth 2
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begingroup
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+let
+\backslash
+clearpage
+\backslash
+relax
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+let
+\backslash
+cleardoublepage
+\backslash
+relax
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align right
+
+\shape slanted
+TODO
+\begin_inset Newline newline
+\end_inset
+
+
+\shape default
+ 
+\begin_inset VSpace medskip
+\end_inset
+
+ — 
+\series bold
+TODO
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace bigskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter
+BlueBorne
+\begin_inset CommandInset label
+LatexCommand label
+name "ch:blueborne"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Analisi della superficie d'attacco Bluetooth
+\end_layout
+
+\begin_layout Standard
+In un certo senso lo stack Bluetooth è l'equivalente dello stack TCP/IP,
+ ma per comunicazioni Bluetooth; infatti a differenza di altri protocolli
+ di comunicazione come Ethernet e WiFi, il Bluetooth non fa affidamento
+ sullo stack TCP/IP per i protocolli applicativi di alto livello.
+ Piuttosto sono stati definiti una gran varietà di protocolli e applicazioni
+ a partire dal livello fisico fino al livello applicativo che nel complesso
+ rappresentano lo stack Bluetooth (Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:bluetooth-stack"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /home/mrnfrancesco/git/master-thesis/gfx/bluetooth-stack.png
+	display false
+	width 100col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:bluetooth-stack"
+
+\end_inset
+
+
+\size footnotesize
+Architettura dello stack Bluetooth
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+I livelli più bassi dello stack (livello fisico e di collegamento) sono
+ implementati nei chip Bluetooth.
+ Questi chip comunicano con un 
+\emph on
+host
+\emph default
+, che è il sistema operativo del dispositivo, tramite il protocollo 
+\begin_inset Flex CT - acronym
+status open
+
+\begin_layout Plain Layout
+
+HCI
+\end_layout
+
+\end_inset
+
+.
+ Tutti i protocolli al di sopra di questo livello (L2CAP, AMP, SMP, SDP
+ e RFCOMM) sono invece implementati direttamente dall'host.
+ A differenza dei driver degli adattatori Bluetooth che implementano diverse
+ versioni dello stack per ogni hardware, i moderni sistemi operativi hanno
+ una sola implementazione dello stack.
+ Questo significa che ogni vulnerabilità che viene trovata in uno stack
+ automaticamente affligge tutti i dispositivi su cui gira lo specifico sistema
+ operativo che implementa quello stack.
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /home/mrnfrancesco/git/master-thesis/gfx/bluetooth-stack-blocks-and-vulnerabilities.png
+	display false
+	width 100col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:bluetooth-stack-blocks-and-vulnerabilities"
+
+\end_inset
+
+
+\size footnotesize
+Blocchi fondamentali dello stack Bluetooth e vulnerabilità scoperte con
+ BlueBorne
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In Figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:bluetooth-stack-blocks-and-vulnerabilities"
+
+\end_inset
+
+ vengono mostrati i blocchi fondamentali dello stack Bluetooth evidenziando
+ quelli dove risiedono le vulnerabilità di BlueBorne per i diversi sistemi
+ operativi.
+\end_layout
+
+\begin_layout Section
+Service Discovery Protocol
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset citation
+LatexCommand nocite
+key "blueborne_white_paper"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Il 
+\begin_inset Flex CT - acronym
+status open
+
+\begin_layout Plain Layout
+
+SDP
+\end_layout
+
+\end_inset
+
+ è uno degli strati che fanno parte del core delle specifiche Bluetooth,
+ quindi è presente in tutte le sue implementazioni.
+ Il suo scopo è quello di permettere ai dispositivi che lo richiedono di
+ scoprire i vari servizi e le applicazioni che il dispositivo interrogato
+ supporta.
+ Inoltre SDP è anche responsabile di tradurre gli 
+\begin_inset Flex CT - acronym
+status open
+
+\begin_layout Plain Layout
+
+UUID
+\end_layout
+
+\end_inset
+
+ dei servizi Bluetooth in 
+\begin_inset Flex CT - acronym
+status open
+
+\begin_layout Plain Layout
+
+PSM
+\end_layout
+
+\end_inset
+
+ (l'equivalente L2CAP del numero di porta).
+ Il valore PSM ottenuto viene poi usato per creare una connessione L2CAP
+ al servizio associato.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Per scoprire i servizi esposti da un dispositivo, un client SDP invia una
+ richiesta SDP e riceve una risposta SDP.
+ Il livello SDP definisce un altro meccanismo di frammentazione per le risposte
+ restituite dal server, chiamato 
+\emph on
+
+\begin_inset Quotes eld
+\end_inset
+
+SDP Continuation
+\begin_inset Quotes erd
+\end_inset
+
+
+\emph default
+.
+\end_layout
+
+\begin_layout Standard
+Il workflow di una comunicazione SDP tra client e server (Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:sdp-continuation-state-workflow"
+
+\end_inset
+
+) è il seguente:
+\end_layout
+
+\begin_layout Enumerate
+Un client SDP invia una richiesta SDP
+\end_layout
+
+\begin_layout Enumerate
+Se la risposta eccede la 
+\begin_inset Flex CT - acronym
+status open
+
+\begin_layout Plain Layout
+
+MTU
+\end_layout
+
+\end_inset
+
+ della connessione L2CAP sottostante verrà inviato solo un frammento della
+ risposta SDP preceduta dalla struttura 
+\emph on
+
+\begin_inset Quotes eld
+\end_inset
+
+continuation state
+\begin_inset Quotes erd
+\end_inset
+
+
+\emph default
+.
+\end_layout
+
+\begin_layout Enumerate
+Per ricevere i restanti frammenti della risposta il client SDP dovrà inviare
+ di nuovo 
+\series bold
+la stessa richiesta
+\series default
+ seguita dal 
+\emph on
+
+\begin_inset Quotes eld
+\end_inset
+
+continuation state
+\begin_inset Quotes erd
+\end_inset
+
+
+\emph default
+ ricevuto nell'ultima risposta SDP ricevuta (questo tipo di richiesta viene
+ chiamata 
+\emph on
+continuation request
+\emph default
+).
+\end_layout
+
+\begin_layout Enumerate
+Il server SDP invierà al client il frammento della risposta successivo a
+ quello indicato nel 
+\emph on
+continuation state
+\emph default
+.
+\end_layout
+
+\begin_layout Enumerate
+Si ripete il procedimento dal punto 3 finché tutti i frammenti della risposta
+ non vengono inviati.
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{sequencediagram}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+renewcommand
+\backslash
+unitfactor{0.75}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+newthread{client}{SDP Client}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+newinst[6]{server}{SDP Server}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+begin{call}{client}{richiesta}{server}{risposta (1/N) + continuation state
+ (1)}
+\backslash
+end{call}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+begin{call}{client}{richiesta + continuation state (1)}{server}{risposta
+ (2/N) + continuation state (2)}
+\backslash
+end{call}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+begin{call}{client}{
+\backslash
+dots}{server}{
+\backslash
+dots}
+\backslash
+end{call}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+begin{call}{client}{richiesta + continuation state (i)}{server}{risposta
+ (i/N) + continuation state (i)}
+\backslash
+end{call}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+begin{call}{client}{
+\backslash
+dots}{server}{
+\backslash
+dots}
+\backslash
+end{call}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+begin{call}{client}{richiesta + continuation state (N)}{server}{risposta
+ (N/N)}
+\backslash
+end{call}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{sequencediagram}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:sdp-continuation-state-workflow"
+
+\end_inset
+
+
+\size footnotesize
+Workflow di una comunicazione SDP con 
+\emph on
+continuation state
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Le specifiche del meccanismo di frammentazione del livello SDP lasciano
+ piena libertà agli sviluppatori circa la struttura del 
+\emph on
+continuation state
+\emph default
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\emph on
+\begin_inset Quotes eld
+\end_inset
+
+Il formato dell'informazione di continuazione non è standardizzato tra i
+ server SDP.
+ Ogni parametro del continuation state ha significato solo per il server
+ SDP che lo ha generato.
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Questa decisione è piuttosto singolare in quanto il 
+\emph on
+continuation state
+\emph default
+ non è utilizzato in alcun modo dal client, ma il suo scopo è quello di
+ essere utilizzato internamente dal server.
+ Il motivo di ciò è probabilmente quello di non sovraccaricare il server
+ con il compito di mantenere in memoria lo stato delle richieste tra i vari
+ client con cui è in corso una comunicazione.
+ Nonostante questo abbia una logica, non viene presa in considerazione la
+ possibilità che il client abusi di questo comportamento inviando un 
+\emph on
+continuation state
+\emph default
+ malformato, diverso da quello inviato dal server.
+ È proprio questo tipo di azione che ha portato alla scoperta della vulnerabilit
+à di tipo 
+\emph on
+Information Exposure
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Divulgazione intenzionale o non intenzionale di informazioni a un attore
+ che non è esplicitamente autorizzato ad avere accesso a quell'informazione
+\end_layout
+
+\end_inset
+
+ 
+\emph default
+(
+\begin_inset CommandInset href
+LatexCommand href
+name "CWE-200"
+target "http://cwe.mitre.org/data/definitions/200.html"
+
+\end_inset
+
+) dell'implementazione dello stack Bluetooth di Android analizzata in dettaglio
+ a seguire.
+\end_layout
+
+\begin_layout Subsection
+Android Information Leak - CVE-2017-0785
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+TODO
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Bluetooth Network Encapsulation Protocol
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+TODO
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Andorid Remote Command Execution - CVE-2017-0781
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset citation
+LatexCommand nocite
+key "blueborne_android_rce_white_paper"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+TODO
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+endgroup
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document
