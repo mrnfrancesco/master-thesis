@@ -722,16 +722,864 @@ Android Information Leak - CVE-2017-0785
 \end_layout
 
 \begin_layout Standard
-\begin_inset Note Note
+La struttura del 
+\emph on
+continuation state
+\emph default
+ SDP utilizzata nell'implementazione Android dello stack Bluetooth è la
+ seguente:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language={C++},showstringspaces=false,tabsize=4"
+inline false
 status open
 
 \begin_layout Plain Layout
-TODO
+
+typedef struct { 
+\end_layout
+
+\begin_layout Plain Layout
+
+	uint16_t cont_offset;
+\end_layout
+
+\begin_layout Plain Layout
+
+} sdp_cont_state_t;
 \end_layout
 
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+In questo caso la struttura presenta solamente un offset che indica quale
+ frammento inviare alla prossima richiesta SDP.
+\end_layout
+
+\begin_layout Standard
+Nonostante il codice del server SDP di Android esegua alcune validazioni
+ sul valore del campo 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+cont_offset
+\end_layout
+
+\end_inset
+
+, in particolare sul numero totale di frammenti, è comunque possibile ottenere
+ un 
+\emph on
+information leak.
+\end_layout
+
+\begin_layout Standard
+La funzione vulnerabile è in 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+/stack/sdp/sdp_server.cc
+\end_layout
+
+\end_inset
+
+:
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+static void process_service_search(
+\end_layout
+
+\begin_layout Plain Layout
+
+	tCONN_CB* p_ccb,
+\end_layout
+
+\begin_layout Plain Layout
+
+	uint16_t trans_num,
+\end_layout
+
+\begin_layout Plain Layout
+
+	uint16_t param_len,
+\end_layout
+
+\begin_layout Plain Layout
+
+	uint8_t* p_req,
+\end_layout
+
+\begin_layout Plain Layout
+
+	UNUSED_ATTR uint8_t* p_req_end
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Il suo scopo è quello di gestire una richiesta di ricerca di un servizio
+ da parte di un client SDP e costruire un messaggio di risposta da inviare
+ indietro al client.
+\end_layout
+
+\begin_layout Standard
+Andando ad analizzare più a fondo la sua implementazione poniamo la nostra
+ attenzione sul seguente estratto:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language={C++},showstringspaces=false,tabsize=4"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+uint16_t cur_handles, rem_handles, cont_offset, num_rsp_handles;
+\end_layout
+
+\begin_layout Plain Layout
+
+uint32_t rsp_handles[SDP_MAX_RECORDS] = {0};
+\end_layout
+
+\begin_layout Plain Layout
+
+tSDP_RECORD* p_rec = NULL;
+\end_layout
+
+\begin_layout Plain Layout
+
+...
+\end_layout
+
+\begin_layout Plain Layout
+
+/* Check if this is a continuation request */
+\end_layout
+
+\begin_layout Plain Layout
+
+if (*p_req) {
+\end_layout
+
+\begin_layout Plain Layout
+
+	...
+\end_layout
+
+\begin_layout Plain Layout
+
+	if (cont_offset != p_ccb->cont_offset) {
+\end_layout
+
+\begin_layout Plain Layout
+
+		sdpu_build_n_send_error(
+\end_layout
+
+\begin_layout Plain Layout
+
+			p_ccb,
+\end_layout
+
+\begin_layout Plain Layout
+
+			trans_num,
+\end_layout
+
+\begin_layout Plain Layout
+
+			SDP_INVALID_CONT_STATE,
+\end_layout
+
+\begin_layout Plain Layout
+
+			SDP_TEXT_BAD_CONT_INX
+\end_layout
+
+\begin_layout Plain Layout
+
+		);
+\end_layout
+
+\begin_layout Plain Layout
+
+		return;
+\end_layout
+
+\begin_layout Plain Layout
+
+	}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	/* extract the remaining handles */
+\end_layout
+
+\begin_layout Plain Layout
+
+	rem_handles = num_rsp_handles - cont_offset;
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+...
+\end_layout
+
+\begin_layout Plain Layout
+
+/* Calculate how many handles will fit in one PDU */
+\end_layout
+
+\begin_layout Plain Layout
+
+cur_handles =
+\end_layout
+
+\begin_layout Plain Layout
+
+	(uint16_t)((pccb->rem_mtu_size - SDP_MAX_SERVICE_RSPHDR_LEN) / 4);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+if (rem_handles <= cur_handles)
+\end_layout
+
+\begin_layout Plain Layout
+
+	cur_handles = rem_handles;
+\end_layout
+
+\begin_layout Plain Layout
+
+else { /* Continuation is set */
+\end_layout
+
+\begin_layout Plain Layout
+
+	p_ccb->cont_offset += cur_handles;
+\end_layout
+
+\begin_layout Plain Layout
+
+	is_cont = true;
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+...
+\end_layout
+
+\begin_layout Plain Layout
+
+for (xx = cont_offset; xx < cont_offset + cur_handles; xx++)
+\end_layout
+
+\begin_layout Plain Layout
+
+	UINT32_TO_BE_STREAM(p_rsp, rsp_handles[xx]);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Come si può notare il codice mantiene una copia del valore di 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+cont_offset
+\end_layout
+
+\end_inset
+
+ nell'oggetto 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+p_ccb
+\end_layout
+
+\end_inset
+
+ che mantiene le informazioni di connessione, e controlla che il valore
+ ricevuto sia uguale allo stato corrente della connessione; se i due valori
+ differiscono la funzione termina segnalando l'errore.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+if (cont_offset != p_ccb->cont_offset) {
+\end_layout
+
+\begin_layout Plain Layout
+
+	sdpu_build_n_send_error(...);
+\end_layout
+
+\begin_layout Plain Layout
+
+	return;
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In questo scenario non è possibile abusare di un valore di 
+\emph on
+continuation state
+\emph default
+ malformato che permetta di leggere zone di memoria arbitrarie.
+ Tuttavia, come già visto in Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:sdp-continuation-state-workflow"
+
+\end_inset
+
+, per il recupero dell'intera risposta il meccanismo di frammentazione del
+ livello SDP si aspetta che la richiesta fatta del client sia sempre la
+ stessa, mentre a variare è il valore del 
+\emph on
+continuation state
+\emph default
+.
+ Possiamo notare come l'estratto di codice della funzione 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+process_service_search
+\end_layout
+
+\end_inset
+
+ non abbia alcun controllo sulla consistenza dei parametri di due o più
+ richieste successive; possiamo quindi sfruttare questo per portare il codice
+ in uno stato inconsistente.
+\end_layout
+
+\begin_layout Standard
+Il valore del numero di frammenti rimanenti da inviare al client non viene
+ salvato nell'oggetto 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+p_ccb
+\end_layout
+
+\end_inset
+
+ per essere validato alla ricezione di una nuova richiesta, ma è calcolato
+ ad ogni invocazione della funzione eseguendo:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+rem_handles = num_rsp_handles - cont_offset;
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+dove 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+num_rsp_handles
+\end_layout
+
+\end_inset
+
+ rappresenta il numero totale di frammenti della risposta all'attuale richiesta
+ SDP, mentre 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+cont_offset
+\end_layout
+
+\end_inset
+
+, lo ricordiamo, è l'offset del frammento corrente da leggere.
+\end_layout
+
+\begin_layout Standard
+La mancanza di questo controllo nasce dall'assunzione (errata) che due richieste
+ successive facciano riferimento alla stessa risposta.
+\end_layout
+
+\begin_layout Standard
+Se quindi potessimo sfruttare questa situazione in particolare portando
+ il valore di 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+rem_handles
+\end_layout
+
+\end_inset
+
+ ad essere maggiore del reale numero dei frammenti rimanenti, durante il
+ 
+\emph on
+loop
+\emph default
+ di lettura dei frammenti si andrebbero a leggere sequenze di byte nello
+ stack oltre quelle che dovrebbero essere consentite.
+\end_layout
+
+\begin_layout Standard
+L'
+\emph on
+information leak
+\emph default
+ può essere quindi ottenuto tramite underflow
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Si ha quando il risultato di un calcolo è un numero minore del valore minore
+ rappresentabile.
+ La conseguenza è quella di ottenere valori generalmente molto alti, vicini
+ al massimo valore rappresentabile.
+\end_layout
+
+\end_inset
+
+ della variabile 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+rem_handles
+\end_layout
+
+\end_inset
+
+ ottenibile seguendo il flusso di richieste semplificato in Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:sdp-malformed-continuation-state-workflow"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{sequencediagram}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+renewcommand
+\backslash
+unitfactor{0.75}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+newthread{client}{SDP Client}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+newinst[6]{server}{SDP Server}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+begin{call}{client}{richiesta al servizio A}{server}{risposta (1/N) + continuati
+on state (1)}
+\backslash
+end{call}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+begin{call}{client}{richiesta al servizio B + continuation state (1)}{server}{ri
+sposta (2/N) + continuation state (2)}
+\backslash
+end{call}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{sequencediagram}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:sdp-malformed-continuation-state-workflow"
+
+\end_inset
+
+
+\size footnotesize
+Workflow malformato di una comunicazione SDP con 
+\emph on
+continuation state
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Quello che permette l'
+\emph on
+underflow
+\emph default
+ è in particolare la scelta dei due servizi da interrogare.
+ Più in dettaglio i passi da seguire sono:
+\end_layout
+
+\begin_layout Enumerate
+Il client (attaccante) effettuata una richiesta SDP per un servizio 
+\emph on
+A
+\emph default
+.
+\end_layout
+
+\begin_layout Enumerate
+Il server riceve la richiesta e genera una risposta contenente un 
+\emph on
+continuation state
+\emph default
+.
+ La dimensione di questa risposta è definita dal valore di 
+\begin_inset Flex CT - acronym
+status collapsed
+
+\begin_layout Plain Layout
+
+MTU
+\end_layout
+
+\end_inset
+
+ impostato dal client durante la connessione; in questo modo l'attaccante
+ può controllare la dimensione dei frammenti restituiti.
+\end_layout
+
+\begin_layout Enumerate
+Il client effettua una seconda richiesta SDP per un servizio 
+\emph on
+B
+\emph default
+ apponendo alla richiesta il 
+\emph on
+continuation state
+\emph default
+ ricevuto dalla risposta precedente riferita al servizio 
+\emph on
+A
+\emph default
+.
+ È importante che il servizio 
+\emph on
+B
+\emph default
+ restituisca risposte di dimensione inferiore a quelle del servizio 
+\emph on
+A.
+\end_layout
+
+\begin_layout Enumerate
+Il server riceve la richiesta ed effettua la validazione del campo 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+cont_offset
+\end_layout
+
+\end_inset
+
+ che passerà senza problemi in quanto ricevuto direttamente dal server alla
+ richiesta precedente.
+\end_layout
+
+\begin_layout Enumerate
+A causa del fatto che il valore di 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+num_rsp_handles
+\end_layout
+
+\end_inset
+
+ del servizio 
+\emph on
+B
+\emph default
+ è minore di quello del servizio 
+\emph on
+A
+\emph default
+, si otterrà l'
+\emph on
+underflow
+\emph default
+ sperato.
+\end_layout
+
+\begin_layout Enumerate
+L'estratto di codice precedente si aspetterà di dover inviare una risposta
+ molto grande (fino a 
+\begin_inset Formula $64$
+\end_inset
+
+KB) e il codice seguente copierà tanti byte quanti specificati dal valore
+ di 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+num_rsp_handles
+\end_layout
+
+\end_inset
+
+ nel pacchetto di risposta
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+for (xx = cont_offset; xx < cont_offset + cur_handles; xx++)
+\end_layout
+
+\begin_layout Plain Layout
+
+	UINT32_TO_BE_STREAM(p_rsp, rsp_handles[xx]);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Da questo punto in poi l'attaccante può ripetere la stessa richiesta al
+ servizio 
+\emph on
+B
+\emph default
+ apponendo il valore di 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+cont_offset
+\end_layout
+
+\end_inset
+
+ ricevuto dal server, continuando così a leggere byte nello stack fino a
+ consumare il numero totale di frammenti specificato in 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+num_rsp_handles
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+I dati ottenuti in questo modo potenzialmente potrebbero contenere chiavi
+ di cifratura, puntatori a dati o a codice, o altri dati che possono essere
+ utilizzati congiuntamente ad altre vulnerabilità per bypassare alcuni meccanism
+i di mitigazione messi a disposizione dal sistema operativo.
+ Per ultima, ma non meno importante, è anche la possibilità di creare un
+ disservizio facendo si che il puntatore ai dati da leggere per costruire
+ la risposta SDP punti ad un'area riservata del sistema operativo.
+ L'accesso a queste aree di memoria, infatti, portano generalmente al riavvio
+ improvviso del dispositivo.
 \end_layout
 
 \begin_layout Section
