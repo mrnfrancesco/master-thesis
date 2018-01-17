@@ -619,6 +619,13 @@ acro{MTU}{Maximum Transfer Unit}
 
 \begin_layout Plain Layout
 
+  
+\backslash
+acro{CS}{Continuation State}
+\end_layout
+
+\begin_layout Plain Layout
+
 
 \backslash
 end{acronym}              

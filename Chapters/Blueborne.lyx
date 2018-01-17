@@ -322,7 +322,7 @@ key "blueborne_white_paper"
 \begin_layout Standard
 Il 
 \begin_inset Flex CT - acronym
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -336,9 +336,9 @@ SDP
  Il suo scopo è quello di permettere ai dispositivi che lo richiedono di
  scoprire i vari servizi e le applicazioni che il dispositivo interrogato
  supporta.
- Inoltre SDP è anche responsabile di tradurre gli 
+ SDP è inoltre responsabile di tradurre gli 
 \begin_inset Flex CT - acronym
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -349,7 +349,7 @@ UUID
 
  dei servizi Bluetooth in 
 \begin_inset Flex CT - acronym
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -371,10 +371,9 @@ PSM
 \end_layout
 
 \begin_layout Standard
-Per scoprire i servizi esposti da un dispositivo, un client SDP invia una
- richiesta SDP e riceve una risposta SDP.
- Il livello SDP definisce un altro meccanismo di frammentazione per le risposte
- restituite dal server, chiamato 
+Per scoprire i servizi esposti da un dispositivo, un client invia una richiesta
+ SDP e riceve una risposta SDP eventualmente frammentata tramite un meccanismo
+ proprio del livello SDP chiamato 
 \emph on
 
 \begin_inset Quotes eld
@@ -402,13 +401,13 @@ reference "fig:sdp-continuation-state-workflow"
 \end_layout
 
 \begin_layout Enumerate
-Un client SDP invia una richiesta SDP
+Un client invia una richiesta SDP.
 \end_layout
 
 \begin_layout Enumerate
 Se la risposta eccede la 
 \begin_inset Flex CT - acronym
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -418,41 +417,32 @@ MTU
 \end_inset
 
  della connessione L2CAP sottostante verrà inviato solo un frammento della
- risposta SDP preceduta dalla struttura 
-\emph on
+ risposta SDP seguita dalla struttura 
+\begin_inset Flex CT - acronym
+status collapsed
 
-\begin_inset Quotes eld
+\begin_layout Plain Layout
+
+CS
+\end_layout
+
 \end_inset
 
-continuation state
-\begin_inset Quotes erd
-\end_inset
-
-
-\emph default
-.
+ che permette al client di richiedere il frammento successivo.
 \end_layout
 
 \begin_layout Enumerate
-Per ricevere i restanti frammenti della risposta il client SDP dovrà inviare
+Per ricevere i restanti frammenti della risposta il client dovrà inviare
  di nuovo 
 \series bold
 la stessa richiesta
 \series default
  seguita dal 
 \emph on
-
-\begin_inset Quotes eld
-\end_inset
-
-continuation state
-\begin_inset Quotes erd
-\end_inset
-
-
+Continuation State
 \emph default
- ricevuto nell'ultima risposta SDP ricevuta (questo tipo di richiesta viene
- chiamata 
+ ricevuto nell'ultima risposta SDP (questo tipo di richiesta viene chiamata
+ 
 \emph on
 continuation request
 \emph default
@@ -463,14 +453,17 @@ continuation request
 Il server SDP invierà al client il frammento della risposta successivo a
  quello indicato nel 
 \emph on
-continuation state
+Continuation State
 \emph default
 .
 \end_layout
 
 \begin_layout Enumerate
-Si ripete il procedimento dal punto 3 finché tutti i frammenti della risposta
- non vengono inviati.
+Si ripete il procedimento dal punto 
+\begin_inset Formula $3$
+\end_inset
+
+ finché tutti i frammenti della risposta non vengono inviati.
 \end_layout
 
 \begin_layout Standard
@@ -528,8 +521,19 @@ newinst[6]{server}{SDP Server}
 
 	
 \backslash
-begin{call}{client}{richiesta}{server}{risposta (1/N) + continuation state
- (1)}
+begin{call}{client}{
+\backslash
+small Richiesta}{server}{
+\backslash
+small Risposta 
+\backslash
+((1/N)
+\backslash
+) + CS 
+\backslash
+((1)
+\backslash
+)}
 \backslash
 end{call}
 \end_layout
@@ -538,8 +542,23 @@ end{call}
 
 	
 \backslash
-begin{call}{client}{richiesta + continuation state (1)}{server}{risposta
- (2/N) + continuation state (2)}
+begin{call}{client}{
+\backslash
+small Richiesta + CS 
+\backslash
+((1)
+\backslash
+)}{server}{
+\backslash
+small Risposta 
+\backslash
+((2/N)
+\backslash
+) + CS 
+\backslash
+((2)
+\backslash
+)}
 \backslash
 end{call}
 \end_layout
@@ -561,8 +580,23 @@ end{call}
 
 	
 \backslash
-begin{call}{client}{richiesta + continuation state (i)}{server}{risposta
- (i/N) + continuation state (i)}
+begin{call}{client}{
+\backslash
+small Richiesta + CS 
+\backslash
+((i)
+\backslash
+)}{server}{
+\backslash
+small Risposta 
+\backslash
+((i/N)
+\backslash
+) + CS 
+\backslash
+((i)
+\backslash
+)}
 \backslash
 end{call}
 \end_layout
@@ -584,8 +618,19 @@ end{call}
 
 	
 \backslash
-begin{call}{client}{richiesta + continuation state (N)}{server}{risposta
- (N/N)}
+begin{call}{client}{
+\backslash
+small Richiesta + CS 
+\backslash
+((N)
+\backslash
+)}{server}{
+\backslash
+small Risposta 
+\backslash
+((N/N)
+\backslash
+)}
 \backslash
 end{call}
 \end_layout
@@ -637,7 +682,7 @@ continuation state
 Le specifiche del meccanismo di frammentazione del livello SDP lasciano
  piena libertà agli sviluppatori circa la struttura del 
 \emph on
-continuation state
+Continuation State
 \emph default
 :
 \end_layout
@@ -664,6 +709,16 @@ Il formato dell'informazione di continuazione non è standardizzato tra i
 \end_inset
 
 
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Specifiche Bluetooth v5.0, Vol 3, Parte B, pagina 1926
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -676,17 +731,18 @@ Il formato dell'informazione di continuazione non è standardizzato tra i
 \begin_layout Standard
 Questa decisione è piuttosto singolare in quanto il 
 \emph on
-continuation state
+Continuation State
 \emph default
  non è utilizzato in alcun modo dal client, ma il suo scopo è quello di
  essere utilizzato internamente dal server.
- Il motivo di ciò è probabilmente quello di non sovraccaricare il server
+ Il motivo di ciò potrebbe essere quello di non sovraccaricare il server
  con il compito di mantenere in memoria lo stato delle richieste tra i vari
  client con cui è in corso una comunicazione.
  Nonostante questo abbia una logica, non viene presa in considerazione la
- possibilità che il client abusi di questo comportamento inviando un 
+ possibilità che il client abusi di questo comportamento ad esempio inviando
+ un 
 \emph on
-continuation state
+Continuation State
 \emph default
  malformato, diverso da quello inviato dal server.
  È proprio questo tipo di azione che ha portato alla scoperta della vulnerabilit
@@ -724,10 +780,9 @@ Android Information Leak - CVE-2017-0785
 \begin_layout Standard
 La struttura del 
 \emph on
-continuation state
+Continuation State
 \emph default
- SDP utilizzata nell'implementazione Android dello stack Bluetooth è la
- seguente:
+ utilizzata nell'implementazione Android dello stack Bluetooth è la seguente:
 \end_layout
 
 \begin_layout Standard
@@ -757,8 +812,703 @@ typedef struct {
 \end_layout
 
 \begin_layout Standard
-In questo caso la struttura presenta solamente un offset che indica quale
- frammento inviare alla prossima richiesta SDP.
+In questo caso la struttura presenta solamente un offset di 
+\begin_inset Formula $16$
+\end_inset
+
+ bit che indica quale frammento inviare alla prossima richiesta SDP.
+\end_layout
+
+\begin_layout Standard
+La funzione che gestisce tutte le richieste SDP si trova in 
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+/stack/sdp/sdp_server.cc
+\end_layout
+
+\end_inset
+
+ ed ha la seguente firma:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+void sdp_server_handle_client_req (tCONN_CB * p_ccb, BT_HDR * p_msg);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Come indicato nella documentazione, la funzione riceve tutti i dati derivanti
+ dal livello L2CAP e li passa alla funzione appropriata per la gestione.
+ Un estratto del codice è il seguente:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+...
+\end_layout
+
+\begin_layout Plain Layout
+
+/* The first byte in the message is the pdu type */
+\end_layout
+
+\begin_layout Plain Layout
+
+pdu_id = *p_req++;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+/* Extract the transaction number and parameter length */
+\end_layout
+
+\begin_layout Plain Layout
+
+BE_STREAM_TO_UINT16(trans_num, p_req);
+\end_layout
+
+\begin_layout Plain Layout
+
+BE_STREAM_TO_UINT16(param_len, p_req);
+\end_layout
+
+\begin_layout Plain Layout
+
+...
+\end_layout
+
+\begin_layout Plain Layout
+
+switch (pdu_id) {
+\end_layout
+
+\begin_layout Plain Layout
+
+	case SDP_PDU_SERVICE_SEARCH_REQ:
+\end_layout
+
+\begin_layout Plain Layout
+
+		process_service_search(p_ccb, trans_num, param_len, p_req, p_req_end);
+\end_layout
+
+\begin_layout Plain Layout
+
+		break;
+\end_layout
+
+\begin_layout Plain Layout
+
+	...
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Proseguendo nell'albero delle chiamate andiamo ad analizzare la funzione
+ che si occupa di gestire le richieste di ricerca di servizi, particolari
+ richieste utilizzate per sapere se e quali servizi il dispositivo supporta
+ del tipo richiesto.
+\end_layout
+
+\begin_layout Standard
+Dalle specifiche Bluetooth otteniamo il formato dei pacchetti di richiesta
+ e risposta di questo tipo con e senza 
+\emph on
+Continuation State
+\emph default
+, illustrati rispettivamente in Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:sdp-request-packet-format"
+
+\end_inset
+
+ e Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:sdp-response-packet-format"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align left
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+newcommand{
+\backslash
+colorbitbox}[3]{%
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+rlap{
+\backslash
+bitbox{#2}{
+\backslash
+color{#1}
+\backslash
+rule{
+\backslash
+width}{
+\backslash
+height}}}%
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitbox{#2}{#3}}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{bytefield}[%
+\end_layout
+
+\begin_layout Plain Layout
+
+	boxformatting={
+\backslash
+centering
+\backslash
+itshape},
+\end_layout
+
+\begin_layout Plain Layout
+
+	bitwidth=1em]{32}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitheader{0,7,8,12,13,15,16,23,24,28,29,31} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitbox{8}{
+\backslash
+scriptsize PDU ID} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitbox{16}{
+\backslash
+scriptsize Transaction ID} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{gray!15}{8}{
+\backslash
+scriptsize Parameter Length 
+\backslash
+
+\backslash
+ 
+\backslash
+tiny (Byte 
+\backslash
+(0
+\backslash
+))} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{gray!15}{8}{
+\backslash
+scriptsize Parameter Length 
+\backslash
+
+\backslash
+ 
+\backslash
+tiny (Byte 
+\backslash
+(1
+\backslash
+))} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{orange!15}{5}{
+\backslash
+scriptsize Element Type} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{orange!15}{3}{
+\backslash
+scriptsize Element Size} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{orange!15}{8}{
+\backslash
+scriptsize Element Var Size} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{green!15}{5}{
+\backslash
+scriptsize Value Type} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{green!15}{3}{
+\backslash
+scriptsize Value Size} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{green!15}{16}{
+\backslash
+scriptsize Value} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitbox{16}{
+\backslash
+scriptsize Maximum Service Record Count} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{blue!15}{8}{
+\backslash
+scriptsize Continuation State Length 
+\backslash
+
+\backslash
+ 
+\backslash
+tiny (
+\backslash
+(=0x02
+\backslash
+))} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{blue!15}{16}{
+\backslash
+scriptsize Continuation State Value} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{bytefield}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+~
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{bytefield}[%
+\end_layout
+
+\begin_layout Plain Layout
+
+	boxformatting={
+\backslash
+centering
+\backslash
+itshape},
+\end_layout
+
+\begin_layout Plain Layout
+
+	bitwidth=1em]{32}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitheader{0,7,8,12,13,15,16,23,24,28,29,31} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitbox{8}{
+\backslash
+scriptsize PDU ID} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitbox{16}{
+\backslash
+scriptsize Transaction ID} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{gray!15}{8}{
+\backslash
+scriptsize Parameter Length 
+\backslash
+
+\backslash
+ 
+\backslash
+tiny (Byte 
+\backslash
+(0
+\backslash
+))} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{gray!15}{8}{
+\backslash
+scriptsize Parameter Length 
+\backslash
+
+\backslash
+ 
+\backslash
+tiny (Byte 
+\backslash
+(1
+\backslash
+))} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{orange!15}{5}{
+\backslash
+scriptsize Element Type} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{orange!15}{3}{
+\backslash
+scriptsize Element Size} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{orange!15}{8}{
+\backslash
+scriptsize Element Var Size} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{green!15}{5}{
+\backslash
+scriptsize Value Type} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{green!15}{3}{
+\backslash
+scriptsize Value Size} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{green!15}{16}{
+\backslash
+scriptsize Value} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitbox{16}{
+\backslash
+scriptsize Maximum Service Record Count} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{blue!15}{8}{
+\backslash
+scriptsize No Continuation State 
+\backslash
+
+\backslash
+ 
+\backslash
+tiny (
+\backslash
+(=0x00
+\backslash
+))} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{bytefield}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:sdp-request-packet-format"
+
+\end_inset
+
+
+\size footnotesize
+Formato del pacchetto di richiesta di una ricerca di servizi fatta tramite
+ SDP rispettivamente con e senza 
+\emph on
+Continuation State
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align left
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+TODO
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:sdp-response-packet-format"
+
+\end_inset
+
+
+\size footnotesize
+Formato del pacchetto di risposta di una ricerca di servizi fatta tramite
+ SDP
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -951,6 +1701,11 @@ if (*p_req) {
 \begin_layout Plain Layout
 
 	rem_handles = num_rsp_handles - cont_offset;
+\end_layout
+
+\begin_layout Plain Layout
+
+	...
 \end_layout
 
 \begin_layout Plain Layout
@@ -1582,16 +2337,6 @@ i di mitigazione messi a disposizione dal sistema operativo.
  improvviso del dispositivo.
 \end_layout
 
-\begin_layout Section
-Bluetooth Network Encapsulation Protocol
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-TODO
 \end_layout
 
 \end_inset
