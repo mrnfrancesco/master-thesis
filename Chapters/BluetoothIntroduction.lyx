@@ -710,8 +710,6 @@ end{tikzpicture}
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-
-\size footnotesize
 \begin_inset CommandInset label
 LatexCommand label
 name "fig:bluetooth-ecosystem"
@@ -861,8 +859,6 @@ name "fig:bluetooth-fragmentation"
 
 \end_inset
 
-
-\size footnotesize
 Esempio dei processi di segmentazione e frammentazione
 \end_layout
 
@@ -973,8 +969,6 @@ name "fig:bluetooth-stack"
 
 \end_inset
 
-
-\size footnotesize
 Architettura dello stack Bluetooth
 \end_layout
 
@@ -1047,8 +1041,6 @@ name "fig:bluetooth-stack-blocks-and-vulnerabilities"
 
 \end_inset
 
-
-\size footnotesize
 Blocchi fondamentali dello stack Bluetooth e vulnerabilità scoperte con
  BlueBorne
 \end_layout
@@ -1295,8 +1287,6 @@ name "fig:sdp-service-record"
 
 \end_inset
 
-
-\size footnotesize
 Service Record
 \end_layout
 
@@ -1435,8 +1425,6 @@ name "fig:sdp-service-attribute-general"
 
 \end_inset
 
-
-\size footnotesize
 Service Attribute
 \end_layout
 
@@ -1594,8 +1582,6 @@ name "fig:sdp-service-attribute-data-element"
 
 \end_inset
 
-
-\size footnotesize
 Data Element
 \end_layout
 
@@ -2433,8 +2419,6 @@ name "fig:sdp-pdu-format"
 
 \end_inset
 
-
-\size footnotesize
 Formato del pacchetto PDU
 \end_layout
 
@@ -2569,8 +2553,6 @@ name "fig:sdp-continuation-state-format"
 
 \end_inset
 
-
-\size footnotesize
 Formato 
 \emph on
 Continuation State
@@ -3342,8 +3324,6 @@ name "fig:sdp-service-search-request-response-format"
 
 \end_inset
 
-
-\size footnotesize
 Formato dei pacchetti di richiesta e risposta di una ricerca di servizi
  con 
 \emph on
@@ -3651,8 +3631,6 @@ name "fig:sdp-continuation-state-workflow"
 
 \end_inset
 
-
-\size footnotesize
 Workflow di una comunicazione SDP con 
 \emph on
 continuation state 
@@ -4286,8 +4264,6 @@ name "fig:bnep-packet-encapsulation"
 
 \end_inset
 
-
-\size footnotesize
 Meccanismo di incapsulamento di un pacchetto Ethernet con BNEP
 \end_layout
 
@@ -4487,8 +4463,6 @@ name "fig:bnep-control-message-format"
 
 \end_inset
 
-
-\size footnotesize
 Formato del messaggio di controllo BNEP
 \end_layout
 
@@ -4868,8 +4842,6 @@ name "fig:bnep-extension-header-format"
 
 \end_inset
 
-
-\size footnotesize
 Formato dell'
 \emph on
 extension header
