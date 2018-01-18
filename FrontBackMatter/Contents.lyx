@@ -626,6 +626,13 @@ acro{CS}{Continuation State}
 
 \begin_layout Plain Layout
 
+  
+\backslash
+acro{PDU}{Protocol Data Unit}
+\end_layout
+
+\begin_layout Plain Layout
+
 
 \backslash
 end{acronym}              

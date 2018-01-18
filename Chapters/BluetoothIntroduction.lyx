@@ -921,6 +921,2757 @@ erg dei problemi che le implementazioni dello stack Bluetooth possono presentare
  verso questa tecnologia.
 \end_layout
 
+\begin_layout Section
+Analisi della superficie d'attacco Bluetooth
+\end_layout
+
+\begin_layout Standard
+In un certo senso lo stack Bluetooth è l'equivalente dello stack TCP/IP,
+ ma per comunicazioni Bluetooth; infatti a differenza di altri protocolli
+ di comunicazione come Ethernet e WiFi, il Bluetooth non fa affidamento
+ sullo stack TCP/IP per i protocolli applicativi di alto livello.
+ Piuttosto sono stati definiti una gran varietà di protocolli e applicazioni
+ a partire dal livello fisico fino al livello applicativo che nel complesso
+ rappresentano lo stack Bluetooth (Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:bluetooth-stack"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /home/mrnfrancesco/git/master-thesis/gfx/bluetooth-stack.png
+	display false
+	width 100col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:bluetooth-stack"
+
+\end_inset
+
+
+\size footnotesize
+Architettura dello stack Bluetooth
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+I livelli più bassi dello stack (livello fisico e di collegamento) sono
+ implementati nei chip Bluetooth.
+ Questi chip comunicano con un 
+\emph on
+host
+\emph default
+, che è il sistema operativo del dispositivo, tramite il protocollo 
+\begin_inset Flex CT - acronym
+status open
+
+\begin_layout Plain Layout
+
+HCI
+\end_layout
+
+\end_inset
+
+.
+ Tutti i protocolli al di sopra di questo livello (L2CAP, AMP, SMP, SDP
+ e RFCOMM) sono invece implementati direttamente dall'host.
+ A differenza dei driver degli adattatori Bluetooth che implementano diverse
+ versioni dello stack per ogni hardware, i moderni sistemi operativi hanno
+ una sola implementazione dello stack.
+ Questo significa che ogni vulnerabilità che viene trovata in uno stack
+ automaticamente affligge tutti i dispositivi su cui gira lo specifico sistema
+ operativo che implementa quello stack.
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /home/mrnfrancesco/git/master-thesis/gfx/bluetooth-stack-blocks-and-vulnerabilities.png
+	display false
+	width 100col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:bluetooth-stack-blocks-and-vulnerabilities"
+
+\end_inset
+
+
+\size footnotesize
+Blocchi fondamentali dello stack Bluetooth e vulnerabilità scoperte con
+ BlueBorne
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In Figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:bluetooth-stack-blocks-and-vulnerabilities"
+
+\end_inset
+
+ vengono mostrati i blocchi fondamentali dello stack Bluetooth evidenziando
+ quelli dove risiedono le vulnerabilità di BlueBorne per i diversi sistemi
+ operativi.
+\end_layout
+
+\begin_layout Section
+Service Discovery Protocol
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset citation
+LatexCommand nocite
+key "blueborne_white_paper"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Il 
+\begin_inset Flex CT - acronym
+status collapsed
+
+\begin_layout Plain Layout
+
+SDP
+\end_layout
+
+\end_inset
+
+ è uno degli strati che fanno parte del core delle specifiche Bluetooth,
+ quindi è presente in tutte le sue implementazioni.
+ Il suo scopo è quello di fornire alle applicazioni client un meccanismo
+ per scoprire l'esistenza di servizi forniti e relativi attributi dal server
+ SDP interrogato.
+ Gli attributi di un servizio includono il tipo e la classe di servizio
+ offerti e il meccanismo o le informazioni di protocollo necessarie per
+ utilizzare il servizio.
+\end_layout
+
+\begin_layout Standard
+L'intera comunicazione avviene tra il client SDP e il server SDP.
+ Quest'ultimo mantiene una lista di 
+\emph on
+service record
+\emph default
+ che descrivono le caratteristiche dei servizi presenti sull'host su cui
+ gira il server.
+ Un client può recuperare queste informazioni richiedendo i 
+\emph on
+service record
+\emph default
+ al server tramite una richiesta SDP.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Se il client, o un'applicazione associata con esso, decide di utilizzare
+ un servizio deve aprire una connessione separata al provider del servizio
+ utilizzando le informazioni presenti nel 
+\emph on
+service record
+\emph default
+.
+ Questo perché SDP fornisce un meccanismo atto solo a scoprire i servizi,
+ ma non ad utilizzarli.
+\end_layout
+
+\begin_layout Subsection
+Service Record e Service Attribute
+\end_layout
+
+\begin_layout Standard
+Un servizio è un'entità che può fornire informazioni, svolgere azioni o
+ gestire risorse.
+ Un servizio può essere implementato in software, hardware, o una combinazione
+ dei due.
+\end_layout
+
+\begin_layout Standard
+Tutte le informazioni che riguardano un servizio mantenuto da un server
+ SDP sono contenute in un unico 
+\emph on
+service record 
+\emph default
+che non è altro che una lista di attributi relativi al servizio, come mostrato
+ in Figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:sdp-service-record"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{bytefield}[%
+\end_layout
+
+\begin_layout Plain Layout
+
+	boxformatting={
+\backslash
+centering
+\backslash
+itshape},
+\end_layout
+
+\begin_layout Plain Layout
+
+	bitwidth=1em]{10}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+wordbox{1}{
+\backslash
+scriptsize Service Attribute~1} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+wordbox{1}{
+\backslash
+scriptsize Service Attribute~2} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+wordbox{1}{
+\backslash
+scriptsize Service Attribute~3} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+wordbox[]{1}{$
+\backslash
+vdots$} 
+\backslash
+
+\backslash
+[1ex]
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+wordbox{1}{
+\backslash
+scriptsize Service Attribute~N} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{bytefield}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:sdp-service-record"
+
+\end_inset
+
+
+\size footnotesize
+Service Record
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Ogni attributo descrive una singola caratteristica di un servizio.
+ Alcuni esempi di attributo sono quelli che descrivono l'ID del servizio,
+ il nome, la descrizione, l'URL dell'icona, ecc.
+\end_layout
+
+\begin_layout Standard
+Un attributo consiste di due componenti: un ID e un valore (vedi Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:sdp-service-attribute-general"
+
+\end_inset
+
+).
+ L'ID è un intero senza segno a 16 bit che serve a distinguere ogni attributo
+ di un servizio dagli attributi di altri servizi.
+ Il valore è un campo a lunghezza variabile la cui semantica è definita
+ dal valore dell'ID.
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{bytefield}[%
+\end_layout
+
+\begin_layout Plain Layout
+
+	boxformatting={
+\backslash
+centering
+\backslash
+itshape},
+\end_layout
+
+\begin_layout Plain Layout
+
+	bitwidth=1em]{16}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitheader{0,8,15} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+wordbox{1}{
+\backslash
+scriptsize Attribute ID} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+wordbox{1}{
+\backslash
+scriptsize Attribute Value 
+\backslash
+
+\backslash
+ 
+\backslash
+tiny (Lunghezza variabile)} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{bytefield}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:sdp-service-attribute-general"
+
+\end_inset
+
+
+\size footnotesize
+Service Attribute
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+I valori degli attributi possono essere arbitrariamente complesse e contenere
+ informazioni di vario tipo.
+ SDP definisce un semplice meccanismo per descrivere i dati contenuti in
+ un attributo: il 
+\emph on
+Data Element
+\emph default
+.
+\end_layout
+
+\begin_layout Subsection
+Data Element
+\end_layout
+
+\begin_layout Standard
+Un 
+\emph on
+Data Element
+\emph default
+ (Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:sdp-service-attribute-data-element"
+
+\end_inset
+
+) consiste di due campi: un campo header e un campo dati.
+ A sua volta il campo header è composto di due parti che indicano tipo (
+\begin_inset Formula $5$
+\end_inset
+
+ bit) e dimensione (
+\begin_inset Formula $3$
+\end_inset
+
+ bit) del campo dati.
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{bytefield}[%
+\end_layout
+
+\begin_layout Plain Layout
+
+	boxformatting={
+\backslash
+centering
+\backslash
+itshape},
+\end_layout
+
+\begin_layout Plain Layout
+
+	bitwidth=1.5em]{20}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitheader{0,4,5,7} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitbox{5}{
+\backslash
+scriptsize Element Type} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitbox{3}{
+\backslash
+scriptsize Element Size} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitbox{12}{
+\backslash
+scriptsize Data 
+\backslash
+
+\backslash
+ 
+\backslash
+tiny (Variable Length)} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{bytefield}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:sdp-service-attribute-data-element"
+
+\end_inset
+
+
+\size footnotesize
+Data Element
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Alcuni valori di tipo che saranno utili per la trattazione successiva sono
+ riportati in Tabella 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:sdp-data-element-type"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float table
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="3" columns="3">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="middle">
+<column alignment="center" valignment="middle">
+<column alignment="center" valignment="middle" width="55col%">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Tipo
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Dimensioni valide
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Descrizione
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $3$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $1,2,4$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Flex CT - acronym
+status collapsed
+
+\begin_layout Plain Layout
+
+UUID
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $6$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $5,6,7$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Sequenza, un 
+\emph on
+Data Element
+\emph default
+ in cui il campo dati è una sequenza di altri 
+\emph on
+Data Element
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:sdp-data-element-type"
+
+\end_inset
+
+Valori del campo tipo di un 
+\emph on
+Data Element
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Il campo dimensione nell'header di un 
+\emph on
+Data Element
+\emph default
+ è un indice di 
+\begin_inset Formula $3$
+\end_inset
+
+ bit seguito da 
+\begin_inset Formula $0,8,16\text{ o }32$
+\end_inset
+
+ bit a seconda del valore, come descritto in Tabella 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:sdp-data-element-size"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float table
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="9" columns="3">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="middle">
+<column alignment="center" valignment="middle">
+<column alignment="center" valignment="middle" width="55col%">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Indice
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Bit addizionali
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Dimensione del campo Dati
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\emph on
+\begin_inset Formula $0$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $1$
+\end_inset
+
+ byte tranne nel caso in cui il tipo è 
+\emph on
+nil
+\emph default
+ in cui la dimensione è 
+\begin_inset Formula $0$
+\end_inset
+
+ byte
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $1$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $2$
+\end_inset
+
+ byte
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $2$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $4$
+\end_inset
+
+ byte
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $3$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $8$
+\end_inset
+
+ byte
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $4$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $16$
+\end_inset
+
+ byte
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $5$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $8$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+La dimensione dei dati è contenuto nel successivo byte, interpretato come
+ intero senza segno
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $6$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $16$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+La dimensione dei dati è contenuta nei successivi 
+\begin_inset Formula $16$
+\end_inset
+
+ bit, interpretati come intero senza segno
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $7$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $32$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+La dimensione dei dati è contenuta nei successivi 
+\begin_inset Formula $32$
+\end_inset
+
+ bit, interpretati come intero senza segno
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:sdp-data-element-size"
+
+\end_inset
+
+Valori del campo dimensione di un 
+\emph on
+Data Element
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Descrizione del protocollo
+\end_layout
+
+\begin_layout Standard
+SDP utilizza un modello richiesta/risposta tra client e server in cui ogni
+ transazione consiste di una richiesta 
+\begin_inset Flex CT - acronym
+status collapsed
+
+\begin_layout Plain Layout
+
+PDU
+\end_layout
+
+\end_inset
+
+ e una risposta PDU il cui formato è specificato in Figura 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:sdp-pdu-format"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{bytefield}[%
+\end_layout
+
+\begin_layout Plain Layout
+
+	boxformatting={
+\backslash
+centering
+\backslash
+itshape},
+\end_layout
+
+\begin_layout Plain Layout
+
+	bitwidth=0.55em]{40}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitheader{0,7,8,23,24,39} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+begin{rightwordgroup}{PDU Header}
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+bitbox{8}{
+\backslash
+scriptsize PDU ID} &
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+bitbox{16}{
+\backslash
+scriptsize Transaction ID} &
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+bitbox{16}{
+\backslash
+scriptsize Parameter Length}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+end{rightwordgroup} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitheader{0,31} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+begin{rightwordgroup}{Parametri 
+\backslash
+
+\backslash
+ 
+\backslash
+tiny (
+\backslash
+(4
+\backslash
+) x Parameter Length Byte)}
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+bitbox{32}{
+\backslash
+scriptsize Parametro~1} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+bitbox{32}{
+\backslash
+scriptsize Parametro~2} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+bitbox[]{32}{$
+\backslash
+vdots$} 
+\backslash
+
+\backslash
+ [1ex]
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+bitbox{32}{
+\backslash
+scriptsize Parametro~N}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+end{rightwordgroup} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{bytefield}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:sdp-pdu-format"
+
+\end_inset
+
+
+\size footnotesize
+Formato del pacchetto PDU
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Alcune richieste SDP potrebbero richiedere risposte che sono più grandi
+ della dimensione massima di una risposta PDU.
+ In questo caso il server SDP genera una risposta parziale a cui viene accodato
+ un parametro chiamato 
+\emph on
+Continuation State
+\emph default
+ utilizzando un meccanismo di frammentazione proprio del livello SDP chiamato
+ 
+\emph on
+SDP Continuation
+\emph default
+.
+\end_layout
+
+\begin_layout Standard
+Il parametro 
+\emph on
+Continuation State
+\emph default
+ è un campo a lunghezza variabile la cui dimensione è specificata nel primo
+ byte (vedi Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:sdp-continuation-state-format"
+
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{bytefield}[%
+\end_layout
+
+\begin_layout Plain Layout
+
+	boxformatting={
+\backslash
+centering
+\backslash
+itshape},
+\end_layout
+
+\begin_layout Plain Layout
+
+	bitwidth=1em]{24}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitbox{8}{
+\backslash
+small InfoLength 
+\backslash
+
+\backslash
+ 
+\backslash
+tiny (
+\backslash
+(1
+\backslash
+) Byte)} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitbox{16}{
+\backslash
+small Continuation Information} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{bytefield}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:sdp-continuation-state-format"
+
+\end_inset
+
+
+\size footnotesize
+Formato 
+\emph on
+Continuation State
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Il formato dell'informazione di continuazione non è standardizzato tra i
+ server SDP.
+ Ogni parametro del 
+\emph on
+Continuation State
+\emph default
+ ha significato solo per il server SDP che lo ha generato.
+\end_layout
+
+\begin_layout Standard
+Dopo che un client riceve una risposta parziale contenente il 
+\emph on
+Continuation State
+\emph default
+ può re-inviare la richiesta originale (con un nuovo 
+\emph on
+Transaction ID
+\emph default
+) includendo il 
+\emph on
+Continuation State 
+\emph default
+ricevuto indicando così di voler ricevere la restante parte della risposta.
+\end_layout
+
+\begin_layout Subsection
+Cercare servizi
+\end_layout
+
+\begin_layout Standard
+La richiesta SDP per la ricerca di un servizio da parte di un client permette
+ di ottenere il 
+\emph on
+service record
+\emph default
+ di un servizio sulla base del valore di UUID.
+ Un UUID è un valore a 
+\begin_inset Formula $128$
+\end_inset
+
+ bit, ma per alleggerire il carico di lavoro durante il trasferimento dei
+ valori di UUID, sono stati predisposti alcuni alias a 
+\begin_inset Formula $16$
+\end_inset
+
+ o 
+\begin_inset Formula $32$
+\end_inset
+
+ bit per i valori più comunemente utilizzati.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Il formato dei pacchetti di richiesta e risposta per la ricerca del servizio
+ con UUID fittizio 
+\begin_inset Formula $0xAABB$
+\end_inset
+
+ e 
+\emph on
+Continuation State
+\emph default
+ impostato sono illustrati in Figura 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:sdp-service-search-request-response-format"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align left
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+newcommand{
+\backslash
+colorbitbox}[3]{%
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+rlap{
+\backslash
+bitbox{#2}{
+\backslash
+color{#1}
+\backslash
+rule{
+\backslash
+width}{
+\backslash
+height}}}%
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitbox{#2}{#3}}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+centering
+\end_layout
+
+\begin_layout Plain Layout
+
+SDP Service Search Request
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+~
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{bytefield}[%
+\end_layout
+
+\begin_layout Plain Layout
+
+	boxformatting={
+\backslash
+centering
+\backslash
+itshape},
+\end_layout
+
+\begin_layout Plain Layout
+
+	bitwidth=0.8em]{40}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitheader{0,4,5,7,8,15,16,20,21,23,24,39} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+begin{rightwordgroup}{
+\backslash
+small PDU Header}
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+bitbox{8}{
+\backslash
+scriptsize PDU ID 
+\backslash
+(=0x03
+\backslash
+)} &
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+bitbox{16}{
+\backslash
+scriptsize Transaction ID} &
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+bitbox{16}{
+\backslash
+scriptsize Parameter Length}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+end{rightwordgroup} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+begin{rightwordgroup}{
+\backslash
+scriptsize Service Search Pattern}
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{orange!15}{5}{
+\backslash
+scriptsize Element Type 
+\backslash
+(=6
+\backslash
+)} &
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{orange!15}{3}{
+\backslash
+tiny Element Size 
+\backslash
+(=5
+\backslash
+)} &
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{green!15}{8}{
+\backslash
+scriptsize Element Var Size 
+\backslash
+(=3
+\backslash
+)} &
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{green!15}{5}{
+\backslash
+scriptsize Value Type 
+\backslash
+(=3
+\backslash
+)} &
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{green!15}{3}{
+\backslash
+tiny Value Size 
+\backslash
+(=1
+\backslash
+)} &
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{green!15}{16}{
+\backslash
+scriptsize Value 
+\backslash
+(=0xAABB
+\backslash
+)}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+end{rightwordgroup} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitbox{16}{
+\backslash
+scriptsize Maximum Service Record Count} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{blue!15}{8}{
+\backslash
+scriptsize Continuation State Length} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{blue!15}{16}{
+\backslash
+scriptsize Continuation State Value 
+\backslash
+
+\backslash
+ 
+\backslash
+tiny (Continuation State Length Byte)} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{bytefield}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+centering
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{bytefield}[bitwidth=0.85em, boxformatting={
+\backslash
+centering
+\backslash
+itshape}]{39}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{orange!15}{1}{} & 
+\backslash
+bitbox[]{10}{
+\backslash
+small Data Element Header} & 
+\backslash
+bitbox[]{2}{} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{green!15}{1}{} & 
+\backslash
+bitbox[]{12}{
+\backslash
+small Data Element Data} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{blue!15}{1}{} & 
+\backslash
+bitbox[]{10}{
+\backslash
+small Continuation State} & 
+\backslash
+bitbox[]{2}{} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{bytefield}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+~
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+centering
+\end_layout
+
+\begin_layout Plain Layout
+
+SDP Service Search Response
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+~
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{bytefield}[%
+\end_layout
+
+\begin_layout Plain Layout
+
+	boxformatting={
+\backslash
+centering
+\backslash
+itshape},
+\end_layout
+
+\begin_layout Plain Layout
+
+	bitwidth=0.8em]{40}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitheader{0,7,8,15,16,23,24,31,39} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+begin{rightwordgroup}{
+\backslash
+small PDU Header}
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+bitbox{8}{
+\backslash
+scriptsize PDU ID 
+\backslash
+(=0x03
+\backslash
+)} &
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+bitbox{16}{
+\backslash
+scriptsize Transaction ID 
+\backslash
+
+\backslash
+ 
+\backslash
+tiny (Transaction ID della richiesta)} &
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+bitbox{16}{
+\backslash
+scriptsize Parameter Length}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+end{rightwordgroup} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitbox{16}{
+\backslash
+scriptsize TotalServiceRecordCount 
+\backslash
+(=M 
+\backslash
+geq N
+\backslash
+)} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitbox{16}{
+\backslash
+scriptsize CurrentServiceRecordCount 
+\backslash
+(=N
+\backslash
+)} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+begin{rightwordgroup}{
+\backslash
+scriptsize ServiceRecordHandleList 
+\backslash
+
+\backslash
+ 
+\backslash
+tiny (
+\backslash
+(N
+\backslash
+) x 
+\backslash
+(4
+\backslash
+) Byte)}
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+bitbox{32}{
+\backslash
+scriptsize Service Attribute~1} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+bitbox{32}{
+\backslash
+scriptsize Service Attribute~2} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+bitbox[]{32}{$
+\backslash
+vdots$} 
+\backslash
+
+\backslash
+ [1ex]
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+bitbox{32}{
+\backslash
+scriptsize Service Attribute~N}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+end{rightwordgroup} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+begin{rightwordgroup}{
+\backslash
+scriptsize Continuation State}
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{blue!15}{8}{
+\backslash
+scriptsize Continuation State Length} &
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{blue!15}{16}{
+\backslash
+scriptsize Continuation State Value 
+\backslash
+
+\backslash
+ 
+\backslash
+tiny (Continuation State Length Byte)}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+end{rightwordgroup} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{bytefield}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:sdp-service-search-request-response-format"
+
+\end_inset
+
+
+\size footnotesize
+Formato dei pacchetti di richiesta e risposta di una ricerca di servizi
+ con 
+\emph on
+Continuation State
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Il workflow di una comunicazione SDP tra client e server per la ricerca
+ di un servizio (illustrato in Figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:sdp-continuation-state-workflow"
+
+\end_inset
+
+) è il seguente:
+\end_layout
+
+\begin_layout Enumerate
+Il client genera una richiesta SDP di ricerca per ottenere i 
+\emph on
+service record
+\emph default
+ del servizio specificato come primo parametro del PDU.
+\end_layout
+
+\begin_layout Enumerate
+Alla ricezione della richiesta il server esamina i dati riguardanti i servizi
+ disponibili e restituisce una risposta SDP contenente gli attributi dei
+ 
+\emph on
+service record 
+\emph default
+associati al servizio richiesto dal client.
+\begin_inset Newline newline
+\end_inset
+
+Se la risposta eccede la 
+\begin_inset Flex CT - acronym
+status collapsed
+
+\begin_layout Plain Layout
+
+MTU
+\end_layout
+
+\end_inset
+
+ della connessione L2CAP sottostante verrà inviato solo un frammento della
+ risposta SDP seguita dalla struttura 
+\begin_inset Flex CT - acronym
+status collapsed
+
+\begin_layout Plain Layout
+
+CS
+\end_layout
+
+\end_inset
+
+ che permette al client di richiedere il frammento successivo alla successiva
+ richiesta.
+\end_layout
+
+\begin_layout Enumerate
+Il client riceve la risposta SDP e controlla l'eventuale presenza del 
+\emph on
+Continuation State
+\emph default
+.
+ Nel caso in cui fosse presente, per ricevere i restanti frammenti della
+ risposta, il client invierà nuovamente 
+\series bold
+la stessa richiesta
+\series default
+ seguita dal 
+\emph on
+Continuation State
+\emph default
+ ricevuto nell'ultima risposta SDP.
+\end_layout
+
+\begin_layout Enumerate
+Il server SDP invierà al client il frammento della risposta successivo secondo
+ quanto indicato nel 
+\emph on
+Continuation State
+\emph default
+.
+\end_layout
+
+\begin_layout Enumerate
+Si ripete il procedimento dal punto 
+\begin_inset Formula $3$
+\end_inset
+
+ finché tutti i frammenti della risposta non vengono inviati.
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{sequencediagram}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+renewcommand
+\backslash
+unitfactor{0.75}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+newthread{client}{SDP Client}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+newinst[6]{server}{SDP Server}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+begin{call}{client}{
+\backslash
+small ServiceSearchRequest(UUID)}{server}{
+\backslash
+small ServiceSearchResponse 
+\backslash
+((1/N)
+\backslash
+) + CS 
+\backslash
+((1)
+\backslash
+)}
+\backslash
+end{call}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+begin{call}{client}{
+\backslash
+small ServiceSearchRequest(UUID) + CS 
+\backslash
+((1)
+\backslash
+)}{server}{
+\backslash
+small ServiceSearchResponse 
+\backslash
+((2/N)
+\backslash
+) + CS 
+\backslash
+((2)
+\backslash
+)}
+\backslash
+end{call}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+begin{call}{client}{
+\backslash
+dots}{server}{
+\backslash
+dots}
+\backslash
+end{call}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+begin{call}{client}{
+\backslash
+small ServiceSearchRequest(UUID) + CS 
+\backslash
+((i)
+\backslash
+)}{server}{
+\backslash
+small ServiceSearchResponse 
+\backslash
+((i/N)
+\backslash
+) + CS 
+\backslash
+((i)
+\backslash
+)}
+\backslash
+end{call}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+begin{call}{client}{
+\backslash
+dots}{server}{
+\backslash
+dots}
+\backslash
+end{call}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+begin{call}{client}{
+\backslash
+small ServiceSearchRequest(UUID) + CS 
+\backslash
+((N)
+\backslash
+)}{server}{
+\backslash
+small ServiceSearchResponse 
+\backslash
+((N/N)
+\backslash
+)}
+\backslash
+end{call}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{sequencediagram}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:sdp-continuation-state-workflow"
+
+\end_inset
+
+
+\size footnotesize
+Workflow di una comunicazione SDP con 
+\emph on
+continuation state 
+\emph default
+per la ricerca di un servizio
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_layout
+
 \begin_layout Standard
 \begin_inset ERT
 status open
