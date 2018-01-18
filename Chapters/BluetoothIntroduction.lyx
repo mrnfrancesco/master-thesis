@@ -4625,7 +4625,7 @@ small Header BNEP
 \backslash
 tiny (con bit 
 \backslash
-(E=0x1
+(E=1
 \backslash
 ))} 
 \backslash
@@ -4655,11 +4655,11 @@ tiny E
 \backslash
  
 \backslash
-tiny 
+tiny (
 \backslash
-(0x1
+(1
 \backslash
-)} &
+))} &
 \end_layout
 
 \begin_layout Plain Layout
@@ -4718,11 +4718,11 @@ tiny E
 \backslash
  
 \backslash
-tiny 
+tiny (
 \backslash
-(0x1
+(1
 \backslash
-)} &
+))} &
 \end_layout
 
 \begin_layout Plain Layout
@@ -4768,11 +4768,11 @@ tiny E
 \backslash
  
 \backslash
-tiny 
+tiny (
 \backslash
-(0x0
+(0
 \backslash
-)} &
+))} &
 \end_layout
 
 \begin_layout Plain Layout
