@@ -3670,6 +3670,1221 @@ per la ricerca di un servizio
 
 \end_layout
 
+\begin_layout Section
+Bluetooth Network Encapsulation Protocol
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset citation
+LatexCommand nocite
+key "blueborne_white_paper"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Il servizio 
+\begin_inset Flex CT - acronym
+status collapsed
+
+\begin_layout Plain Layout
+
+BNEP
+\end_layout
+
+\end_inset
+
+ realizza l'incapsulamento di pacchetti Ethernet su una connessione L2CAP.
+ L'utilizzo che se ne fa è quello di permettere il 
+\emph on
+tethering
+\emph default
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Condivisione della connessione internet di un dispositivo con altri dispositivi
+\end_layout
+
+\end_inset
+
+ tramite Bluetooth.
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align left
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+newcommand{
+\backslash
+colorbitbox}[3]{%
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+rlap{
+\backslash
+bitbox{#2}{
+\backslash
+color{#1}
+\backslash
+rule{
+\backslash
+width}{
+\backslash
+height}}}%
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitbox{#2}{#3}}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+newcommand{
+\backslash
+fakeEthernetPacketFormatting}[1]{%
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+tiny
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+ifnum#1=1234567890
+\end_layout
+
+\begin_layout Plain Layout
+
+		#1
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+else
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+ifnum#1=2
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+(6
+\backslash
+) Byte%
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+else
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+ifnum#1=8
+\end_layout
+
+\begin_layout Plain Layout
+
+				
+\backslash
+(6
+\backslash
+) Byte%
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+else
+\end_layout
+
+\begin_layout Plain Layout
+
+				
+\backslash
+ifnum#1=13
+\end_layout
+
+\begin_layout Plain Layout
+
+					
+\backslash
+(2
+\backslash
+) Byte%
+\end_layout
+
+\begin_layout Plain Layout
+
+				
+\backslash
+else
+\end_layout
+
+\begin_layout Plain Layout
+
+					
+\backslash
+ifnum#1=20
+\end_layout
+
+\begin_layout Plain Layout
+
+						
+\backslash
+(0-1500
+\backslash
+) Byte%
+\end_layout
+
+\begin_layout Plain Layout
+
+					
+\backslash
+else
+\end_layout
+
+\begin_layout Plain Layout
+
+						
+\backslash
+ifnum#1=29
+\end_layout
+
+\begin_layout Plain Layout
+
+							
+\backslash
+(4
+\backslash
+) Byte%
+\end_layout
+
+\begin_layout Plain Layout
+
+						
+\backslash
+fi
+\end_layout
+
+\begin_layout Plain Layout
+
+					
+\backslash
+fi
+\end_layout
+
+\begin_layout Plain Layout
+
+				
+\backslash
+fi
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+fi
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+fi
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+fi
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{bytefield}[%
+\end_layout
+
+\begin_layout Plain Layout
+
+	boxformatting={
+\backslash
+centering
+\backslash
+itshape},
+\end_layout
+
+\begin_layout Plain Layout
+
+	bitformatting=
+\backslash
+fakeEthernetPacketFormatting,
+\end_layout
+
+\begin_layout Plain Layout
+
+	bitwidth=1em]{32}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitheader{0-31} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{orange!15}{6}{
+\backslash
+scriptsize Indirizzo di destinazione} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{orange!15}{6}{
+\backslash
+scriptsize Indirizzo sorgente} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{orange!15}{2}{
+\backslash
+scriptsize Ether Type} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{green!15}{14}{Payload Ethernet} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{red!15}{4}{
+\backslash
+scriptsize Checksum CRC} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{bytefield}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+~
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{bytefield}[%
+\end_layout
+
+\begin_layout Plain Layout
+
+	boxformatting={
+\backslash
+centering
+\backslash
+itshape},
+\end_layout
+
+\begin_layout Plain Layout
+
+	bitwidth=1em]{32}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitheader[endianness=little]{0,6,7,8,23,24,31} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitbox{32}{Header L2CAP} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{orange!15}{7}{
+\backslash
+scriptsize BNEP Type = 
+\backslash
+(0x00
+\backslash
+)} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{orange!15}{1}{
+\backslash
+small E} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{orange!15}{24}{
+\backslash
+scriptsize Indirizzo di destinazione 
+\backslash
+
+\backslash
+ 
+\backslash
+tiny (Byte 
+\backslash
+(0-2
+\backslash
+))} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{orange!15}{24}{
+\backslash
+scriptsize Indirizzo di destinazione 
+\backslash
+
+\backslash
+ 
+\backslash
+tiny (Byte 
+\backslash
+(3-5
+\backslash
+))} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{orange!15}{8}{
+\backslash
+scriptsize Indirizzo sorgente 
+\backslash
+
+\backslash
+ 
+\backslash
+tiny (Byte 
+\backslash
+(0
+\backslash
+))} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{orange!15}{32}{
+\backslash
+scriptsize Indirizzo sorgente 
+\backslash
+
+\backslash
+ 
+\backslash
+tiny (Byte 
+\backslash
+(1-4
+\backslash
+))} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{orange!15}{8}{
+\backslash
+scriptsize Indirizzo sorgente 
+\backslash
+
+\backslash
+ 
+\backslash
+tiny (Byte 
+\backslash
+(5
+\backslash
+))} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{orange!15}{16}{
+\backslash
+scriptsize Tipo di protocollo di rete} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{green!15}{8}{
+\backslash
+scriptsize Payload Ethernet 
+\backslash
+
+\backslash
+ 
+\backslash
+tiny (
+\backslash
+(0-1500
+\backslash
+) Byte)} &
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{bytefield}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:bnep-packet-encapsulation"
+
+\end_inset
+
+
+\size footnotesize
+Meccanismo di incapsulamento di un pacchetto Ethernet con BNEP
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+La Figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:bnep-packet-encapsulation"
+
+\end_inset
+
+ mostra come avviene la trasformazione tra gli header Ethernet e BNEP.
+ 
+\end_layout
+
+\begin_layout Standard
+Oltre all'incapsulamento, BNEP supporta diverse altre tipologie di pacchetto
+ tra cui i cosìdetti 
+\emph on
+BNEP Control Messages
+\emph default
+, messaggi utilizzati per scambiare informazioni di controllo.
+\end_layout
+
+\begin_layout Standard
+Il formato di un messaggio di controllo BNEP è mostrato di seguito; come
+ si può notare l'intero messaggio è contenuto nell'header BNEP e nessun
+ payload viene inviato.
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+newcommand{
+\backslash
+colorbitbox}[3]{%
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+rlap{
+\backslash
+bitbox{#2}{
+\backslash
+color{#1}
+\backslash
+rule{
+\backslash
+width}{
+\backslash
+height}}}%
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitbox{#2}{#3}}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{bytefield}[%
+\end_layout
+
+\begin_layout Plain Layout
+
+	boxformatting={
+\backslash
+centering
+\backslash
+itshape},
+\end_layout
+
+\begin_layout Plain Layout
+
+	bitwidth=1em]{32}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitheader[endianness=little]{0,6,7,8,15,16,31} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitbox{32}{Header L2CAP} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{orange!15}{7}{
+\backslash
+scriptsize BNEP Type = 
+\backslash
+(0x01
+\backslash
+)} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{orange!15}{1}{
+\backslash
+small E} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{orange!15}{8}{
+\backslash
+scriptsize BNEP Control Type} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{orange!15}{16}{
+\backslash
+scriptsize Pacchetto di controllo basato sul Control Type} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{bytefield}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:bnep-control-message-format"
+
+\end_inset
+
+
+\size footnotesize
+Formato del messaggio di controllo BNEP
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Per permettere l'invio di più messaggi di controllo in un singolo messaggio
+ L2CAP è possibile accodare uno o più 
+\emph on
+extension header 
+\emph default
+(vedi Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:bnep-extension-header-format"
+
+\end_inset
+
+) all'header BNEP di Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:bnep-control-message-format"
+
+\end_inset
+
+.
+ Per segnalare che a seguire è presente un 
+\emph on
+extension header
+\emph default
+ da leggere si pone il bit E (
+\emph on
+Extension
+\emph default
+) al valore 
+\begin_inset Formula $1$
+\end_inset
+
+ (
+\begin_inset Formula $0x1$
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+newcommand{
+\backslash
+colorbitbox}[3]{%
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+rlap{
+\backslash
+bitbox{#2}{
+\backslash
+color{#1}
+\backslash
+rule{
+\backslash
+width}{
+\backslash
+height}}}%
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitbox{#2}{#3}}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{bytefield}[%
+\end_layout
+
+\begin_layout Plain Layout
+
+	boxformatting={
+\backslash
+centering
+\backslash
+itshape},
+\end_layout
+
+\begin_layout Plain Layout
+
+	bitwidth=1em]{32}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitheader[endianness=little]{0,6,7,8,15,16,31} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+wordbox{1}{Header L2CAP} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{orange!15}{32}{
+\backslash
+small Header BNEP 
+\backslash
+
+\backslash
+ 
+\backslash
+tiny (con bit 
+\backslash
+(E=0x1
+\backslash
+))} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{blue!15}{7}{
+\backslash
+scriptsize Extension Type} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{blue!15}{1}{
+\backslash
+tiny E 
+\backslash
+
+\backslash
+ 
+\backslash
+tiny 
+\backslash
+(0x1
+\backslash
+)} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{blue!15}{8}{
+\backslash
+scriptsize Extension Length} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{blue!15}{16}{
+\backslash
+scriptsize Extension Payload} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+wordbox[]{1}{$
+\backslash
+vdots$} 
+\backslash
+
+\backslash
+[1ex]
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{blue!15}{7}{
+\backslash
+scriptsize Extension Type} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{blue!15}{1}{
+\backslash
+tiny E 
+\backslash
+
+\backslash
+ 
+\backslash
+tiny 
+\backslash
+(0x1
+\backslash
+)} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{blue!15}{8}{
+\backslash
+scriptsize Extension Length} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{blue!15}{16}{
+\backslash
+scriptsize Extension Payload} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{blue!15}{7}{
+\backslash
+scriptsize Extension Type} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{blue!15}{1}{
+\backslash
+tiny E 
+\backslash
+
+\backslash
+ 
+\backslash
+tiny 
+\backslash
+(0x0
+\backslash
+)} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{blue!15}{8}{
+\backslash
+scriptsize Extension Length} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{blue!15}{16}{
+\backslash
+scriptsize Extension Payload} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{green!15}{32}{
+\backslash
+scriptsize Payload
+\backslash
+
+\backslash
+ 
+\backslash
+tiny (
+\backslash
+(0-1500
+\backslash
+) Byte)} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{bytefield}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:bnep-extension-header-format"
+
+\end_inset
+
+
+\size footnotesize
+Formato dell'
+\emph on
+extension header
+\emph default
+ BNEP
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard

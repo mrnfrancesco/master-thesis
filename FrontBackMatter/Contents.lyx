@@ -633,6 +633,13 @@ acro{PDU}{Protocol Data Unit}
 
 \begin_layout Plain Layout
 
+  
+\backslash
+acro{BNEP}{Bluetooth Network Encapsulation Protocol}
+\end_layout
+
+\begin_layout Plain Layout
+
 
 \backslash
 end{acronym}              
