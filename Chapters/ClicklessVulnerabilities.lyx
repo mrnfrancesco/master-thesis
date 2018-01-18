@@ -146,16 +146,35 @@ name "ch:clickless-vulnerabilities"
 
 \end_layout
 
-\begin_layout Standard
-TODO
-\end_layout
-
 \begin_layout Section
 Cosa sono
 \end_layout
 
 \begin_layout Standard
+Le vulnerabilità sono dinamiche: l'utilità di un errore potrebbe cambiare
+ a seconda di dove si trova il codice che lo genera.
+ Per di più, non tutti gli errori sono vulnerabilità, non tutte le vulnerabilità
+ possono essere sfruttate e non tutte le vulnerabilità sfruttabili sono
+ di qualche interesse per un attaccante.
+ Nonostante questo l'utilità di un errore può cambiare di giorno in giorno:
+ una vulnerabilità che inizialmente non è sfruttabile lo potrebbe essere
+ dopo che il software che ne è affetto viene aggiornato o viceversa.
+ Nuove tecniche di attacco vengono costantemente sviluppate permettendo
+ di sfruttare vulnerabilità prima irraggiungibili così come nuove mitigazioni
+ vengono introdotte per prevenire lo sfruttamento della stessa vulnerabilità.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
 TODO
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
@@ -163,7 +182,16 @@ Differenza con le vulnerabilità tradizionali
 \end_layout
 
 \begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
 TODO
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
@@ -171,7 +199,16 @@ Alcuni esempi
 \end_layout
 
 \begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
 TODO
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
@@ -179,7 +216,16 @@ Stagefright
 \end_layout
 
 \begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
 TODO
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
@@ -187,7 +233,16 @@ Broadpwn
 \end_layout
 
 \begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
 TODO
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
@@ -195,7 +250,16 @@ KRACK
 \end_layout
 
 \begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
 TODO
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
