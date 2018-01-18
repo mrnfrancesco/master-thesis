@@ -114,6 +114,10 @@ relax
 
 \shape slanted
 TODO
+\begin_inset Newline newline
+\end_inset
+
+
 \shape default
  
 \begin_inset VSpace medskip
@@ -142,20 +146,13 @@ name "ch:build-blueborne-attack-vector"
 
 \end_layout
 
-\begin_layout Standard
-TODO
-\end_layout
-
 \begin_layout Section
-Workflow del 
-\begin_inset Flex CT - acronym
-status open
+Il problema della 
+\begin_inset Quotes eld
+\end_inset
 
-\begin_layout Plain Layout
-
-PoC
-\end_layout
-
+discoverable mode
+\begin_inset Quotes erd
 \end_inset
 
 
@@ -166,7 +163,11 @@ TODO
 \end_layout
 
 \begin_layout Section
-Aumentare il rate di successo
+
+\emph on
+Shaping
+\emph default
+ della memoria
 \end_layout
 
 \begin_layout Standard
@@ -182,7 +183,7 @@ TODO
 \end_layout
 
 \begin_layout Section
-Calcolo degli offset
+Bypassare la randomizzazione degli indirizzi
 \end_layout
 
 \begin_layout Standard
@@ -190,12 +191,15 @@ TODO
 \end_layout
 
 \begin_layout Section
-Il problema della 
-\begin_inset Quotes eld
-\end_inset
+Workflow del 
+\begin_inset Flex CT - acronym
+status open
 
-discoverable mode
-\begin_inset Quotes erd
+\begin_layout Plain Layout
+
+PoC
+\end_layout
+
 \end_inset
 
 
