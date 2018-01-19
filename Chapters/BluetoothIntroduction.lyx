@@ -170,6 +170,27 @@ key "blueborne_white_paper"
 \end_layout
 
 \begin_layout Standard
+\begin_inset Wrap figure
+lines 0
+placement o
+overhang 0in
+width "2cm"
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /home/mrnfrancesco/git/master-thesis/gfx/bluetooth-logo.png
+	display false
+	width 1.5cm
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
 Introdotto per la prima volta nel 1998, il Bluetooth è tutt'oggi il protocollo
  più diffuso per le comunicazioni senza fili a corto raggio.
  Secondo stime recenti
