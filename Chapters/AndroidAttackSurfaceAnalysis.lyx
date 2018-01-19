@@ -113,23 +113,19 @@ relax
 \align right
 
 \shape slanted
-When you invent the ship, you also invent the shipwrec;
-\begin_inset Newline newline
-\end_inset
-
-when you invent the plane you laso invent the plane crash
+TODO
 \begin_inset Newline newline
 \end_inset
 
 
 \shape default
- 
+
 \begin_inset VSpace medskip
 \end_inset
 
  — 
 \series bold
-Paul Virilio
+TODO
 \end_layout
 
 \begin_layout Standard

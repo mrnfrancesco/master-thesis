@@ -113,7 +113,11 @@ relax
 \align right
 
 \shape slanted
-TODO
+When you invent the ship, you also invent the shipwrec;
+\begin_inset Newline newline
+\end_inset
+
+when you invent the plane you laso invent the plane crash
 \begin_inset Newline newline
 \end_inset
 
@@ -125,7 +129,7 @@ TODO
 
  — 
 \series bold
-TODO
+Paul Virilio
 \end_layout
 
 \begin_layout Standard
