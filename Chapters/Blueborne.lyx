@@ -111,25 +111,15 @@ relax
 
 \begin_layout Standard
 \align right
-
-\shape slanted
-TODO
-\begin_inset Newline newline
-\end_inset
-
-
-\shape default
-
 \begin_inset VSpace medskip
 \end_inset
 
- — 
-\series bold
-TODO
-\end_layout
 
-\begin_layout Standard
-\begin_inset VSpace bigskip
+\begin_inset Graphics
+	filename /home/mrnfrancesco/git/master-thesis/gfx/blueborne-logo.png
+	display false
+	width 2.5cm
+
 \end_inset
 
 
