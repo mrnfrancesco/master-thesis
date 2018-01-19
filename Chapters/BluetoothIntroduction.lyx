@@ -160,6 +160,16 @@ name "ch:bluetooth-introduction"
 \end_layout
 
 \begin_layout Standard
+\begin_inset CommandInset citation
+LatexCommand nocite
+key "blueborne_white_paper"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 Introdotto per la prima volta nel 1998, il Bluetooth è tutt'oggi il protocollo
  più diffuso per le comunicazioni senza fili a corto raggio.
  Secondo stime recenti
@@ -926,6 +936,16 @@ Analisi della superficie d'attacco Bluetooth
 \end_layout
 
 \begin_layout Standard
+\begin_inset CommandInset citation
+LatexCommand nocite
+key "blueborne_white_paper"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 In un certo senso lo stack Bluetooth è l'equivalente dello stack TCP/IP,
  ma per comunicazioni Bluetooth; infatti a differenza di altri protocolli
  di comunicazione come Ethernet e WiFi, il Bluetooth non fa affidamento
@@ -1079,7 +1099,7 @@ Service Discovery Protocol
 \begin_layout Standard
 \begin_inset CommandInset citation
 LatexCommand nocite
-key "blueborne_white_paper"
+key "bluetooth_core_specification_v5_0"
 
 \end_inset
 
@@ -3666,7 +3686,7 @@ Bluetooth Network Encapsulation Protocol
 \begin_layout Standard
 \begin_inset CommandInset citation
 LatexCommand nocite
-key "blueborne_white_paper"
+key "bluetooth_bnep_protocol_specification_v1_0,blueborne_white_paper,blueborne_android_rce_white_paper"
 
 \end_inset
 

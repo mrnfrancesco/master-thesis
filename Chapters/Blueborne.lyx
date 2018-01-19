@@ -119,7 +119,7 @@ TODO
 
 
 \shape default
- 
+
 \begin_inset VSpace medskip
 \end_inset
 
@@ -148,6 +148,16 @@ name "ch:blueborne"
 
 \begin_layout Section
 Android Information Leak (CVE-2017-0785)
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset citation
+LatexCommand nocite
+key "blueborne_white_paper"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
