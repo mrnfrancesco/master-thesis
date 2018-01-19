@@ -111,25 +111,11 @@ relax
 
 \begin_layout Standard
 \align right
+\begin_inset Graphics
+	filename /home/mrnfrancesco/git/master-thesis/gfx/android-dead-guy-logo.png
+	display false
+	width 2.5cm
 
-\shape slanted
-TODO
-\begin_inset Newline newline
-\end_inset
-
-
-\shape default
- 
-\begin_inset VSpace medskip
-\end_inset
-
- — 
-\series bold
-TODO
-\end_layout
-
-\begin_layout Standard
-\begin_inset VSpace bigskip
 \end_inset
 
 
