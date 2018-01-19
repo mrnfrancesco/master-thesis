@@ -145,11 +145,162 @@ discoverable mode
 \end_layout
 
 \begin_layout Standard
+Come impostazione predefinita in ormai tutti i dispositivi Android il Bluetooth
+ è acceso e molti utenti preferiscono lasciarlo tale in quanto è un modo
+ comodo e veloce di connettere auricolari, smartwatch o altri dispositivi.
+\end_layout
+
+\begin_layout Standard
+In Android, durante tutto il tempo in cui un utente effettua una scansione
+ dei dispositivi Bluetooth vicini, risulta lui stesso visibile alla ricerca
+ di altri dispositivi vicini.
+ In ogni altro caso il dispositivo non è visibile.
+ Tuttavia un dispositivo con il Bluetooth attivo, seppur non visibile, è
+ sempre in ascolto di traffico di cui è il destinatario.
+ Per questa ragione se si vuole stabilire una connessione con un dispositivo
+ si ha la necessita di conoscere solamente il suo 
+\begin_inset Flex CT - acronym
+status collapsed
+
+\begin_layout Plain Layout
+
+BDADDR
+\end_layout
+
+\end_inset
+
+.
+ Questo meccanismo di funzionamento permette a due dispositivi che sono
+ già stati associati di connettersi e comunicare senza dover cambiare le
+ impostazioni di visibilità.
+ Agli occhi di un attaccante che conosca il BDADDR della vittima designata,
+ però, questo meccanismo permette di avere accesso ad una vasta superficie
+ d'attacco.
+\end_layout
+
+\begin_layout Standard
+Supponiamo però che l'attaccante non conosca il BDADDR della vittima, ma
+ si trovi fisicamente in prossimità del dispositivo da attaccare.
+ Se il dispositivo vittima è impostato in modo tale da essere visibile ai
+ dispositivi vicini il problema è banale: una semplice scansione dei dispositivi
+ Bluetooth vicini darà l'informazione cercata.
+\end_layout
+
+\begin_layout Standard
+Se il dispositivo non compare tra i risultati della ricerca, però, nonstante
+ il problema sia più difficile da risolvere, non è comunque impossibile.
+\end_layout
+
+\begin_layout Subsection
+Sniffare il traffico Bluetooth
+\end_layout
+
+\begin_layout Standard
+Già dall'Ottobre 2010 è disponibile online 
+\begin_inset CommandInset href
+LatexCommand href
+name "Ubertooth"
+target "http://ubertooth.sourceforge.net/"
+
+\end_inset
+
+, una piattaforma (software, hardware e firmware) open source di sviluppo
+ wireless che supporta la tecnologia Bluetooth.
+ Seguendo le istruzioni sul sito ufficiale del progetto è possibile ottenere
+ un adattatore Bluetooth in grado di sniffare
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+attività di intercettazione passiva dei dati che transitano in una rete
+ telematica o in un mezzo trasmissivo
+\end_layout
+
+\end_inset
+
+ i pacchetti Bluetooth anche se diretti ad altri dispositivi.
+\end_layout
+
+\begin_layout Standard
+Nonostante le connessioni Bluetooth siano cifrate, parti di pacchetto contenenti
+ informazioni utili non lo sono.
+ Guardando queste parti e attraverso alcune euristiche che sono state implementa
+te nel progetto è possibile ricavare parzialmente o totalmente il BDADDR
+ dei dispositivi nelle vicinanze che stanno attivamente scambiando dei pacchetti
+ Bluetooth.
+\end_layout
+
+\begin_layout Subsection
+Sniffare il traffico WiFi
+\end_layout
+
+\begin_layout Standard
+Se il dispositivo vittima nonostante abbia il Bluetooth acceso non genera
+ alcun traffico (non ha alcuna connessione attiva con altri dispositivi),
+ è ancora possibile provare ad 
+\begin_inset Quotes eld
+\end_inset
+
+indovinare
+\begin_inset Quotes erd
+\end_inset
+
+ il suo BDADDR sniffando il traffico WiFi.
+ Questo è possibile in quanto l'indirizzo MAC della scheda di rete WiFi
+ appare non cifrato durante qualunque scambio di pacchetti.
+ Conoscere l'indirizzo MAC della scheda di rete ci può dare delle indicazioni
+ su quello che potrebbe essere il BDADDR in quanto è ormai largamente diffusa
+ la pratica per cui i produttori di hardware forniscono agli 
+\begin_inset Flex CT - acronym
+status collapsed
+
+\begin_layout Plain Layout
+
+OEM
+\end_layout
+
+\end_inset
+
+ adattatori WiFi e Bluetooth con indirizzi rispettivamente MAC e BDADDR
+ uguali o al più contigui.
+\end_layout
+
+\begin_layout Standard
 \begin_inset Note Note
 status open
 
 \begin_layout Plain Layout
-TODO
+TODO: Aggiungi screenshot del Samsung Galaxy S3
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Brute-force del BDADDR
+\end_layout
+
+\begin_layout Standard
+Se il dispositivo vittima non ha connessioni Bluetooth né WiFi attive, o
+ se indirizzo MAC e BDADDR non sono correlati, è ancora possibile provare
+ ad ottenere il BDADDR utilizzando un approccio brute-force.
+ In pratica quello che si fa è generare sequenzialmente o randomicamente
+ dei BDADDR validi e con questi provare ad iniziare una connessione verso
+ il dispositivo.
+ Se il BDADDR generato coincide con quello associato a un dispositivo fisicament
+e nelle vicinanze, questo risponderà alla richiesta di connessione (eventualment
+e anche con un errore).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+TODO: dimensione BDADDR e tecniche per velocizzare la ricerca (prima parte
+ dipende dal vendor)
 \end_layout
 
 \end_inset

@@ -647,6 +647,20 @@ acro{BNEP}{Bluetooth Network Encapsulation Protocol}
 
 \begin_layout Plain Layout
 
+  
+\backslash
+acro{BDADDR}{Bluetooth Device Address}
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+acro{OEM}{Original Equipment Manifacturers}
+\end_layout
+
+\begin_layout Plain Layout
+
 
 \backslash
 end{acronym}              
