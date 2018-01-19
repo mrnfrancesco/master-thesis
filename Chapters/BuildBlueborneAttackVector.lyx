@@ -159,7 +159,16 @@ discoverable mode
 \end_layout
 
 \begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
 TODO
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
@@ -171,33 +180,11 @@ Shaping
 \end_layout
 
 \begin_layout Standard
-TODO
-\end_layout
-
-\begin_layout Section
-Costruzione del payload
-\end_layout
-
-\begin_layout Standard
-TODO
-\end_layout
-
-\begin_layout Section
-Bypassare la randomizzazione degli indirizzi
-\end_layout
-
-\begin_layout Standard
-TODO
-\end_layout
-
-\begin_layout Section
-Workflow del 
-\begin_inset Flex CT - acronym
+\begin_inset Note Note
 status open
 
 \begin_layout Plain Layout
-
-PoC
+TODO
 \end_layout
 
 \end_inset
@@ -205,8 +192,55 @@ PoC
 
 \end_layout
 
+\begin_layout Section
+Costruzione del payload
+\end_layout
+
 \begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
 TODO
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Bypassare la randomizzazione degli indirizzi
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+TODO
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Workflow del Proof of Concept (PoC)
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+TODO
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
@@ -214,7 +248,16 @@ Post-exploitation
 \end_layout
 
 \begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
 TODO
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
