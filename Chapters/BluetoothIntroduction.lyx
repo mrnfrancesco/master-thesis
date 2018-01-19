@@ -2596,6 +2596,13 @@ ricevuto indicando così di voler ricevere la restante parte della risposta.
 
 \begin_layout Subsection
 Ricerca di servizi
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:sdp-service-search"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard

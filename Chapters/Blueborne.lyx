@@ -313,14 +313,7 @@ switch (pdu_id) {
 
 \begin_layout Standard
 Proseguendo nell'albero delle chiamate andiamo ad analizzare la funzione
- che si occupa di gestire le richieste di ricerca di servizi, particolari
- richieste utilizzate per sapere se e quali servizi il dispositivo supporta
- del tipo richiesto.
-\end_layout
-
-\begin_layout Standard
-Nonostante il codice del server SDP di Android esegua alcune validazioni
- sul valore del campo 
+ 
 \begin_inset listings
 lstparams "language={C++},tabsize=4"
 inline true
@@ -328,19 +321,34 @@ status open
 
 \begin_layout Plain Layout
 
-cont_offset
+process_service_search
 \end_layout
 
 \end_inset
 
-, in particolare sul numero totale di frammenti, è comunque possibile ottenere
- un 
+ che si occupa di gestire le 
 \emph on
-information leak.
+service search request
+\emph default
+ spiegate nella sezione 
+\begin_inset CommandInset ref
+LatexCommand nameref
+reference "subsec:sdp-service-search"
+
+\end_inset
+
+ 
+\begin_inset CommandInset ref
+LatexCommand vpageref
+reference "subsec:sdp-service-search"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
-La funzione vulnerabile è in 
+La funzione si trova anch'essa in 
 \begin_inset listings
 lstparams "language={C++},tabsize=4"
 inline true
@@ -353,7 +361,7 @@ status open
 
 \end_inset
 
-:
+ con la seguente firma:
 \begin_inset listings
 lstparams "language={C++},tabsize=4"
 inline false
@@ -400,14 +408,8 @@ static void process_service_search(
 \end_layout
 
 \begin_layout Standard
-Il suo scopo è quello di gestire una richiesta di ricerca di un servizio
- da parte di un client SDP e costruire un messaggio di risposta da inviare
- indietro al client.
-\end_layout
-
-\begin_layout Standard
-Andando ad analizzare più a fondo la sua implementazione poniamo la nostra
- attenzione sul seguente estratto:
+Andando ad analizzare la sua implementazione poniamo la nostra attenzione
+ sul seguente estratto:
 \end_layout
 
 \begin_layout Standard
@@ -608,7 +610,11 @@ cont_offset
 
 \end_inset
 
- nell'oggetto 
+ (equivalente al 
+\emph on
+Continuation State Value
+\emph default
+) nell'oggetto 
 \begin_inset listings
 lstparams "language={C++},tabsize=4"
 inline true
@@ -622,8 +628,8 @@ p_ccb
 \end_inset
 
  che mantiene le informazioni di connessione, e controlla che il valore
- ricevuto sia uguale allo stato corrente della connessione; se i due valori
- differiscono la funzione termina segnalando l'errore.
+ ricevuto sia uguale a quello atteso; se i due valori differiscono la funzione
+ termina segnalando l'errore.
 \end_layout
 
 \begin_layout Standard
@@ -663,8 +669,7 @@ In questo scenario non è possibile abusare di un valore di
 continuation state
 \emph default
  malformato che permetta di leggere zone di memoria arbitrarie.
- Tuttavia, come già visto in Fig.
- 
+ Tuttavia, come già visto in Figura 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "fig:sdp-continuation-state-workflow"
@@ -697,8 +702,8 @@ process_service_search
 \end_layout
 
 \begin_layout Standard
-Il valore del numero di frammenti rimanenti da inviare al client non viene
- salvato nell'oggetto 
+Il numero di frammenti rimanenti da inviare al client non viene salvato
+ nell'oggetto 
 \begin_inset listings
 lstparams "language={C++},tabsize=4"
 inline true
@@ -788,15 +793,35 @@ rem_handles
 loop
 \emph default
  di lettura dei frammenti si andrebbero a leggere sequenze di byte nello
- stack oltre quelle che dovrebbero essere consentite.
+ stack oltre quelle consentite, che verrebbero restituite nella risposta
+ SDP ottenendo così un 
+\emph on
+Information Exposure
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Divulgazione intenzionale o non intenzionale di informazioni a un attore
+ - che non è esplicitamente autorizzato ad avere accesso a quell'informazione
+\end_layout
+
+\end_inset
+
+
+\emph default
+ (
+\begin_inset CommandInset href
+LatexCommand href
+name "CWE-200"
+target "http://cwe.mitre.org/data/definitions/200.html"
+
+\end_inset
+
+).
 \end_layout
 
 \begin_layout Standard
-L'
-\emph on
-information leak
-\emph default
- può essere quindi ottenuto tramite underflow
+Questa vulnerabilità può essere quindi ottenuto tramite underflow
 \begin_inset Foot
 status collapsed
 
@@ -822,10 +847,9 @@ rem_handles
 
 \end_inset
 
- ottenibile seguendo il flusso di richieste semplificato in Fig.
- 
+ ottenibile seguendo il flusso di richieste semplificato in Figura 
 \begin_inset CommandInset ref
-LatexCommand ref
+LatexCommand vref
 reference "fig:sdp-malformed-continuation-state-workflow"
 
 \end_inset
@@ -888,8 +912,15 @@ newinst[6]{server}{SDP Server}
 
 	
 \backslash
-begin{call}{client}{richiesta al servizio A}{server}{risposta (1/N) + continuati
-on state (1)}
+begin{call}{client}{
+\backslash
+small ServiceSearchRequest(UUID=
+\backslash
+(0
+\backslash
+)xDEAD)}{server}{
+\backslash
+small ServiceSearchResponse (1/N) + CS (1)}
 \backslash
 end{call}
 \end_layout
@@ -898,8 +929,15 @@ end{call}
 
 	
 \backslash
-begin{call}{client}{richiesta al servizio B + continuation state (1)}{server}{ri
-sposta (2/N) + continuation state (2)}
+begin{call}{client}{
+\backslash
+small ServiceSearchRequest(UUID=
+\backslash
+(0
+\backslash
+)xBEEF) + CS (1)}{server}{
+\backslash
+small ServiceSearchResponse (2/N) + CS (2)}
 \backslash
 end{call}
 \end_layout
@@ -951,10 +989,11 @@ underflow
 \end_layout
 
 \begin_layout Enumerate
-Il client (attaccante) effettuata una richiesta SDP per un servizio 
-\emph on
-A
-\emph default
+Il client (attaccante) effettuata una richiesta SDP per un servizio con
+ 
+\begin_inset Formula $\text{UUID}=0\text{xDEAD}$
+\end_inset
+
 .
 \end_layout
 
@@ -980,26 +1019,22 @@ MTU
 \end_layout
 
 \begin_layout Enumerate
-Il client effettua una seconda richiesta SDP per un servizio 
-\emph on
-B
-\emph default
+Il client effettua una seconda richiesta SDP per un servizio con 
+\begin_inset Formula $\text{UUID}=0\text{xBEEF}$
+\end_inset
+
  apponendo alla richiesta il 
 \emph on
 continuation state
 \emph default
- ricevuto dalla risposta precedente riferita al servizio 
-\emph on
-A
-\emph default
+ ricevuto dalla risposta precedente riferita al servizio con 
+\begin_inset Formula $\text{UUID}=0\text{xDEAD}$
+\end_inset
+
 .
- È importante che il servizio 
-\emph on
-B
-\emph default
- restituisca risposte di dimensione inferiore a quelle del servizio 
-\emph on
-A.
+ Nella scelta dei due UUID è importante che il servizio interrogato per
+ primo restituisca un numero di risposte superiore a quelle restituite dal
+ secondo servizio scelto.
 \end_layout
 
 \begin_layout Enumerate
@@ -1036,40 +1071,35 @@ num_rsp_handles
 
  del servizio 
 \emph on
-B
+con 
 \emph default
- è minore di quello del servizio 
-\emph on
-A
-\emph default
+
+\begin_inset Formula $\text{UUID}=0\text{xBEEF}$
+\end_inset
+
+ è minore di quello del servizio con 
+\begin_inset Formula $\text{UUID}=0\text{xDEAD}$
+\end_inset
+
 , si otterrà l'
 \emph on
 underflow
 \emph default
  sperato.
-\end_layout
+\begin_inset Newline newline
+\end_inset
 
-\begin_layout Enumerate
 L'estratto di codice precedente si aspetterà di dover inviare una risposta
  molto grande (fino a 
 \begin_inset Formula $64$
 \end_inset
 
-KB) e il codice seguente copierà tanti byte quanti specificati dal valore
- di 
-\begin_inset listings
-lstparams "language={C++},tabsize=4"
-inline true
-status open
-
-\begin_layout Plain Layout
-
-num_rsp_handles
-\end_layout
-
-\end_inset
-
- nel pacchetto di risposta
+KB) e il codice seguente copierà tanti byte quanti ne entrano in un pacchetto
+ di risposta 
+\series bold
+a partire dal precedente valore di offset
+\series default
+.
 \begin_inset Newline newline
 \end_inset
 
@@ -1096,10 +1126,10 @@ for (xx = cont_offset; xx < cont_offset + cur_handles; xx++)
 
 \begin_layout Enumerate
 Da questo punto in poi l'attaccante può ripetere la stessa richiesta al
- servizio 
-\emph on
-B
-\emph default
+ servizio con 
+\begin_inset Formula $\text{UUID}=0\text{xBEEF}$
+\end_inset
+
  apponendo il valore di 
 \begin_inset listings
 lstparams "language={C++},tabsize=4"
@@ -1113,8 +1143,9 @@ cont_offset
 
 \end_inset
 
- ricevuto dal server, continuando così a leggere byte nello stack fino a
- consumare il numero totale di frammenti specificato in 
+ ricevuto dal server alla richiesta precedente, continuando così a leggere
+ byte nello stack fino a consumare il numero totale di frammenti specificato
+ in 
 \begin_inset listings
 lstparams "language={C++},tabsize=4"
 inline true
@@ -1134,7 +1165,32 @@ num_rsp_handles
 I dati ottenuti in questo modo potenzialmente potrebbero contenere chiavi
  di cifratura, puntatori a dati o a codice, o altri dati che possono essere
  utilizzati congiuntamente ad altre vulnerabilità per bypassare alcuni meccanism
-i di mitigazione messi a disposizione dal sistema operativo.
+i di mitigazione messi a disposizione dal sistema operativo come l'
+\begin_inset Flex CT - acronym
+status collapsed
+
+\begin_layout Plain Layout
+
+ASLR
+\end_layout
+
+\end_inset
+
+
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+Misura di protezione che consiste nel rendere (parzialmente) casuale l'indirizzo
+ delle funzioni di libreria e delle più importanti aree di memoria.
+ In questo modo un attacco che cerca di eseguire codice malevolo su un computer
+ è costretto a cercare gli indirizzi del codice e dei dati che gli servono
+ prima di poterli usare.
+\end_layout
+
+\end_inset
+
+.
  Per ultima, ma non meno importante, è anche la possibilità di creare un
  disservizio facendo si che il puntatore ai dati da leggere per costruire
  la risposta SDP punti ad un'area riservata del sistema operativo.

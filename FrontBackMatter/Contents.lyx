@@ -635,6 +635,13 @@ acro{PDU}{Protocol Data Unit}
 
   
 \backslash
+acro{ASLR}{Address Space Layout Randomization}
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
 acro{BNEP}{Bluetooth Network Encapsulation Protocol}
 \end_layout
 
