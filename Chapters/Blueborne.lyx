@@ -783,8 +783,8 @@ La mancanza di questo controllo nasce dall'assunzione (errata) che due richieste
 \end_layout
 
 \begin_layout Standard
-Se quindi potessimo sfruttare questa situazione in particolare portando
- il valore di 
+Se quindi potessimo sfruttare questa situazione per portare il valore di
+ 
 \begin_inset listings
 lstparams "language={C++},tabsize=4"
 inline true
@@ -797,14 +797,30 @@ rem_handles
 
 \end_inset
 
- ad essere maggiore del reale numero dei frammenti rimanenti, durante il
- 
+ ad essere maggiore del reale numero dei frammenti rimanenti tramite 
+\emph on
+underflow
+\emph default
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Si ha quando il risultato di un calcolo è un numero minore del valore minore
+ rappresentabile.
+ La conseguenza è quella di ottenere valori generalmente molto alti, vicini
+ al massimo valore rappresentabile.
+\end_layout
+
+\end_inset
+
+, durante il 
 \emph on
 loop
 \emph default
  di lettura dei frammenti si andrebbero a leggere sequenze di byte nello
  stack oltre quelle consentite, che verrebbero restituite nella risposta
- SDP ottenendo così un 
+ SDP ottenendo così una vulnerabilità di tipo 
 \emph on
 Information Exposure
 \begin_inset Foot
@@ -831,33 +847,8 @@ target "http://cwe.mitre.org/data/definitions/200.html"
 \end_layout
 
 \begin_layout Standard
-Questa vulnerabilità può essere quindi ottenuto tramite underflow
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-Si ha quando il risultato di un calcolo è un numero minore del valore minore
- rappresentabile.
- La conseguenza è quella di ottenere valori generalmente molto alti, vicini
- al massimo valore rappresentabile.
-\end_layout
-
-\end_inset
-
- della variabile 
-\begin_inset listings
-lstparams "language={C++},tabsize=4"
-inline true
-status open
-
-\begin_layout Plain Layout
-
-rem_handles
-\end_layout
-
-\end_inset
-
- ottenibile seguendo il flusso di richieste semplificato in Figura 
+Questo comportamento si può ottenere seguendo il flusso di richieste semplificat
+o in Figura 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "fig:sdp-malformed-continuation-state-workflow"
@@ -930,7 +921,15 @@ small ServiceSearchRequest(UUID=
 \backslash
 )xDEAD)}{server}{
 \backslash
-small ServiceSearchResponse (1/N) + CS (1)}
+small ServiceSearchResponse 
+\backslash
+((1/N)
+\backslash
+) + CS 
+\backslash
+((1)
+\backslash
+)}
 \backslash
 end{call}
 \end_layout
@@ -945,9 +944,101 @@ small ServiceSearchRequest(UUID=
 \backslash
 (0
 \backslash
-)xBEEF) + CS (1)}{server}{
+)xBEEF) + CS 
 \backslash
-small ServiceSearchResponse (2/N) + CS (2)}
+((1)
+\backslash
+)}{server}{
+\backslash
+small ServiceSearchResponse 
+\backslash
+((2/N)
+\backslash
+) + CS 
+\backslash
+((2)
+\backslash
+)}
+\backslash
+end{call}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+begin{call}{client}{
+\backslash
+dots}{server}{
+\backslash
+dots}
+\backslash
+end{call}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+begin{call}{client}{
+\backslash
+small ServiceSearchRequest(UUID=
+\backslash
+(0
+\backslash
+)xBEEF) + CS 
+\backslash
+((i)
+\backslash
+)}{server}{
+\backslash
+small ServiceSearchResponse 
+\backslash
+((2/N)
+\backslash
+) + CS 
+\backslash
+((2)
+\backslash
+)}
+\backslash
+end{call}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+begin{call}{client}{
+\backslash
+dots}{server}{
+\backslash
+dots}
+\backslash
+end{call}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+begin{call}{client}{
+\backslash
+small ServiceSearchRequest(UUID=
+\backslash
+(0
+\backslash
+)xBEEF) + CS 
+\backslash
+((N)
+\backslash
+)}{server}{
+\backslash
+small ServiceSearchResponse 
+\backslash
+((N/N)
+\backslash
+)}
 \backslash
 end{call}
 \end_layout
@@ -1188,7 +1279,7 @@ ASLR
 
 
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Misura di protezione che consiste nel rendere (parzialmente) casuale l'indirizzo
