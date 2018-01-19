@@ -3680,7 +3680,7 @@ per la ricerca di un servizio
 \end_layout
 
 \begin_layout Section
-Bluetooth Network Encapsulation Protocol
+Bluetooth Network Encapsulation Protocol (BNEP)
 \end_layout
 
 \begin_layout Standard
@@ -3971,6 +3971,33 @@ fi
 
 
 \backslash
+centering
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+small Formato di un pacchetto Ethernet
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+~
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
 begin{bytefield}[%
 \end_layout
 
@@ -4037,7 +4064,9 @@ scriptsize Ether Type} &
 
 	
 \backslash
-colorbitbox{green!15}{14}{Payload Ethernet} &
+colorbitbox{green!15}{14}{
+\backslash
+scriptsize Payload Ethernet} &
 \end_layout
 
 \begin_layout Plain Layout
@@ -4058,6 +4087,33 @@ scriptsize Checksum CRC}
 
 \backslash
 end{bytefield}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+~
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+centering
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+small Formato di un pacchetto BNEP che incapsula un pacchetto Ethernet
 \end_layout
 
 \begin_layout Plain Layout
@@ -4109,18 +4165,7 @@ bitheader[endianness=little]{0,6,7,8,23,24,31}
 
 	
 \backslash
-bitbox{32}{Header L2CAP} 
-\backslash
-
-\backslash
-
-\end_layout
-
-\begin_layout Plain Layout
-
-	
-\backslash
-colorbitbox{orange!15}{7}{
+colorbitbox{blue!15}{7}{
 \backslash
 scriptsize BNEP Type = 
 \backslash
@@ -4133,7 +4178,7 @@ scriptsize BNEP Type =
 
 	
 \backslash
-colorbitbox{orange!15}{1}{
+colorbitbox{blue!15}{1}{
 \backslash
 small E} &
 \end_layout
@@ -4258,7 +4303,24 @@ scriptsize Tipo di protocollo di rete} &
 
 	
 \backslash
-colorbitbox{green!15}{8}{
+rlap{
+\backslash
+bitbox[lrt]{8}{
+\backslash
+color{green!15}
+\backslash
+rule{
+\backslash
+width}{
+\backslash
+height+1px}}}%
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitbox[lrt]{8}{
 \backslash
 scriptsize Payload Ethernet 
 \backslash
@@ -4270,7 +4332,26 @@ tiny (
 \backslash
 (0-1500
 \backslash
-) Byte)} &
+) Byte)} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+wordbox[lrb]{1}{
+\backslash
+color{green!15}
+\backslash
+rule{
+\backslash
+width}{
+\backslash
+height-1px}} &
 \end_layout
 
 \begin_layout Plain Layout
@@ -4311,7 +4392,7 @@ Meccanismo di incapsulamento di un pacchetto Ethernet con BNEP
 \begin_layout Standard
 La Figura 
 \begin_inset CommandInset ref
-LatexCommand ref
+LatexCommand vref
 reference "fig:bnep-packet-encapsulation"
 
 \end_inset
@@ -4330,8 +4411,14 @@ BNEP Control Messages
 \end_layout
 
 \begin_layout Standard
-Il formato di un messaggio di controllo BNEP è mostrato di seguito; come
- si può notare l'intero messaggio è contenuto nell'header BNEP e nessun
+Il formato di un messaggio di controllo BNEP è mostrato in Figura 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:bnep-control-message-format"
+
+\end_inset
+
+; come si può notare l'intero messaggio è contenuto nell'header BNEP e nessun
  payload viene inviato.
 \end_layout
 
@@ -4421,18 +4508,7 @@ bitheader[endianness=little]{0,6,7,8,15,16,31}
 
 	
 \backslash
-bitbox{32}{Header L2CAP} 
-\backslash
-
-\backslash
-
-\end_layout
-
-\begin_layout Plain Layout
-
-	
-\backslash
-colorbitbox{orange!15}{7}{
+colorbitbox{blue!15}{7}{
 \backslash
 scriptsize BNEP Type = 
 \backslash
@@ -4445,7 +4521,7 @@ scriptsize BNEP Type =
 
 	
 \backslash
-colorbitbox{orange!15}{1}{
+colorbitbox{blue!15}{1}{
 \backslash
 small E} &
 \end_layout
@@ -4454,7 +4530,7 @@ small E} &
 
 	
 \backslash
-colorbitbox{orange!15}{8}{
+colorbitbox{yellow!15}{8}{
 \backslash
 scriptsize BNEP Control Type} &
 \end_layout
@@ -4463,7 +4539,7 @@ scriptsize BNEP Control Type} &
 
 	
 \backslash
-colorbitbox{orange!15}{16}{
+colorbitbox{cyan!15}{16}{
 \backslash
 scriptsize Pacchetto di controllo basato sul Control Type} 
 \backslash
@@ -4508,45 +4584,829 @@ Formato del messaggio di controllo BNEP
 \end_layout
 
 \begin_layout Standard
-Per permettere l'invio di più messaggi di controllo in un singolo messaggio
- L2CAP è possibile accodare uno o più 
-\emph on
-extension header 
-\emph default
-(vedi Fig.
- 
+I tipi di messaggi di controllo ammissibili sono elencati in Tabella 
 \begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:bnep-extension-header-format"
-
-\end_inset
-
-) all'header BNEP di Fig.
- 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:bnep-control-message-format"
+LatexCommand vref
+reference "tab:bnep-control-type-values"
 
 \end_inset
 
 .
- Per segnalare che a seguire è presente un 
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float table
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="9" columns="2">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="middle">
+<column alignment="center" valignment="middle" width="75col%">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Valore
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+BNEP Control Type
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0\text{x}00$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size small
+BNEP_CONTROL_COMMAND_NOT_UNDERSTOOD
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0\text{x}01$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size small
+BNEP_SETUP_CONNECTION_REQUEST_MSG
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0\text{x}02$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size small
+BNEP_SETUP_CONNECTION_RESPONSE_MSG
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0\text{x}03$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size small
+BNEP_FILTER_NET_TYPE_SET_MSG
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0\text{x}04$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size small
+BNEP_FILTER_NET_TYPE_RESPONSE_MSG
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0\text{x}05$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size small
+BNEP_FILTER_MULTI_ADDR_SET_MSG
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0\text{x}06$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size small
+BNEP_FILTER_MULTI_ADDR_RESPONSE_MSG
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $0\text{x}07-0\text{x}FF$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size small
+Riservati per uso futuro
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:bnep-control-type-values"
+
+\end_inset
+
+Valori ammissibili per il campo 
+\emph on
+Control Type
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Comando di controllo non valido
+\end_layout
+
+\begin_layout Standard
+Questo pacchetto, il cui formato è mostrato in Figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:bnep-control-command-not-understood-format"
+
+\end_inset
+
+, viene utilizzato per rispondere a qualunque messaggio di controllo ricevuto
+ che contiene un valore sconosciuto del campo 
+\emph on
+Control Type
+\emph default
+.
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+newcommand{
+\backslash
+colorbitbox}[3]{%
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+rlap{
+\backslash
+bitbox{#2}{
+\backslash
+color{#1}
+\backslash
+rule{
+\backslash
+width}{
+\backslash
+height}}}%
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitbox{#2}{#3}}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{bytefield}[%
+\end_layout
+
+\begin_layout Plain Layout
+
+	boxformatting={
+\backslash
+centering
+\backslash
+itshape},
+\end_layout
+
+\begin_layout Plain Layout
+
+	bitwidth=1em]{32}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitheader[endianness=little]{0,6,7,8,15,16,31} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{blue!15}{7}{
+\backslash
+scriptsize BNEP Type = 
+\backslash
+(0x01
+\backslash
+)} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{blue!15}{1}{
+\backslash
+small E} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{yellow!15}{8}{
+\backslash
+scriptsize BNEP Control Type = 
+\backslash
+(0x00
+\backslash
+)} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{cyan!15}{16}{
+\backslash
+scriptsize Unknown Control Type 
+\backslash
+
+\backslash
+ 
+\backslash
+tiny (BNEP Control Type ricevuto)} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{bytefield}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:bnep-control-command-not-understood-format"
+
+\end_inset
+
+Formato del messaggio di controllo per il messaggio 
+\emph on
+
+\begin_inset Quotes eld
+\end_inset
+
+Command not understood
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Richiesta di creazione della connessione
+\end_layout
+
+\begin_layout Standard
+Il formato di questo messaggio di controllo è mostrato in Figura 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:bnep-setup-connection-request-msg-format"
+
+\end_inset
+
+.
+ Il suo scopo è quello di informare il ricevente circa gli UUID del servizio
+ SDP destinazione e sorgente utilizzati per instaurare la connessione BNEP.
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+newcommand{
+\backslash
+colorbitbox}[3]{%
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+rlap{
+\backslash
+bitbox{#2}{
+\backslash
+color{#1}
+\backslash
+rule{
+\backslash
+width}{
+\backslash
+height}}}%
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitbox{#2}{#3}}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{bytefield}[%
+\end_layout
+
+\begin_layout Plain Layout
+
+	boxformatting={
+\backslash
+centering
+\backslash
+itshape},
+\end_layout
+
+\begin_layout Plain Layout
+
+	bitwidth=1em]{32}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitheader[endianness=little]{0,6,7,8,15,16,23,24,31} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{blue!15}{7}{
+\backslash
+scriptsize BNEP Type = 
+\backslash
+(0x01
+\backslash
+)} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{blue!15}{1}{
+\backslash
+small E} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{yellow!15}{8}{
+\backslash
+scriptsize BNEP Control Type = 
+\backslash
+(0x00
+\backslash
+)} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{cyan!15}{8}{
+\backslash
+scriptsize UUID Size} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{cyan!15}{8}{
+\backslash
+scriptsize Destination Service UUID 
+\backslash
+
+\backslash
+ 
+\backslash
+tiny (Byte 
+\backslash
+(0
+\backslash
+))} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{cyan!15}{24}{
+\backslash
+scriptsize Destination Service UUID 
+\backslash
+
+\backslash
+ 
+\backslash
+tiny (Byte 
+\backslash
+(1-N
+\backslash
+))} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{cyan!15}{8}{
+\backslash
+scriptsize Source Service UUID 
+\backslash
+
+\backslash
+ 
+\backslash
+tiny (Byte 
+\backslash
+(0
+\backslash
+))} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{cyan!15}{24}{
+\backslash
+scriptsize Source Service UUID 
+\backslash
+
+\backslash
+ 
+\backslash
+tiny (Byte 
+\backslash
+(1-N
+\backslash
+))} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{bytefield}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:bnep-setup-connection-request-msg-format"
+
+\end_inset
+
+Formato del messaggio di controllo per il messaggio 
+\emph on
+
+\begin_inset Quotes eld
+\end_inset
+
+Setup connection
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+
+\emph on
+Extension Header
+\end_layout
+
+\begin_layout Standard
+Per permettere l'invio di più messaggi di controllo in un singolo messaggio
+ L2CAP è possibile inserire uno o più cosìdetti 
 \emph on
 extension header
 \emph default
- da leggere si pone il bit E (
+ dopo l'header BNEP
 \emph on
-Extension
+ 
 \emph default
-) al valore 
-\begin_inset Formula $1$
-\end_inset
+e prima del payload BNEP (vedi Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:bnep-extension-header-format"
 
- (
-\begin_inset Formula $0x1$
 \end_inset
 
 ).
+ Se nel pacchetto BNEP è presente almeno un
+\emph on
+ extension header
+\emph default
+ allora il flag E (
+\emph on
+Extension
+\emph default
+) dell'header BNEP viene posto al valore 
+\begin_inset Formula $1$
+\end_inset
+
+.
+ Se è presente un 
+\emph on
+extension header
+\emph default
+ che segue quello corrente, allora quest'ultimo deve anch'esso impostare
+ il bit E al valore 
+\begin_inset Formula $1$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Nonostante le specifiche del meccanismo degli 
+\emph on
+extension header
+\emph default
+ sia predisposto ad accogliere eventuali altri tipi di estensione, attualmente
+ l'unico ammissibile per il campo 
+\emph on
+Extension Type
+\emph default
+ è il valore 
+\begin_inset Formula $0\text{x}00$
+\end_inset
+
+ (BNEP_EXTENSION_CONTROL) utilizzato per inviare messaggi di controllo.
 \end_layout
 
 \begin_layout Standard
@@ -4635,48 +5495,78 @@ bitheader[endianness=little]{0,6,7,8,15,16,31}
 
 	
 \backslash
-wordbox{1}{Header L2CAP} 
+begin{rightwordgroup}{
 \backslash
-
-\backslash
-
+scriptsize Header BNEP}
 \end_layout
 
 \begin_layout Plain Layout
 
-	
-\backslash
-colorbitbox{orange!15}{32}{
-\backslash
-small Header BNEP 
-\backslash
-
-\backslash
- 
-\backslash
-tiny (con bit 
-\backslash
-(E=1
-\backslash
-))} 
-\backslash
-
-\backslash
-
-\end_layout
-
-\begin_layout Plain Layout
-
-	
+		
 \backslash
 colorbitbox{blue!15}{7}{
 \backslash
-scriptsize Extension Type} &
+scriptsize BNEP Type = 
+\backslash
+(0x01
+\backslash
+)} &
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{blue!15}{1}{
+\backslash
+small E} &
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{yellow!15}{8}{
+\backslash
+scriptsize BNEP Control Type}
 \end_layout
 
 \begin_layout Plain Layout
 
 	
+\backslash
+end{rightwordgroup} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+begin{rightwordgroup}{
+\backslash
+scriptsize Extension header}
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{blue!15}{7}{
+\backslash
+scriptsize Extension Type = 
+\backslash
+(0x00
+\backslash
+)} &
+\end_layout
+
+\begin_layout Plain Layout
+
+		
 \backslash
 colorbitbox{blue!15}{1}{
 \backslash
@@ -4695,7 +5585,7 @@ tiny (
 
 \begin_layout Plain Layout
 
-	
+		
 \backslash
 colorbitbox{blue!15}{8}{
 \backslash
@@ -4704,11 +5594,20 @@ scriptsize Extension Length} &
 
 \begin_layout Plain Layout
 
-	
+		
 \backslash
-colorbitbox{blue!15}{16}{
+colorbitbox{yellow!15}{8}{
 \backslash
-scriptsize Extension Payload} 
+scriptsize BNEP Control Type} &
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{cyan!15}{8}{
+\backslash
+tiny Pacchetto di controllo basato sul Control Type} 
 \backslash
 
 \backslash
@@ -4717,7 +5616,7 @@ scriptsize Extension Payload}
 
 \begin_layout Plain Layout
 
-	
+		
 \backslash
 wordbox[]{1}{$
 \backslash
@@ -4730,16 +5629,20 @@ vdots$}
 
 \begin_layout Plain Layout
 
-	
+		
 \backslash
 colorbitbox{blue!15}{7}{
 \backslash
-scriptsize Extension Type} &
+scriptsize Extension Type = 
+\backslash
+(0x00
+\backslash
+)} &
 \end_layout
 
 \begin_layout Plain Layout
 
-	
+		
 \backslash
 colorbitbox{blue!15}{1}{
 \backslash
@@ -4758,7 +5661,7 @@ tiny (
 
 \begin_layout Plain Layout
 
-	
+		
 \backslash
 colorbitbox{blue!15}{8}{
 \backslash
@@ -4767,11 +5670,20 @@ scriptsize Extension Length} &
 
 \begin_layout Plain Layout
 
-	
+		
 \backslash
-colorbitbox{blue!15}{16}{
+colorbitbox{yellow!15}{8}{
 \backslash
-scriptsize Extension Payload} 
+scriptsize BNEP Control Type} &
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{cyan!15}{8}{
+\backslash
+tiny Pacchetto di controllo basato sul Control Type} 
 \backslash
 
 \backslash
@@ -4780,16 +5692,20 @@ scriptsize Extension Payload}
 
 \begin_layout Plain Layout
 
-	
+		
 \backslash
 colorbitbox{blue!15}{7}{
 \backslash
-scriptsize Extension Type} &
+scriptsize Extension Type = 
+\backslash
+(0x00
+\backslash
+)} &
 \end_layout
 
 \begin_layout Plain Layout
 
-	
+		
 \backslash
 colorbitbox{blue!15}{1}{
 \backslash
@@ -4808,7 +5724,7 @@ tiny (
 
 \begin_layout Plain Layout
 
-	
+		
 \backslash
 colorbitbox{blue!15}{8}{
 \backslash
@@ -4817,11 +5733,27 @@ scriptsize Extension Length} &
 
 \begin_layout Plain Layout
 
+		
+\backslash
+colorbitbox{yellow!15}{8}{
+\backslash
+scriptsize BNEP Control Type} &
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{cyan!15}{8}{
+\backslash
+tiny Pacchetto di controllo basato sul Control Type}
+\end_layout
+
+\begin_layout Plain Layout
+
 	
 \backslash
-colorbitbox{blue!15}{16}{
-\backslash
-scriptsize Extension Payload} 
+end{rightwordgroup} 
 \backslash
 
 \backslash
@@ -4832,19 +5764,25 @@ scriptsize Extension Payload}
 
 	
 \backslash
-colorbitbox{green!15}{32}{
+begin{rightwordgroup}{
 \backslash
-scriptsize Payload
-\backslash
+scriptsize Payload BNEP}
+\end_layout
 
+\begin_layout Plain Layout
+
+		
 \backslash
- 
+colorbitbox{cyan!15}{8}{
 \backslash
-tiny (
+tiny Pacchetto di controllo basato sul Control Type}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
 \backslash
-(0-1500
-\backslash
-) Byte)} 
+end{rightwordgroup} 
 \backslash
 
 \backslash
@@ -4873,11 +5811,11 @@ name "fig:bnep-extension-header-format"
 
 \end_inset
 
-Formato dell'
+Formato di un messaggio di controllo BNEP con 
 \emph on
 extension header
 \emph default
- BNEP
+ multipli
 \end_layout
 
 \end_inset
