@@ -213,7 +213,22 @@ status open
 
 \begin_layout Plain Layout
 
-void sdp_server_handle_client_req (tCONN_CB * p_ccb, BT_HDR * p_msg);
+void sdp_server_handle_client_req (
+\end_layout
+
+\begin_layout Plain Layout
+
+	tCONN_CB * p_ccb,
+\end_layout
+
+\begin_layout Plain Layout
+
+	BT_HDR * p_msg
+\end_layout
+
+\begin_layout Plain Layout
+
+);
 \end_layout
 
 \end_inset
@@ -436,6 +451,51 @@ tSDP_RECORD* p_rec = NULL;
 
 \begin_layout Plain Layout
 
+/* Get a list of handles that match the UUIDs given to us */
+\end_layout
+
+\begin_layout Plain Layout
+
+for (num_rsp_handles = 0; num_rsp_handles < max_replies;) {
+\end_layout
+
+\begin_layout Plain Layout
+
+	p_rec = sdp_db_service_search(p_rec, &uid_seq);
+\end_layout
+
+\begin_layout Plain Layout
+
+	if (p_rec)
+\end_layout
+
+\begin_layout Plain Layout
+
+		rsp_handles[num_rsp_handles++] = p_rec->record_handle;
+\end_layout
+
+\begin_layout Plain Layout
+
+	else
+\end_layout
+
+\begin_layout Plain Layout
+
+		break;
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+...
+\end_layout
+
+\begin_layout Plain Layout
+
 /* Check if this is a continuation request */
 \end_layout
 
@@ -492,10 +552,6 @@ if (*p_req) {
 \begin_layout Plain Layout
 
 	}
-\end_layout
-
-\begin_layout Plain Layout
-
 \end_layout
 
 \begin_layout Plain Layout
@@ -1182,11 +1238,7 @@ L'estratto di codice precedente si aspetterà di dover inviare una risposta
 \end_inset
 
 KB) e il codice seguente copierà tanti byte quanti ne entrano in un pacchetto
- di risposta 
-\series bold
-a partire dal precedente valore di offset
-\series default
-.
+ di risposta a partire dal precedente valore di offset.
 \begin_inset Newline newline
 \end_inset
 
@@ -1245,14 +1297,412 @@ num_rsp_handles
 
 \end_inset
 
-.
+ (vedi Figura 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:sdp-stack-overflow"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+newcommand{
+\backslash
+colorbitbox}[3]{%
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+rlap{
+\backslash
+bitbox{#2}{
+\backslash
+color{#1}
+\backslash
+rule{
+\backslash
+width}{
+\backslash
+height}}}%
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitbox{#2}{#3}}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{bytefield}{16}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitbox[]{8}{} & 
+\backslash
+bitbox[lrb]{8}{
+\backslash
+dots} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+begin{rightwordgroup}{
+\backslash
+scriptsize 
+\backslash
+texttt{SDP
+\backslash
+_MAX
+\backslash
+_RECORDS}}
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+begin{leftwordgroup}{
+\backslash
+scriptsize 
+\backslash
+texttt{num
+\backslash
+_rsp
+\backslash
+_handles} 
+\backslash
+
+\backslash
+ 
+\backslash
+scriptsize dopo l
+\backslash
+textquotesingle underflow}
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+bitbox[]{8}{
+\backslash
+scriptsize 
+\backslash
+texttt{rsp
+\backslash
+_handles}} &
+\end_layout
+
+\begin_layout Plain Layout
+
+				
+\backslash
+colorbitbox{green!15}{8}{
+\backslash
+small 
+\backslash
+texttt{sdp record}} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+bitbox[]{8}{} & 
+\backslash
+colorbitbox{green!15}{8}{
+\backslash
+small 
+\backslash
+texttt{sdp record}} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+bitbox[]{8}{
+\backslash
+scriptsize 
+\backslash
+texttt{rsp
+\backslash
+_handles + 
+\backslash
+
+\backslash
+ cont
+\backslash
+_offset}} &
+\end_layout
+
+\begin_layout Plain Layout
+
+				
+\backslash
+colorbitbox{green!15}{8}{
+\backslash
+small 
+\backslash
+texttt{sdp record}} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+bitbox[]{8}{} & 
+\backslash
+colorbitbox{green!15}{8}{
+\backslash
+small 
+\backslash
+texttt{sdp record}} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+bitbox[]{8}{} & 
+\backslash
+colorbitbox{yellow!15}{8}{
+\backslash
+small 
+\backslash
+texttt{0x00000000}} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+bitbox[]{8}{} & 
+\backslash
+colorbitbox{yellow!15}{8}{
+\backslash
+small 
+\backslash
+texttt{0x00000000}}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+end{rightwordgroup} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitbox[]{8}{} & 
+\backslash
+colorbitbox{red!15}{8}{
+\backslash
+dots} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitbox[]{8}{} & 
+\backslash
+colorbitbox{red!15}{8}{
+\backslash
+dots} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitbox[]{8}{
+\backslash
+scriptsize 
+\backslash
+texttt{rsp
+\backslash
+_handles + 
+\backslash
+
+\backslash
+ rem
+\backslash
+_handles}} &
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{red!15}{8}{
+\backslash
+dots}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+end{leftwordgroup} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitbox[]{8}{} & 
+\backslash
+bitbox[lrt]{8}{
+\backslash
+dots}
+\end_layout
+
+\begin_layout Plain Layout
+
+ 
+\backslash
+end{bytefield}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\size small
+In verde i record SDP che il client può leggere.
+ In giallo i record SDP che il client non dovrebbe leggere, ma che non contengon
+o informazioni perché azzerati.
+ In rosso i dati presenti sullo stack a cui l'utente accede grazie all'
+\emph on
+underflow
+\emph default
+ della variabile 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+\size small
+num_rsp_handles
+\end_layout
+
+\end_inset
+
+ e che potrebbero contenere informazioni rilevanti.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:sdp-stack-overflow"
+
+\end_inset
+
+Vista dello stack SDP dopo una richiesta malformata
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
 I dati ottenuti in questo modo potenzialmente potrebbero contenere chiavi
  di cifratura, puntatori a dati o a codice, o altri dati che possono essere
- utilizzati congiuntamente ad altre vulnerabilità per bypassare alcuni meccanism
-i di mitigazione messi a disposizione dal sistema operativo come l'
+ utilizzati ad esempio per bypassare meccanismi di mitigazione del sistema
+ operativo come l'
 \begin_inset Flex CT - acronym
 status collapsed
 
@@ -1278,7 +1728,10 @@ Misura di protezione che consiste nel rendere (parzialmente) casuale l'indirizzo
 \end_inset
 
 .
- Per ultima, ma non meno importante, è anche la possibilità di creare un
+\end_layout
+
+\begin_layout Standard
+Per ultima, ma non meno importante, è anche la possibilità di creare un
  disservizio facendo si che il puntatore ai dati da leggere per costruire
  la risposta SDP punti ad un'area riservata del sistema operativo.
  L'accesso a queste aree di memoria, infatti, portano generalmente al riavvio
