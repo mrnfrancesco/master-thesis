@@ -661,6 +661,13 @@ acro{OEM}{Original Equipment Manifacturers}
 
 \begin_layout Plain Layout
 
+  
+\backslash
+acro{VCF}{Virtual Contact File}
+\end_layout
+
+\begin_layout Plain Layout
+
 
 \backslash
 end{acronym}              
