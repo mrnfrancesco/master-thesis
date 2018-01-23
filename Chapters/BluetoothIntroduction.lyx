@@ -5216,7 +5216,7 @@ colorbitbox{yellow!15}{8}{
 \backslash
 scriptsize BNEP Control Type = 
 \backslash
-(0x00
+(0x01
 \backslash
 )} &
 \end_layout
@@ -5375,11 +5375,7 @@ Per permettere l'invio di più messaggi di controllo in un singolo messaggio
 \emph on
 extension header
 \emph default
- dopo l'header BNEP
-\emph on
- 
-\emph default
-e prima del payload BNEP (vedi Fig.
+ dopo un normale messaggio BNEP (vedi Fig.
  
 \begin_inset CommandInset ref
 LatexCommand vref
@@ -5516,15 +5512,6 @@ bitheader[endianness=little]{0,6,7,8,15,16,31}
 
 	
 \backslash
-begin{rightwordgroup}{
-\backslash
-scriptsize Header BNEP}
-\end_layout
-
-\begin_layout Plain Layout
-
-		
-\backslash
 colorbitbox{blue!15}{7}{
 \backslash
 scriptsize BNEP Type = 
@@ -5536,27 +5523,39 @@ scriptsize BNEP Type =
 
 \begin_layout Plain Layout
 
-		
+	
 \backslash
 colorbitbox{blue!15}{1}{
 \backslash
-small E} &
-\end_layout
-
-\begin_layout Plain Layout
-
-		
+tiny E 
 \backslash
-colorbitbox{yellow!15}{8}{
+
 \backslash
-scriptsize BNEP Control Type}
+ 
+\backslash
+tiny (
+\backslash
+(1
+\backslash
+))} &
 \end_layout
 
 \begin_layout Plain Layout
 
 	
 \backslash
-end{rightwordgroup} 
+colorbitbox{yellow!15}{8}{
+\backslash
+scriptsize BNEP Control Type} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{cyan!15}{16}{
+\backslash
+scriptsize Pacchetto di controllo basato sul Control Type} 
 \backslash
 
 \backslash
@@ -5759,35 +5758,6 @@ scriptsize Extension Length} &
 colorbitbox{yellow!15}{8}{
 \backslash
 scriptsize BNEP Control Type} &
-\end_layout
-
-\begin_layout Plain Layout
-
-		
-\backslash
-colorbitbox{cyan!15}{8}{
-\backslash
-tiny Pacchetto di controllo basato sul Control Type}
-\end_layout
-
-\begin_layout Plain Layout
-
-	
-\backslash
-end{rightwordgroup} 
-\backslash
-
-\backslash
-
-\end_layout
-
-\begin_layout Plain Layout
-
-	
-\backslash
-begin{rightwordgroup}{
-\backslash
-scriptsize Payload BNEP}
 \end_layout
 
 \begin_layout Plain Layout
