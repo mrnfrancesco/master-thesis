@@ -190,15 +190,10 @@ In questo caso la struttura presenta solamente un offset di
 
 \begin_layout Standard
 La funzione che gestisce tutte le richieste SDP si trova in 
-\begin_inset listings
-lstparams "tabsize=4"
-inline true
-status open
-
-\begin_layout Plain Layout
-
-/stack/sdp/sdp_server.cc
-\end_layout
+\begin_inset CommandInset href
+LatexCommand href
+name "/stack/sdp/sdp_server.c"
+target "https://android.googlesource.com/platform/system/bt/+/android-7.1.1_r44/stack/sdp/sdp_server.c#117"
 
 \end_inset
 
@@ -360,15 +355,10 @@ reference "subsec:sdp-service-search"
 
 \begin_layout Standard
 La funzione si trova anch'essa in 
-\begin_inset listings
-lstparams "language={C++},tabsize=4"
-inline true
-status open
-
-\begin_layout Plain Layout
-
-/stack/sdp/sdp_server.cc
-\end_layout
+\begin_inset CommandInset href
+LatexCommand href
+name "/stack/sdp/sdp_server.c"
+target "https://android.googlesource.com/platform/system/bt/+/android-7.1.1_r44/stack/sdp/sdp_server.c#176"
 
 \end_inset
 
