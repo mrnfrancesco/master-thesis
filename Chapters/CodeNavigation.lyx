@@ -72,10 +72,10 @@
 \begin_body
 
 \begin_layout Chapter
-Trovare nuove vulnerabilità clickless
+Navigazione del codice
 \begin_inset CommandInset label
 LatexCommand label
-name "ch:find-new-clickless-vulnerabilities"
+name "ch:code-navigation"
 
 \end_inset
 
@@ -83,7 +83,7 @@ name "ch:find-new-clickless-vulnerabilities"
 \end_layout
 
 \begin_layout Section
-Come è stato trovato BlueBorne
+Control flow sensitive viewpoint
 \end_layout
 
 \begin_layout Standard
@@ -100,11 +100,7 @@ TODO
 \end_layout
 
 \begin_layout Section
-Considerazioni sulle vulnerabilità 0-day
-\end_layout
-
-\begin_layout Subsection
-Tempo necessario a trovare nuove vulnerabilità
+Data flow sensitive viewpoint
 \end_layout
 
 \begin_layout Standard
@@ -120,8 +116,8 @@ TODO
 
 \end_layout
 
-\begin_layout Subsection
-Tempo necessario a sviluppare un exploit
+\begin_layout Section
+Forward tracing
 \end_layout
 
 \begin_layout Standard
@@ -137,25 +133,8 @@ TODO
 
 \end_layout
 
-\begin_layout Subsection
-Analisi dei costi: quanto costa sviluppare un exploit?
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-TODO
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsection
-Prezzo di vendita o ricavo interno
+\begin_layout Section
+Backward tracing
 \end_layout
 
 \begin_layout Standard
