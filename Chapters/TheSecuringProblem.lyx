@@ -73,12 +73,26 @@
 
 \begin_layout Chapter
 Il problema della messa in sicurezza
-\end_layout
-
-\begin_layout Standard
 \begin_inset CommandInset label
 LatexCommand label
 name "ch:the-securing-problem"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Impatto
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+TODO
+\end_layout
 
 \end_inset
 
@@ -168,7 +182,7 @@ ali sistemi di sicurezza aziendali.
  (vedi Fig.
  
 \begin_inset CommandInset ref
-LatexCommand ref
+LatexCommand vref
 reference "fig:cutting-across-boundaries"
 
 \end_inset
@@ -179,7 +193,7 @@ reference "fig:cutting-across-boundaries"
 \begin_layout Standard
 Gli 
 \begin_inset Flex CT - acronym
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -211,7 +225,7 @@ Più significativo ancora è il fatto che BlueBorne possa potenzialmente diffond
 si attraversando qualunque meccanismo di segmentazione della rete, ad esempio
  le 
 \begin_inset Flex CT - acronym
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -283,6 +297,23 @@ Rete fortemente interconnessa di computer o dispositivi con capacità di
 \end_inset
 
  di device compromessi.
+\end_layout
+
+\begin_layout Section
+Rilevare ed eliminare le minacce
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+TODO
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_body
