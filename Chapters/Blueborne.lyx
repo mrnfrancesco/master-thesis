@@ -2601,6 +2601,16 @@ BT_HDR
 \end_layout
 
 \begin_layout Standard
+\begin_inset CommandInset label
+LatexCommand label
+name "code:BT_HDR"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 
 \size small
 \begin_inset listings
@@ -3961,12 +3971,9 @@ crash
 \emph default
  è visibile sia sul dispositivo stesso (vedi Fig.
  
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-TODO: inserisci screenshot crash bluetooth
-\end_layout
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:nexus-5x-bluetooth-crash-screenshot"
 
 \end_inset
 
@@ -3980,6 +3987,48 @@ log
 \end_inset
 
 ).
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /home/mrnfrancesco/git/master-thesis/gfx/nexus_5x_bluetooth_crash_screenshot.png
+	display false
+	width 40col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:nexus-5x-bluetooth-crash-screenshot"
+
+\end_inset
+
+Screenshot che mostra il crash del demone Bluetooth dopo l'heap overflow
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -4535,7 +4584,7 @@ status open
 
 \begin_layout Plain Layout
 
-(p_msg->event && BT_EVT_MASK) == BTU_POST_TO_TASK_NO_GOOD_HORRIBLE_HACK
+(p_msg->event & BT_EVT_MASK) == BTU_POST_TO_TASK_NO_GOOD_HORRIBLE_HACK
 \end_layout
 
 \end_inset
@@ -4561,6 +4610,108 @@ status open
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+dove la struttura 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+post_to_task_hack_t
+\end_layout
+
+\end_inset
+
+ è definita in 
+\begin_inset CommandInset href
+LatexCommand href
+name "/stack/include/btu.h"
+target "https://android.googlesource.com/platform/system/bt/+/android-7.1.1_r44/stack/include/btu.h#34"
+
+\end_inset
+
+ come segue
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+typedef struct {
+\end_layout
+
+\begin_layout Plain Layout
+
+	void (*callback)(BT_HDR *);
+\end_layout
+
+\begin_layout Plain Layout
+
+} post_to_task_hack_t;
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+A questo punto sappiamo con certezza che sia il parametro della funzione
+ 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+btu_hci_msg_process
+\end_layout
+
+\end_inset
+
+ che quello della callback nella struttura 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+post_to_task_hack_t
+\end_layout
+
+\end_inset
+
+ sono di tipo 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+BT_HDR
+\end_layout
+
+\end_inset
+
+ (già incontrato in precedenza 
+\begin_inset CommandInset ref
+LatexCommand vpageref
+reference "code:BT_HDR"
+
+\end_inset
+
+).
 \end_layout
 
 \begin_layout Standard
