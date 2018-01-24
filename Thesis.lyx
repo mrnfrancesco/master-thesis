@@ -329,9 +329,6 @@ filename "Chapters/Blueborne.lyx"
 \end_inset
 
 
-\end_inset
-
-
 \end_layout
 
 \begin_layout Standard
@@ -344,14 +341,47 @@ filename "Chapters/BuildBlueborneAttackVector.lyx"
 
 \end_layout
 
-
-\begin_layout Standard
+\begin_layout Part Introduction (ClassicThesis)
 \begin_inset Note Note
 status open
 
 \begin_layout Plain Layout
-TODO: aggiungere i file dei capitoli con i relativi TODOs
+TODO: Introduzione della parte
 \end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Part
+Bug Hunting
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand include
+filename "Chapters/CommonBugHuntingTechnique.lyx"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand include
+filename "Chapters/CodeNavigation.lyx"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand include
+filename "Chapters/FindNewClicklessVulnerability.lyx"
 
 \end_inset
 
@@ -389,20 +419,9 @@ Proteggere le aziende da BlueBorne
 \end_layout
 
 \begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-TODO: rinominare il file del capitolo e aggiungere eventualmente quelli
- mancanti
-\end_layout
-
-\end_inset
-
-
 \begin_inset CommandInset include
 LatexCommand include
-filename "Chapters/Chapter04.lyx"
+filename "Chapters/TheSecuringProblem.lyx"
 
 \end_inset
 
