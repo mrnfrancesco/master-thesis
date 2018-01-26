@@ -1729,6 +1729,13 @@ Per ultima, ma non meno importante, è anche la possibilità di creare un
 
 \begin_layout Section
 Andorid RCE (CVE-2017-0781)
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Andorid-RCE-(CVE-2017-0781)"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1926,7 +1933,9 @@ if
 
 \end_inset
 
- viene eseguito al verificarsi di diverse condizioni relative al formato
+ 
+\size default
+viene eseguito al verificarsi di diverse condizioni relative al formato
  del pacchetto (vedi Figura 
 \begin_inset CommandInset ref
 LatexCommand vref
@@ -3981,8 +3990,8 @@ reference "fig:nexus-5x-bluetooth-crash-screenshot"
 \emph on
 log
 \emph default
- dove vediamo chiaramente che il demone ha cercato di all'indirizzo indicato
- nel nostro pacchetto (
+ dove vediamo chiaramente che il demone ha cercato di accedere all'indirizzo
+ indicato nel nostro pacchetto (
 \begin_inset Formula $0\text{x}41414141$
 \end_inset
 
@@ -4307,7 +4316,7 @@ typedef struct {
 
 \begin_layout Plain Layout
 
-	(void)(*)(<struttura>) <puntatore a funzione>;
+	(void)(*)(<struttura> *) <puntatore a funzione>;
 \end_layout
 
 \begin_layout Plain Layout
