@@ -668,6 +668,13 @@ acro{VCF}{Virtual Contact File}
 
 \begin_layout Plain Layout
 
+  
+\backslash
+acro{RCE}{Remote Code Execution}
+\end_layout
+
+\begin_layout Plain Layout
+
 
 \backslash
 end{acronym}              

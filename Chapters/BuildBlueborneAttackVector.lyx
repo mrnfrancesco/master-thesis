@@ -497,7 +497,7 @@ vo visibile, oppure
 \begin_layout Itemize
 a scambiarci i contatti utilizzando le 
 \begin_inset Flex CT - acronym
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -537,11 +537,1328 @@ dots
 \end_layout
 
 \begin_layout Section
+Shaping della memoria
+\end_layout
 
+\begin_layout Standard
+Dato quanto detto nella sezione 
+\begin_inset CommandInset ref
+LatexCommand nameref
+reference "sec:Andorid-RCE-(CVE-2017-0781)"
+
+\end_inset
+
+ 
+\begin_inset CommandInset ref
+LatexCommand vpageref
+reference "sec:Andorid-RCE-(CVE-2017-0781)"
+
+\end_inset
+
+ è chiaro che è possibile inviare un pacchetto creato 
 \emph on
-Shaping
+ad-hoc 
 \emph default
- della memoria
+che sfrutti la vulnerabilità, ma la probabilità che questo abbia successo
+ è stata stimata empiricamente essere di circa l'
+\begin_inset Formula $1\%$
+\end_inset
+
+ (da qui la necessità di inviare 
+\begin_inset Formula $500\text{-}1000$
+\end_inset
+
+ pacchetti).
+\end_layout
+
+\begin_layout Standard
+Continuiamo quindi ad analizzare il flusso di esecuzione a partire dalla
+ funzione vulnerabile 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+btu_hci_msg_process
+\end_layout
+
+\end_inset
+
+ in modo da comprendere cosa stiamo sovrascrivendo durante l'heap overflow
+ e capire come eventualmente poter aumentare il tasso di successo.
+\end_layout
+
+\begin_layout Standard
+Otteniamo:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+void btu_task_start_up(void *context)
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+	...
+\end_layout
+
+\begin_layout Plain Layout
+
+	fixed_queue_register_dequeue(btu_hci_msg_queue,
+\end_layout
+
+\begin_layout Plain Layout
+
+		thread_get_reactor(bt_workqueue_thread),
+\end_layout
+
+\begin_layout Plain Layout
+
+		btu_hci_msg_ready, NULL);
+\end_layout
+
+\begin_layout Plain Layout
+
+	...
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+quindi:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+void btu_hci_msg_ready(fixed_queue_t *queue, void *context) {
+\end_layout
+
+\begin_layout Plain Layout
+
+	BT_HDR *p_msg = (BT_HDR *)fixed_queue_dequeue(queue);   
+\end_layout
+
+\begin_layout Plain Layout
+
+	btu_hci_msg_process(p_msg);
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Lo scopo è quello di registrare la funzione 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+btu_hci_msg_process
+\end_layout
+
+\end_inset
+
+ in modo che venga invocata per ogni messaggio inserito nella coda 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+btu_hci_msg_queue
+\end_layout
+
+\end_inset
+
+ contenente i messaggi destinati al dispositivo provenienti da 
+\series bold
+tutti
+\series default
+ i pacchetti derivanti dal controller Bluetooth che poggiano sul protocollo
+ 
+\begin_inset Flex CT - acronym
+status collapsed
+
+\begin_layout Plain Layout
+
+HCI
+\end_layout
+
+\end_inset
+
+.
+ Questo significa che i pacchetti controllati dall'attaccante verranno inseriti
+ in questa coda per essere processati.
+ I pacchetti relativi all'evento 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+BTU_POST_TO_TASK_NO_GOOD_HORRIBLE_HACK
+\end_layout
+
+\end_inset
+
+ visto in precedenza utilizzano la stessa coda per messaggi di tipo diverso
+ che contengono al loro interno una 
+\emph on
+callback
+\emph default
+ dinamica.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Proseguendo nell'analisi delle funzioni invocate otteniamo il buffer che
+ viene sovrascritto durante l'
+\emph on
+overflow
+\emph default
+ prima che avvenga il 
+\emph on
+crash
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+void *fixed_queue_dequeue(fixed_queue_t *queue) { 
+\end_layout
+
+\begin_layout Plain Layout
+
+	...
+\end_layout
+
+\begin_layout Plain Layout
+
+	void *ret = list_front(queue->list);
+\end_layout
+
+\begin_layout Plain Layout
+
+	list_remove(queue->list, ret);
+\end_layout
+
+\begin_layout Plain Layout
+
+	...
+\end_layout
+
+\begin_layout Plain Layout
+
+	return ret;
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+L'elemento della lista che viene restituito è di tipo 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+list_t
+\end_layout
+
+\end_inset
+
+, cioè una lista linkata di strutture di tipo 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+list_node_t
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Entrambi sono definiti in 
+\begin_inset CommandInset href
+LatexCommand href
+name "/osi/src/list.c"
+target "https://android.googlesource.com/platform/system/bt/+/android-7.1.1_r44/osi/src/list.c#7"
+
+\end_inset
+
+ come
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+struct list_node_t {
+\end_layout
+
+\begin_layout Plain Layout
+
+	struct list_node_t *next;
+\end_layout
+
+\begin_layout Plain Layout
+
+	void *data;
+\end_layout
+
+\begin_layout Plain Layout
+
+};
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+typedef struct list_t {
+\end_layout
+
+\begin_layout Plain Layout
+
+	list_node_t *head;
+\end_layout
+
+\begin_layout Plain Layout
+
+	list_node_t *tail;
+\end_layout
+
+\begin_layout Plain Layout
+
+	size_t length;
+\end_layout
+
+\begin_layout Plain Layout
+
+	list_free_cb free_cb;
+\end_layout
+
+\begin_layout Plain Layout
+
+	const allocator_t *allocator;
+\end_layout
+
+\begin_layout Plain Layout
+
+} list_t;
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Non è un caso che un nodo della lista sia grande esattamente 
+\begin_inset Formula $8$
+\end_inset
+
+ byte come il buffer con cui facciamo 
+\emph on
+overflow
+\emph default
+; infatti la funzione invocata per allocare memoria nell'heap (
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+osi_malloc
+\end_layout
+
+\end_inset
+
+) è un 
+\emph on
+wrap
+\emph default
+per
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Funzione il cui scopo è quello di invocare una seconda funzione o una chiamata
+ di sistema dopo aver (eventualmente) effettuato alcune operazioni preliminari
+\end_layout
+
+\end_inset
+
+ per la funzione 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+jemalloc
+\end_layout
+
+\end_inset
+
+ presente nell'implementazione della libreria standard del C di Android
+ che alloca buffer di dimensioni simili in aree di memoria contigue.
+\end_layout
+
+\begin_layout Standard
+Ricapitolando di nuovo come avviene il 
+\emph on
+crash
+\emph default
+ del demone Bluetooth abbiamo i passi seguenti:
+\end_layout
+
+\begin_layout Enumerate
+un nodo di tipo 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+list_node_t
+\end_layout
+
+\end_inset
+
+ viene inserito nella coda 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+btu_hci_msg_queue
+\end_layout
+
+\end_inset
+
+ per essere processato in un secondo momento (Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:bnep-heap-with-list-node-before-overflow"
+
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Enumerate
+il messaggio malevolo di tipo 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+BT_HDR
+\end_layout
+
+\end_inset
+
+ viene allocato in un'area di memoria contigua e a causa dell'
+\emph on
+overflow
+\emph default
+ vengono scritti 
+\begin_inset Formula $8$
+\end_inset
+
+ byte nell'area di memoria che contiene il nodo di tipo 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+list_node_t
+\end_layout
+
+\end_inset
+
+, in particolare sovrascrivendo il puntatore al campo 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+data
+\end_layout
+
+\end_inset
+
+ (Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:bnep-heap-with-list-node-after-overflow"
+
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Enumerate
+a quest'ultimo viene applicato un 
+\emph on
+cast
+\emph default
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+conversione di formato
+\end_layout
+
+\end_inset
+
+ a tipo 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+BT_HDR
+\end_layout
+
+\end_inset
+
+ per essere utilizzato come parametro 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+p_msg
+\end_layout
+
+\end_inset
+
+ nella funzione 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+btu_hci_msg_process
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+newcommand{
+\backslash
+colorwordbox}[3]{%
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+rlap{
+\backslash
+wordbox{#1}{
+\backslash
+color{#2}
+\backslash
+rule{
+\backslash
+width}{
+\backslash
+height}}}%
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+wordbox{#1}{#3}}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+newcommand{
+\backslash
+memsection}[2]{%
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bytefieldsetup{bitheight=#1
+\backslash
+baselineskip}%
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+wordbox{1}{#2}%
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+newcommand{
+\backslash
+colormemsection}[3]{%
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bytefieldsetup{bitheight=#1
+\backslash
+baselineskip}%
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorwordbox{1}{#2}{#3}%
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{bytefield}{10}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+wordbox[]{1}{
+\backslash
+texttt{btu
+\backslash
+_hci
+\backslash
+_msg
+\backslash
+_queue}} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+skippedwords 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+wordbox[lrb]{1}{
+\backslash
+dots} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colormemsection{10}{gray!15}{
+\backslash
+texttt{-- non allocato --}} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+begin{leftwordgroup}{
+\backslash
+texttt{list
+\backslash
+_node
+\backslash
+_t}}
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colormemsection{4}{green!15}{
+\backslash
+texttt{next} 
+\backslash
+
+\backslash
+ 
+\backslash
+small 
+\backslash
+(0
+\backslash
+)xDEADBEEF} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colormemsection{4}{green!15}{
+\backslash
+texttt{data} 
+\backslash
+
+\backslash
+ 
+\backslash
+small 
+\backslash
+(0
+\backslash
+)x
+\backslash
+(12345678
+\backslash
+)}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+end{leftwordgroup} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+wordbox[lrt]{1}{
+\backslash
+dots} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+skippedwords 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{bytefield}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:bnep-heap-with-list-node-before-overflow"
+
+\end_inset
+
+Illustrazione dell'heap prima dell'overflow che porta al crash del demone
+ Bluetooth
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+newcommand{
+\backslash
+colorwordbox}[3]{%
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+rlap{
+\backslash
+wordbox{#1}{
+\backslash
+color{#2}
+\backslash
+rule{
+\backslash
+width}{
+\backslash
+height}}}%
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+wordbox{#1}{#3}}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+newcommand{
+\backslash
+memsection}[2]{%
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bytefieldsetup{bitheight=#1
+\backslash
+baselineskip}%
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+wordbox{1}{#2}%
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+newcommand{
+\backslash
+colormemsection}[3]{%
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bytefieldsetup{bitheight=#1
+\backslash
+baselineskip}%
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorwordbox{1}{#2}{#3}%
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{bytefield}{10}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+wordbox[]{1}{
+\backslash
+texttt{btu
+\backslash
+_hci
+\backslash
+_msg
+\backslash
+_queue}} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+skippedwords 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+wordbox[lrb]{1}{
+\backslash
+dots} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+begin{leftwordgroup}{
+\backslash
+texttt{p
+\backslash
+_pending
+\backslash
+_data}}
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colormemsection{2}{blue!15}{
+\backslash
+texttt{event}} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colormemsection{2}{blue!15}{
+\backslash
+texttt{len} 
+\backslash
+(=
+\backslash
+) 
+\backslash
+texttt{rem
+\backslash
+_len}} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colormemsection{2}{blue!15}{
+\backslash
+texttt{offset
+\backslash
+(=0
+\backslash
+)}} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colormemsection{2}{blue!15}{
+\backslash
+texttt{layer
+\backslash
+_specific}}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+end{leftwordgroup} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+begin{leftwordgroup}{
+\backslash
+texttt{list
+\backslash
+_node
+\backslash
+_t}}
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colormemsection{4}{red!15}{
+\backslash
+texttt{next} 
+\backslash
+
+\backslash
+ 
+\backslash
+small 
+\backslash
+(0
+\backslash
+)xCCCCCCCC} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colormemsection{4}{red!15}{
+\backslash
+texttt{data} 
+\backslash
+
+\backslash
+ 
+\backslash
+small 
+\backslash
+(0
+\backslash
+)x
+\backslash
+(41414141
+\backslash
+)}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+end{leftwordgroup} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+wordbox[lrt]{1}{
+\backslash
+dots} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+skippedwords 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{bytefield}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:bnep-heap-with-list-node-after-overflow"
+
+\end_inset
+
+Illustrazione dell'heap dopo l'overflow che porta al crash del demone Bluetooth
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -549,12 +1866,48 @@ Shaping
 status open
 
 \begin_layout Plain Layout
-TODO
+TODO: Rivedi quest'ultima parte e completa copiando le immagini dal paper
+ ufficiale
 \end_layout
 
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+Questo significa che per sfruttare l'
+\emph on
+overflow
+\emph default
+ dobbiamo fare in modo di allocare quanti più oggetti di tipo 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+list_node_t
+\end_layout
+
+\end_inset
+
+ possibile con dei buchi tra uno e l'altro.
+ In questo modo al momento di allocare la memoria per il buffer 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+p_pending_data
+\end_layout
+
+\end_inset
+
+ la scelta ricadrà in uno di questi buchi.
 \end_layout
 
 \begin_layout Section
@@ -562,16 +1915,847 @@ Costruzione del payload
 \end_layout
 
 \begin_layout Standard
-\begin_inset Note Note
+Da quanto spiegato finora capiamo che per ottenere una 
+\begin_inset Flex CT - acronym
+status collapsed
+
+\begin_layout Plain Layout
+
+RCE
+\end_layout
+
+\end_inset
+
+ è necessario fare in modo che l'indirizzo utilizzato nell'
+\emph on
+overflow
+\emph default
+ punti a un 
+\emph on
+payload
+\emph default
+ già presente in memoria costruito in modo tale che:
+\end_layout
+
+\begin_layout Itemize
+all'
+\emph on
+offset
+\emph default
+ 
+\begin_inset Formula $8$
+\end_inset
+
+ ci sia l'indirizzo di una funzione che prenda in input un parametro
+\end_layout
+
+\begin_layout Itemize
+che il parametro alla funzione del punto precedente sarà lo stesso 
+\emph on
+payload
+\emph default
+ all'
+\emph on
+offset
+\emph default
+ 
+\begin_inset Formula $0$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+il 
+\emph on
+payload
+\emph default
+ deve innescare l'evento 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
 status open
 
 \begin_layout Plain Layout
-TODO
+
+BTU_POST_TO_TASK_NO_GOOD_HORRIBLE_HACK
 \end_layout
 
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+La funzione che meglio si presta a questo scopo è la 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+system
+\end_layout
+
+\end_inset
+
+ il cui unico parametro è una stringa che contiene i comandi da eseguire.
+ Il 
+\emph on
+payload
+\emph default
+ assumerebbe quindi la seguente forma:
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float table
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+newcommand{
+\backslash
+colorbitbox}[3]{%
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+rlap{
+\backslash
+bitbox{#2}{
+\backslash
+color{#1}
+\backslash
+rule{
+\backslash
+width}{
+\backslash
+height}}}%
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitbox{#2}{#3}}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+newcommand{
+\backslash
+bitlabel}[2]{%
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitbox[]{#1}{%
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+raisebox{0pt}[4ex][0pt]{%
+\end_layout
+
+\begin_layout Plain Layout
+
+			
+\backslash
+turnbox{45}{
+\backslash
+fontsize{7}{7}
+\backslash
+selectfont#2}%
+\end_layout
+
+\begin_layout Plain Layout
+
+		}%
+\end_layout
+
+\begin_layout Plain Layout
+
+	}%
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{bytefield}[bitwidth=1.5em, bitheight=2em]{22}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitbox[]{1}{} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitlabel{1}{"Horrible Hack"} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitbox[]{2}{} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitlabel{1}{
+\backslash
+quad Padding} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitbox[]{4}{} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitlabel{1}{Indirizzo 
+\backslash
+texttt{system}} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitheader{0,1,2,8,11,12} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitbox{1}{
+\backslash
+texttt{??}} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{red!15}{1}{
+\backslash
+(17
+\backslash
+)} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitbox{6}{
+\backslash
+texttt{?? ?? ?? ?? ?? ??}} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{red!15}{4}{
+\backslash
+texttt{system} 
+\backslash
+
+\backslash
+ 
+\backslash
+tiny 
+\backslash
+texttt{?? ?? ?? ??}} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitbox{10}{
+\backslash
+dots} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+ 
+\backslash
+end{bytefield}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:cve-2017-0781-payload-constraints"
+
+\end_inset
+
+Vincoli del payload da usare per sfruttare la vulnerabilità CVE-2017-0781
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Ora, come abbiamo già detto questo stesso payload è sia utilizzato per creare
+ un pacchetto valido di tipo 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+BT_HDR
+\end_layout
+
+\end_inset
+
+ sia come parametro stesso della funzione 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+system
+\end_layout
+
+\end_inset
+
+.
+ Questo significa che l'intero payload oltre che rispettare i vincoli evidenziat
+i in Tabella 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:cve-2017-0781-payload-constraints"
+
+\end_inset
+
+ deve anche contenere uno o più comandi bash validi.
+\end_layout
+
+\begin_layout Standard
+Un payload che rispetti tutti questi vincoli può essere il seguente:
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float table
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+newcommand{
+\backslash
+colorbitbox}[3]{%
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+rlap{
+\backslash
+bitbox{#2}{
+\backslash
+color{#1}
+\backslash
+rule{
+\backslash
+width}{
+\backslash
+height}}}%
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitbox{#2}{#3}}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{bytefield}[bitwidth=1.5em, bitheight=2em]{22}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitbox{1}{
+\backslash
+(22
+\backslash
+)} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{red!15}{1}{
+\backslash
+(17
+\backslash
+)} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitbox{6}{
+\backslash
+texttt{?? ?? ?? ?? ?? ??}} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{red!15}{4}{
+\backslash
+texttt{system} 
+\backslash
+
+\backslash
+ 
+\backslash
+tiny 
+\backslash
+texttt{?? ?? ?? ??}} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitbox{3}{
+\backslash
+(22
+\backslash
+) 
+\backslash
+(3
+\backslash
+)B 
+\backslash
+(0
+\backslash
+)A} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitbox{5}{
+\backslash
+texttt{comandi bash}} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitbox{2}{
+\backslash
+(0
+\backslash
+)A 
+\backslash
+(23
+\backslash
+)} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+ 
+\backslash
+end{bytefield}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:cve-2017-0781-payload-format"
+
+\end_inset
+
+Formato del payload da usare per sfruttare la vulnerabilità CVE-2017-0781
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Supponendo di essere riusciti ad eseguire la funzione 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+system
+\end_layout
+
+\end_inset
+
+ con questo 
+\emph on
+payload
+\emph default
+ come parametro, questo si tradurrebbe nell'esecuzione dei seguenti comandi:
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float table
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+newcommand{
+\backslash
+colorbitbox}[3]{%
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+rlap{
+\backslash
+bitbox{#2}{
+\backslash
+color{#1}
+\backslash
+rule{
+\backslash
+width}{
+\backslash
+height}}}%
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitbox{#2}{#3}}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{bytefield}[bitwidth=1.5em, bitheight=2em]{22}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitbox{1}{"} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{red!15}{1}{
+\backslash
+scriptsize 
+\backslash
+textbackslash x
+\backslash
+(17
+\backslash
+)} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitbox{6}{
+\backslash
+texttt{AAAAAA}} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{red!15}{4}{
+\backslash
+texttt{system} 
+\backslash
+
+\backslash
+ 
+\backslash
+tiny 
+\backslash
+texttt{?? ?? ?? ??}} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitbox{3}{";
+\backslash
+textbackslash n} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitbox{5}{
+\backslash
+texttt{comandi bash}} &
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitbox{2}{
+\backslash
+textbackslash n
+\backslash
+#} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+ 
+\backslash
+end{bytefield}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:cve-2017-0781-payload-sample"
+
+\end_inset
+
+Esempio di payload da usare per sfruttare la vulnerabilità CVE-2017-0781
+ che rispetta tutti i vincoli
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Dove la prima parte (
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+"
+\backslash
+x17AAAAAA....";
+\backslash
+n
+\end_layout
+
+\end_inset
+
+) lancia un comando che non sarà valido e che restituirà un errore subito
+ prima di eseguire la seconda parte (
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+comandi bash
+\backslash
+n#
+\end_layout
+
+\end_inset
+
+) che lancia comandi bash arbitrari controllati dall'attaccante durante
+ la costruzione del 
+\emph on
+payload
+\emph default
+.
+ Importante notare il carattere 
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+#
+\end_layout
+
+\end_inset
+
+ finale che serve a commentare tutto ciò che segue i nostri comandi così
+ da non considerare dati spuri che possono derivare da aree di memoria contigue
+ al 
+\emph on
+payload
+\emph default
+.
 \end_layout
 
 \begin_layout Section
