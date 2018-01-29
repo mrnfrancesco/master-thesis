@@ -677,6 +677,13 @@ acro{RCE}{Remote Code Execution}
 
   
 \backslash
+acro{ADB}{Android Debug Bridge}
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
 acro{BSS}{Block Started by Symbol}
 \end_layout
 

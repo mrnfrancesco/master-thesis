@@ -568,7 +568,16 @@ che sfrutti la vulnerabilità, ma la probabilità che questo abbia successo
 \begin_inset Formula $500\text{-}1000$
 \end_inset
 
- pacchetti).
+ pacchetti), in caso contrario il servizio Bluetooth va in 
+\emph on
+crash
+\emph default
+ e viene automaticamente (e rapidamente) riavviato permettendoci di fare
+ tentativi successivi fino al successo.
+ Nonostante questo è conveniente avere un modo che permetta di aumentare
+ il tasso di successo durante questa fase dell'attacco, soprattutto perchè
+ la prossimità fisica di cui necessità l'attacco non è un qualcosa che possiamo
+ sempre garantire per lunghi periodi di tempo.
 \end_layout
 
 \begin_layout Standard
@@ -586,8 +595,7 @@ btu_hci_msg_process
 
 \end_inset
 
- in modo da comprendere cosa stiamo sovrascrivendo durante l'heap overflow
- e capire come eventualmente poter aumentare il tasso di successo.
+ in modo da comprendere cosa stiamo sovrascrivendo durante l'heap overflow.
 \end_layout
 
 \begin_layout Standard
@@ -1142,6 +1150,7 @@ btu_hci_msg_process
 \begin_layout Standard
 \align center
 \begin_inset Float figure
+placement H
 wide false
 sideways false
 status open
@@ -1467,6 +1476,7 @@ Illustrazione dell'heap prima dell'overflow che porta al crash del demone
 \begin_layout Standard
 \align center
 \begin_inset Float figure
+placement H
 wide false
 sideways false
 status open
@@ -1862,20 +1872,6 @@ Illustrazione dell'heap dopo l'overflow che porta al crash del demone Bluetooth
 \end_layout
 
 \begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-TODO: Rivedi quest'ultima parte e completa copiando le immagini dal paper
- ufficiale
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
 Questo significa che per sfruttare l'
 \emph on
 overflow
@@ -1907,7 +1903,1332 @@ p_pending_data
 
 \end_inset
 
- la scelta ricadrà in uno di questi buchi.
+ la scelta ricadrà su uno di questi buchi.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+La situazione ideale nell'heap subito prima di inviare il pacchetto che
+ induce l'overflow sarebbe quella mostrata in Figura 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:heap-spraying-ideal-situation"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /home/mrnfrancesco/git/master-thesis/gfx/heap-spraying-ideal-situation.png
+	display false
+	width 100col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:heap-spraying-ideal-situation"
+
+\end_inset
+
+Situazione ideale dell'heap prima dell'invio del pacchetto che porta all'overflo
+w
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In questo caso il prossimo buffer di 
+\begin_inset Formula $8$
+\end_inset
+
+ byte ad essere allocato risiederà esattamente prima dell'oggetto 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+list_node_t
+\end_layout
+
+\end_inset
+
+.
+ Per far si che questo 
+\emph on
+layout
+\emph default
+ occorra con maggiore probabilità è necessario che l'oggetto 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+list_node_t
+\end_layout
+
+\end_inset
+
+ che vogliamo sovrascrivere tramite overflow risieda esattamente dopo il
+ primo buco della 
+\begin_inset Quotes eld
+\end_inset
+
+
+\emph on
+run
+\emph default
+
+\begin_inset Quotes erd
+\end_inset
+
+ che verrà utilizzata per l'allocazione.
+\end_layout
+
+\begin_layout Standard
+Mentre è semplice per l'attaccante creare molti oggetti 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+list_node_t
+\end_layout
+
+\end_inset
+
+ appartenenti alla coda 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+btu_hci_msg_queue
+\end_layout
+
+\end_inset
+
+ semplicemente inviando molti datagrammi alla vittima, questo non è sufficiente
+ per ottenere il layout mostrato perché gli oggetti 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+list_node_t
+\end_layout
+
+\end_inset
+
+ verrebbero allocati (e deallocati) in un ordine preciso non permettendo
+ quindi di creare dei buchi come sperato.
+ Avremmo infatti una situazione come quella mostrata in Figura 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:heap-spraying-not-ideal-situation"
+
+\end_inset
+
+, ben diversa da quella sperata.
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /home/mrnfrancesco/git/master-thesis/gfx/heap-spraying-not-ideal-situation.png
+	display false
+	width 100col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:heap-spraying-not-ideal-situation"
+
+\end_inset
+
+Situazione dell'heap se semplicemente inviassimo tanti pacchetti che creano
+ oggetti list_node_t
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In questo caso gli oggetti 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+list_node_t
+\end_layout
+
+\end_inset
+
+ verrebbero allocati una volta ricevuti i pacchetti e solo successivamente
+ gestiti dalla funzione 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+bnep_data_ind
+\end_layout
+
+\end_inset
+
+.
+ Tuttavia, gli oggetti 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+p_pending_data
+\end_layout
+
+\end_inset
+
+ verrebbero allocati 
+\series bold
+dopo
+\series default
+ l'ultimo 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+list_node_t
+\end_layout
+
+\end_inset
+
+ sull'heap non permettendo l'overflow necessario per sfruttare la vulnerabilità.
+\end_layout
+
+\begin_layout Standard
+I buchi tra gli oggetti 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+list_node_t
+\end_layout
+
+\end_inset
+
+ verrebbero creati una volta deallocati i nodi già gestiti, ma è improbabile
+ che questi risiedano immediatamente prima un oggetto 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+list_node_t
+\end_layout
+
+\end_inset
+
+, come mostrato in Figura 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:heap-spraying-no-holes"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /home/mrnfrancesco/git/master-thesis/gfx/heap-spraying-no-holes.png
+	display false
+	width 100col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:heap-spraying-no-holes"
+
+\end_inset
+
+Situazione dell'heap dopo la deallocazione dei nodi gestiti
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In questa situazione è più probabile che un buco esista tra due oggetti
+ 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+p_pending_data
+\end_layout
+
+\end_inset
+
+ e 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+list_node_t
+\end_layout
+
+\end_inset
+
+, quindi è necessaria una strategia che permetta di creare buchi casualmente
+ sull'heap tra due oggetti 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+list_node_t
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+A questo scopo può essere utilizzata un'altra coda di oggetti 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+list_node_t
+\end_layout
+
+\end_inset
+
+, ad esempio quelli di risposta inviati dalla vittima all'attaccante.
+ Più precisamente è possibile fare in modo che la funzione 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+bnep_data_ind
+\end_layout
+
+\end_inset
+
+ trasmetta molti pacchetti di risposta di tipo 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+COMMAND_NOT_UNDERSTOOD
+\end_layout
+
+\end_inset
+
+ come mostrato nel seguente estratto:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+...
+\end_layout
+
+\begin_layout Plain Layout
+
+	if (extension_present) {
+\end_layout
+
+\begin_layout Plain Layout
+
+		...
+\end_layout
+
+\begin_layout Plain Layout
+
+		org_len = rem_len;
+\end_layout
+
+\begin_layout Plain Layout
+
+		new_len = 0;
+\end_layout
+
+\begin_layout Plain Layout
+
+		do {
+\end_layout
+
+\begin_layout Plain Layout
+
+			ext = *p++;
+\end_layout
+
+\begin_layout Plain Layout
+
+			length = *p++;
+\end_layout
+
+\begin_layout Plain Layout
+
+			p += length;
+\end_layout
+
+\begin_layout Plain Layout
+
+			if ((!(ext & 0x7F)) &&
+\end_layout
+
+\begin_layout Plain Layout
+
+				(*p > BNEP_FILTER_MULTI_ADDR_RESPONSE_MSG))
+\end_layout
+
+\begin_layout Plain Layout
+
+					bnep_send_command_not_understood (p_bcb, *p);
+\end_layout
+
+\begin_layout Plain Layout
+
+			new_len += (length + 2);
+\end_layout
+
+\begin_layout Plain Layout
+
+			if (new_len > org_len)
+\end_layout
+
+\begin_layout Plain Layout
+
+				break;
+\end_layout
+
+\begin_layout Plain Layout
+
+		} while (ext & 0x80);
+\end_layout
+
+\begin_layout Plain Layout
+
+	}
+\end_layout
+
+\begin_layout Plain Layout
+
+...
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Questo estratto invia un pacchetto di risposta di tipo 
+\begin_inset listings
+lstparams "language={C++},breaklines=true,tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+COMMAND_NOT_UNDERSTOOD
+\end_layout
+
+\end_inset
+
+ per ogni pacchetto di controllo BNEP che presenti nel campo 
+\emph on
+Control Type
+\emph default
+ un valore superiore al massimo consentito.
+ Lo stesso vale nel caso di 
+\emph on
+extension header
+\emph default
+ aggiunti allo stesso pacchetto.
+\end_layout
+
+\begin_layout Standard
+Il valore massimo consentito per il campo 
+\emph on
+Control Type
+\emph default
+ è 
+\begin_inset Formula $0\text{x}06$
+\end_inset
+
+ corrispondente al messaggio di risposta 
+\begin_inset listings
+lstparams "language={C++},breaklines=true,tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+BNEP_FILTER_MULTI_ADDR_RESPONSE_MSG
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Un pacchetto che rispetti i requisiti necessari è del tipo mostrato in Figura
+ 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:heap-shaping-packet-format"
+
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+newcommand{
+\backslash
+colorbitbox}[3]{%
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+rlap{
+\backslash
+bitbox{#2}{
+\backslash
+color{#1}
+\backslash
+rule{
+\backslash
+width}{
+\backslash
+height}}}%
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitbox{#2}{#3}}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{bytefield}[%
+\end_layout
+
+\begin_layout Plain Layout
+
+	boxformatting={
+\backslash
+centering
+\backslash
+itshape},
+\end_layout
+
+\begin_layout Plain Layout
+
+	bitwidth=1em]{24}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitheader[endianness=little]{0,6,7,8,15,16,23} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{blue!15}{7}{
+\backslash
+scriptsize BNEP Type = 
+\backslash
+(0x01
+\backslash
+)} &
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{blue!15}{1}{
+\backslash
+tiny E 
+\backslash
+
+\backslash
+ 
+\backslash
+tiny (
+\backslash
+(1
+\backslash
+))} &
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{yellow!15}{8}{
+\backslash
+scriptsize BNEP Control Type = 
+\backslash
+(0x09
+\backslash
+)} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{blue!15}{7}{
+\backslash
+scriptsize Extension Type = 
+\backslash
+(0x00
+\backslash
+)} &
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{blue!15}{1}{
+\backslash
+tiny E 
+\backslash
+
+\backslash
+ 
+\backslash
+tiny (
+\backslash
+(1
+\backslash
+))} &
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{blue!15}{8}{
+\backslash
+scriptsize Extension Length = 
+\backslash
+(1
+\backslash
+)} &
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{yellow!15}{8}{
+\backslash
+scriptsize BNEP Control Type = 
+\backslash
+(0x09
+\backslash
+)} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+wordbox[]{1}{$
+\backslash
+vdots$} 
+\backslash
+
+\backslash
+[1ex]
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{blue!15}{7}{
+\backslash
+scriptsize Extension Type = 
+\backslash
+(0x00
+\backslash
+)} &
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{blue!15}{1}{
+\backslash
+tiny E 
+\backslash
+
+\backslash
+ 
+\backslash
+tiny (
+\backslash
+(1
+\backslash
+))} &
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{blue!15}{8}{
+\backslash
+scriptsize Extension Length = 
+\backslash
+(1
+\backslash
+)} &
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{yellow!15}{8}{
+\backslash
+scriptsize BNEP Control Type = 
+\backslash
+(0x09
+\backslash
+)} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{blue!15}{7}{
+\backslash
+scriptsize Extension Type = 
+\backslash
+(0x00
+\backslash
+)} &
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{blue!15}{1}{
+\backslash
+tiny E 
+\backslash
+
+\backslash
+ 
+\backslash
+tiny (
+\backslash
+(1
+\backslash
+))} &
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{blue!15}{8}{
+\backslash
+scriptsize Extension Length = 
+\backslash
+(1
+\backslash
+)} &
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+colorbitbox{yellow!15}{8}{
+\backslash
+scriptsize BNEP Control Type = 
+\backslash
+(0x09
+\backslash
+)} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{bytefield}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:heap-shaping-packet-format"
+
+\end_inset
+
+Formato del pacchetto di controllo BNEP che permette di fare shaping della
+ memoria heap
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Questo fa in modo di invocare la funzione 
+\begin_inset listings
+lstparams "language={C++},breaklines=true,tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+bnep_send_command_not_understood
+\end_layout
+
+\end_inset
+
+ una volta per l'header BNEP e una volta per ogni 
+\emph on
+extension header
+\emph default
+.
+ I pacchetti di risposta vengono passati alla funzione 
+\begin_inset listings
+lstparams "language={C++},breaklines=true,tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+bnepu_check_send_packet
+\end_layout
+
+\end_inset
+
+ che, se la connessione L2CAP risulta congestionata, li inserisce nella
+ coda 
+\begin_inset listings
+lstparams "language={C++},breaklines=true,tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+xmit_q
+\end_layout
+
+\end_inset
+
+ per essere inviati in un secondo momento (vedi estratti seguenti).
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language={C++},breaklines=true,tabsize=4"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+void bnep_send_command_not_understood (tBNEP_CONN *p_bcb, UINT8 cmd_code)
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+	BT_HDR *p_buf = (BT_HDR *)osi_malloc(BNEP_BUF_SIZE);
+\end_layout
+
+\begin_layout Plain Layout
+
+	...
+\end_layout
+
+\begin_layout Plain Layout
+
+	bnepu_check_send_packet (p_bcb, p_buf);
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language={C++},breaklines=true,tabsize=4"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+void bnepu_check_send_packet (tBNEP_CONN *p_bcb, BT_HDR *p_buf)
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+	if (p_bcb->con_flags & BNEP_FLAGS_L2CAP_CONGESTED) {
+\end_layout
+
+\begin_layout Plain Layout
+
+		...
+\end_layout
+
+\begin_layout Plain Layout
+
+		fixed_queue_enqueue(p_bcb->xmit_q, p_buf);
+\end_layout
+
+\begin_layout Plain Layout
+
+		...
+\end_layout
+
+\begin_layout Plain Layout
+
+	} else {
+\end_layout
+
+\begin_layout Plain Layout
+
+		L2CA_DataWrite (p_bcb->l2cap_cid, p_buf);
+\end_layout
+
+\begin_layout Plain Layout
+
+	}
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Questo significa che se subito prima di inviare i datagrammi che inducono
+ l'overflow inviamo un pacchetto di controllo come quello mostrato in Figura
+ 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:heap-shaping-packet-format"
+
+\end_inset
+
+ con un numero sufficientemente elevato di 
+\emph on
+extension header
+\emph default
+ la funzione 
+\begin_inset listings
+lstparams "language={C++},breaklines=true,tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+bnep_data_ind
+\end_layout
+
+\end_inset
+
+ gestirà per primi i messaggi di risposta, quindi prima di tutto verranno
+ allocati gli oggetti 
+\begin_inset listings
+lstparams "language={C++},breaklines=true,tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+list_node_t
+\end_layout
+
+\end_inset
+
+ appartenenti alla coda 
+\begin_inset listings
+lstparams "language={C++},breaklines=true,tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+xmit_q
+\end_layout
+
+\end_inset
+
+; in secondo luogo dato che vengono tolti e deallocati nodi dalla coda 
+\begin_inset listings
+lstparams "language={C++},breaklines=true,tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+xmit_q
+\end_layout
+
+\end_inset
+
+ in un thread differente, questo permette la costruzione di buchi in posizione
+ 
+\begin_inset Quotes eld
+\end_inset
+
+casuali
+\begin_inset Quotes erd
+\end_inset
+
+, come necessario.
+ 
+\end_layout
+
+\begin_layout Standard
+Per illustrare, il 
+\emph on
+layout
+\emph default
+ dell'heap risulterebbe come in Figura 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:heap-spraying-with-holes"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /home/mrnfrancesco/git/master-thesis/gfx/heap-spraying-with-holes.png
+	display false
+	width 100col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:heap-spraying-with-holes"
+
+\end_inset
+
+Layout dell'heap dopo la creazione di buchi casuali
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In questo scenario quando la funzione 
+\begin_inset listings
+lstparams "language={C++},breaklines=true,tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+bnep_data_ind
+\end_layout
+
+\end_inset
+
+ gestirà i pacchetti che inducono l'overflow, il nuovo oggetto 
+\begin_inset listings
+lstparams "language={C++},breaklines=true,tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+p_pending_data
+\end_layout
+
+\end_inset
+
+ verrà allocato verosimilmente nel buco di 
+\begin_inset Formula $8$
+\end_inset
+
+ byte presente.
+ A questo punto, l'overflow sovrascriverà i dati dell'oggetto 
+\begin_inset listings
+lstparams "language={C++},breaklines=true,tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+list_node_t
+\end_layout
+
+\end_inset
+
+ subito successivo permettendo di completare l'attacco con alta probabilità
+ di successo.
 \end_layout
 
 \begin_layout Section
@@ -1972,7 +3293,7 @@ payload
 \emph default
  deve innescare l'evento 
 \begin_inset listings
-lstparams "language={C++},tabsize=4"
+lstparams "language={C++},breaklines=true,tabsize=4"
 inline true
 status open
 
@@ -2730,8 +4051,8 @@ n#
 
 \end_inset
 
-) che lancia comandi bash arbitrari controllati dall'attaccante durante
- la costruzione del 
+) che lancia comandi bash arbitrari scelti dall'attaccante durante la costruzion
+e del 
 \emph on
 payload
 \emph default
@@ -3042,16 +4363,683 @@ Bypassare la randomizzazione degli indirizzi
 \end_layout
 
 \begin_layout Standard
-\begin_inset Note Note
+Prima che l'
+\begin_inset Flex CT - acronym
+status collapsed
+
+\begin_layout Plain Layout
+
+ASLR
+\end_layout
+
+\end_inset
+
+ fosse introdotto molti 
+\emph on
+exploit
+\emph default
+ per funzionare utilizzavano alcuni indirizzi che erano sempre uguali ad
+ ogni esecuzione.
+\end_layout
+
+\begin_layout Standard
+L'ASLR è una tecnica di mitigazione che non permette di utilizzare questa
+ facilitazione introducendo entropia nello spazio degli indirizzi di un
+ processo di modo che ad ogni esecuzione del codice vulnerabile lo spazio
+ degli indirizzi del processo corrispondente risulti diverso (seppur all'interno
+ di un 
+\emph on
+range
+\emph default
+ di valori noto, ma molto grande).
+\end_layout
+
+\begin_layout Standard
+Per comprendere meglio il funzionamento dell'ASLR vediamo due esecuzioni
+ consecutive di un eseguibile prima su una vecchia versione di Android senza
+ ASLR e lo stesso su una versione più recente:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=bash,tabsize=4"
+inline false
 status open
 
 \begin_layout Plain Layout
-TODO
+
+# Due esecuzioni consecutive del comando cat su Android 1.5
+\end_layout
+
+\begin_layout Plain Layout
+
+shell@android:/ $ cat /proc/self/maps | head -1
+\end_layout
+
+\begin_layout Plain Layout
+
+00008000-00018000 r-xp 00000000 1f:03 520 /system/bin/toolbox
+\end_layout
+
+\begin_layout Plain Layout
+
+shell@android:/ $ cat /proc/self/maps | head -1
+\end_layout
+
+\begin_layout Plain Layout
+
+00008000-00018000 r-xp 00000000 1f:03 520 /system/bin/toolbox
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+# Due esecuzioni consecutive del comando cat su Android 7.1.2
+\end_layout
+
+\begin_layout Plain Layout
+
+shell@android:/ $ cat /proc/self/maps | head -1
+\end_layout
+
+\begin_layout Plain Layout
+
+4000e000-4002b000 r-xp 00000000 103:02 267 /system/bin/sh
+\end_layout
+
+\begin_layout Plain Layout
+
+shell@android:/ $ cat /proc/self/maps | head -1
+\end_layout
+
+\begin_layout Plain Layout
+
+40078000-40095000 r-xp 00000000 103:02 267 /system/bin/sh
 \end_layout
 
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+Questo estratto mostra chiaramente che la randomizzazione degli indirizzi
+ è presente in Android 
+\begin_inset Formula $7.1.2$
+\end_inset
+
+, ma non in Android 
+\begin_inset Formula $1.5$
+\end_inset
+
+.
+ Si può infatti osservare che in Android 
+\begin_inset Formula $7.1.2$
+\end_inset
+
+ l'indirizzo di base (il primo numero mostrato) cambia tra due esecuzioni
+ differenti assumendo nel primo caso il valore 
+\begin_inset Formula $4000\text{e}000$
+\end_inset
+
+ e nel secondo 
+\begin_inset Formula $40078000$
+\end_inset
+
+, mentre rimane uguale a 
+\begin_inset Formula $00008000$
+\end_inset
+
+ in Android 
+\begin_inset Formula $1.5$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Questo significa che non possiamo inserire in maniera statica l'indirizzo
+ della chiamata 
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+system
+\end_layout
+
+\end_inset
+
+ nel 
+\emph on
+payload
+\emph default
+ mostrato in Tabella 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "tab:cve-2017-0781-payload-sample"
+
+\end_inset
+
+ perché questo cambia ad ogni esecuzione così come anche quello del 
+\emph on
+payload
+\emph default
+ stesso.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Bypassare questo meccanismo di mitigazione per calcolare l'indirizzo corretto
+ implica quindi avere accesso a:
+\end_layout
+
+\begin_layout Itemize
+un indirizzo qualunque nello spazio degli indirizzi del processo
+\end_layout
+
+\begin_layout Itemize
+l'
+\emph on
+offset
+\emph default
+ di questo indirizzo rispetto a un indirizzo di base che conosciamo che
+ utilizzeremo come riferimento
+\end_layout
+
+\begin_layout Itemize
+l'indirizzo relativo della funzione che ci interessa invocare o dei dati
+ che ci interessa puntare
+\end_layout
+
+\begin_layout Standard
+Per poter fare questo sfruttiamo la vulnerabilità 
+\begin_inset CommandInset ref
+LatexCommand nameref
+reference "sec:android-information-leak-(CVE-2017-0785)"
+
+\end_inset
+
+ spiegata 
+\begin_inset CommandInset ref
+LatexCommand vpageref
+reference "sec:android-information-leak-(CVE-2017-0785)"
+
+\end_inset
+
+ con un dispositivo target fisicamente in nostro possesso e su cui possiamo
+ operare con privilegi di 
+\emph on
+root
+\emph default
+ tramite 
+\begin_inset Flex CT - acronym
+status collapsed
+
+\begin_layout Plain Layout
+
+ADB
+\end_layout
+
+\end_inset
+
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+
+\size normal
+\emph on
+tool
+\emph default
+ a riga di comando che permette di comunicare con un dispositivo Android
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Calcolo dell'indirizzo della funzione system
+\end_layout
+
+\begin_layout Standard
+Per prima cosa otteniamo il compilato della libreria 
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+libc
+\end_layout
+
+\end_inset
+
+ in cui è contenuta la funzione 
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+system
+\end_layout
+
+\end_inset
+
+ e cerchiamo di determinare il tipo di file e altre informazioni utili:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "tabsize=4"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+shell@linux:/ $ adb pull /system/lib/libc.so libc.so
+\end_layout
+
+\begin_layout Plain Layout
+
+/system/lib/libc.so: 1 file pulled.
+ 5.4 MB/s (775624 bytes in 0.136s)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+shell@linux:/ $ file libc.so
+\end_layout
+
+\begin_layout Plain Layout
+
+/libc.so: ELF 32-bit LSB shared object, ARM, EABI5 version 1 (SYSV), dynamically
+ linked, interpreter /system/bin/linker, BuildID[md5/uuid]=1b58b1c03b1223cb6ec27
+87173ab8ca0, not stripped
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Possiamo notare che la libreria risulta 
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+not stripped
+\end_layout
+
+\end_inset
+
+, cioè contiene tutti i simboli di debug tra cui quindi anche quelli relativi
+ alla funzione 
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+system
+\end_layout
+
+\end_inset
+
+.
+ Sfruttiamo questa situazione per ottenere facilmente l'indirizzo relativo
+ della funzione 
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+system
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "tabsize=4"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+shell@linux:/ $ nm /tmp/libc.so | grep "
+\backslash
+ system"
+\end_layout
+
+\begin_layout Plain Layout
+
+00045f81 T system
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+A questo punto cerchiamo il 
+\emph on
+range
+\emph default
+ di indirizzi utilizzati dalla libreria 
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+libc
+\end_layout
+
+\end_inset
+
+ all'interno dello spazio di indirizzi del processo Bluetooth di Android:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "tabsize=4"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+shell@android:/ # cat /proc/$(pidof com.android.bluetooth)/maps | grep libc.so
+\end_layout
+
+\begin_layout Plain Layout
+
+e669c000-e6720000 r-xp 00000000 103:09 1342 /system/lib/libc.so
+\end_layout
+
+\begin_layout Plain Layout
+
+e6720000-e6724000 r--p 00083000 103:09 1342 /system/lib/libc.so
+\end_layout
+
+\begin_layout Plain Layout
+
+e6724000-e6726000 rw-p 00087000 103:09 1342 /system/lib/libc.so
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Otteniamo quindi un 
+\emph on
+range
+\emph default
+ di indirizzi che va da 
+\begin_inset Formula $0\text{xE}669\text{C}000$
+\end_inset
+
+ a 
+\begin_inset Formula $0\text{xE}6726000$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+A questo punto sfruttiamo la vulnerabilità 
+\begin_inset CommandInset ref
+LatexCommand nameref
+reference "sec:android-information-leak-(CVE-2017-0785)"
+
+\end_inset
+
+ per ottenere un indirizzo in memoria valido che sia all'interno di questo
+ range.
+\end_layout
+
+\begin_layout Standard
+Un esempio di output potrebbe essere:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "tabsize=4"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+00000000  00 00 00 00  00 00 00 00  00 00 00 00  00 00 00 00
+\end_layout
+
+\begin_layout Plain Layout
+
+*
+\end_layout
+
+\begin_layout Plain Layout
+
+00000050  00 00 00 00  de a7 d8 0c  de a7 d8 0c  de a7 d8 0c
+\end_layout
+
+\begin_layout Plain Layout
+
+00000060  de a7 d8 0c  00 00 00 18  00 00 00 44  de 94 05 69
+\end_layout
+
+\begin_layout Plain Layout
+
+00000070  de 94 fa d9  de 94 9b 79  de a7 d8 0c  da 8d a5 20
+\end_layout
+
+\begin_layout Plain Layout
+
+00000080  de 99 ff 5b  00 00 00 13  de 73 72 40  de 71 d6 20
+\end_layout
+
+\begin_layout Plain Layout
+
+00000090  0e 01 7c e6  cb 40 02 c8  de a7 d8 0c  00 02 00 01
+\end_layout
+
+\begin_layout Plain Layout
+
+000000a0  de a7 01 00  de 95 0c 8d  cb 53 58 00  00 00 00 00
+\end_layout
+
+\begin_layout Plain Layout
+
+000000b0  de 94 a9 23  cb 53 58 00  00 00 00 00  de a7 8b e4
+\end_layout
+
+\begin_layout Plain Layout
+
+000000c0  da 8e 4c b0  de a6 e0 58  00 00 00 44  de a6 e0 10
+\end_layout
+
+\begin_layout Plain Layout
+
+000000d0  de 94 00 89  da 8e 20 20  e5 c1 18 c0  29 db b4 24
+\end_layout
+
+\begin_layout Plain Layout
+
+000000e0  00 00 00 0a  00 0f 42 40  29 db b4 24  00 00 00 00
+\end_layout
+
+\begin_layout Plain Layout
+
+000000f0  de 73 d0 18  00 0f 42 40  de 73 72 40  00 00 00 00
+\end_layout
+
+\begin_layout Plain Layout
+
+00000100  00 00 00 00  00 00 00 04  de 96 13 4c  0e 01 7c e6
+\end_layout
+
+\begin_layout Plain Layout
+
+00000110  00 00 00 08  de 73 d0 68  de 73 72 40  de 9b d2 4c
+\end_layout
+
+\begin_layout Plain Layout
+
+00000120  de 73 72 40  00 00 00 00  db d3 ea 40  de 73 d0 68
+\end_layout
+
+\begin_layout Plain Layout
+
+00000130  de 73 72 40  cb 50 00 00  e5 c1 18 c0  00 00 00 03
+\end_layout
+
+\begin_layout Plain Layout
+
+00000140  da 8e 20 7c  e5 c1 18 c0  00 00 00 01  da 8e 20 7c
+\end_layout
+
+\begin_layout Plain Layout
+
+00000150  e5 c1 18 c0  00 00 00 01  ff ff ff fb  da 8e 25 10
+\end_layout
+
+\begin_layout Plain Layout
+
+00000160  e6 70 a5 49  e5 c1 1e 70  e5 c1 1e 58  da 8e 20 68
+\end_layout
+
+\begin_layout Plain Layout
+
+00000170  e5 b5 54 08  00 00 00 03  e5 c1 18 c0  e5 c1 1e 38
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In cui possiamo riconoscere all'offset 
+\begin_inset Formula $0\text{x}160$
+\end_inset
+
+ un indirizzo valido (
+\begin_inset Formula $0\text{xE}670\text{A}549$
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+Ora, non sappiamo cosa corrisponda a quest'indirizzo, ma sappiamo che in
+ quella posizione sarà sempre contenuto un indirizzo nel range di interesse
+ e che il suo offset rispetto l'indirizzo di base sarà sempre lo stesso,
+ in questo caso
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+0\text{xE}670\text{A}549-0\text{xE}669\text{C}000=0\text{x}6\text{E}549
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Questo significa che, anche a fronte di riavvii del processo Bluetooth,
+ possiamo sfruttare questa informazione per ricavare l'indirizzo di base
+ della libreria 
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+libc
+\end_layout
+
+\end_inset
+
+ e quindi l'indirizzo della funzione 
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+system
+\end_layout
+
+\end_inset
+
+ nel modo seguente:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\begin{array}{ccccc}
+\text{addr}\left(\text{system}\right) & = & \text{addr}\left(\text{base libc}\right) & + & \text{offset}\left(\text{system}\right)\\
+ & = & \left(0\text{xE}670\text{A}549-0\text{x}6\text{E}549\right) & + & 0\text{x}45\text{F}81\\
+ & = & 0\text{xE}669\text{C}000 & + & 0\text{x}45\text{F}81\\
+ & = & 0\text{xE}66\text{E}1\text{F}81
+\end{array}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Calcolo dell'indirizzo del payload
 \end_layout
 
 \begin_layout Section

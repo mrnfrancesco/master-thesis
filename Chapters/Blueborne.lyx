@@ -134,6 +134,13 @@ name "ch:blueborne"
 
 \begin_layout Section
 Android Information Leak (CVE-2017-0785)
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:android-information-leak-(CVE-2017-0785)"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
