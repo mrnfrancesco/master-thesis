@@ -675,6 +675,20 @@ acro{RCE}{Remote Code Execution}
 
 \begin_layout Plain Layout
 
+  
+\backslash
+acro{BSS}{Block Started by Symbol}
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+acro{ACL}{Asynchronous Connection-Less}
+\end_layout
+
+\begin_layout Plain Layout
+
 
 \backslash
 end{acronym}              

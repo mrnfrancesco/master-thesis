@@ -2759,6 +2759,285 @@ payload
 \end_layout
 
 \begin_layout Section
+Caricare il payload in memoria
+\end_layout
+
+\begin_layout Standard
+È necessario inserire il 
+\emph on
+payload
+\emph default
+ in Figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:cve-2017-0781-payload-sample"
+
+\end_inset
+
+ in un'area di memoria deterministica per poter essere utilizzato.
+\end_layout
+
+\begin_layout Standard
+Esaminando il codice sorgente dello stack Bluetooth di Android si può notare
+ come molte delle strutture dati correlate alle connesioni Bluetooth attualmente
+ attive vengano memorizzate in strutture globali non esplicitamente inizializzat
+e quindi residenti nel segmento 
+\begin_inset Flex CT - acronym
+status collapsed
+
+\begin_layout Plain Layout
+
+BSS
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Gli offset delle variabili globali nel segmento BSS sono costanti per compilazio
+ne.
+ L'unico elemento non deterministico è l'indirizzo di base, randomizzato
+ tramite ASLR.
+\end_layout
+
+\begin_layout Standard
+All'interno di queste strutture dati che descrivono le connessioni attive
+ è presente, tra le altre informazioni, il nome del dispositivo Bluetooth
+ remoto.
+ Questa informazione è chiaramente sotto il controllo dell'attaccante.
+ Per verificare di poter utilizzare il nome del controller con cui ci connettiam
+o per trasmettere il 
+\emph on
+payload
+\emph default
+ dell'attacco dobbiamo sapere:
+\end_layout
+
+\begin_layout Enumerate
+qual'è la dimensione massima utilizzabile
+\end_layout
+
+\begin_layout Enumerate
+se ci sono vincoli sul contenuto del campo
+\end_layout
+
+\begin_layout Enumerate
+in che momento della comunicazione viene inviato il dato
+\end_layout
+
+\begin_layout Standard
+Per rispondere a queste domande torniamo sulla documentazione ufficiale
+ delle specifiche Bluetooth in cui è riportato che il nome del dispositivo
+ viene scambiato quando viene stabilita la connessione 
+\begin_inset Flex CT - acronym
+status collapsed
+
+\begin_layout Plain Layout
+
+ACL
+\end_layout
+
+\end_inset
+
+ (il livello su cui poggia L2CAP).
+\end_layout
+
+\begin_layout Standard
+È inoltre specificato che il nome del dispositivo remoto è una descrizione
+ 
+\emph on
+user-friendly
+\emph default
+ codificata in UTF-8 di massimo 
+\begin_inset Formula $248$
+\end_inset
+
+ ottetti.
+ Se il nome è di lunghezza inferiore la fine della stringa è indicata con
+ un ottetto nullo (
+\begin_inset Formula $0\text{x}00$
+\end_inset
+
+) e gli ottetti successivi a questo non vanno considerati.
+\end_layout
+
+\begin_layout Standard
+Quello che ne ricaviamo è che possiamo disporre di un 
+\emph on
+payload
+\emph default
+ fino a 
+\begin_inset Formula $248$
+\end_inset
+
+ byte a condizione che non ci siano byte nulli.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Per completezza di trattazione si riportano a seguire le strutture dati
+ utilizzate da Android che conterranno il 
+\emph on
+payload
+\emph default
+; queste si possono trovare in 
+\begin_inset CommandInset href
+LatexCommand href
+name "/stack/btm/btm_int.h"
+target "https://android.googlesource.com/platform/system/bt/+/android-7.1.1_r44/stack/btm/btm_int.h#783"
+
+\end_inset
+
+ e sono
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+typedef struct {
+\end_layout
+
+\begin_layout Plain Layout
+
+	...
+\end_layout
+
+\begin_layout Plain Layout
+
+	/****************************************************
+\end_layout
+
+\begin_layout Plain Layout
+
+	**      ACL Management
+\end_layout
+
+\begin_layout Plain Layout
+
+	****************************************************/
+\end_layout
+
+\begin_layout Plain Layout
+
+	tACL_CONN   acl_db[MAX_L2CAP_LINKS];
+\end_layout
+
+\begin_layout Plain Layout
+
+	...
+\end_layout
+
+\begin_layout Plain Layout
+
+} tBTM_CB;
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+/* Define the ACL Management control structure */
+\end_layout
+
+\begin_layout Plain Layout
+
+typedef struct {
+\end_layout
+
+\begin_layout Plain Layout
+
+	...
+\end_layout
+
+\begin_layout Plain Layout
+
+	BD_NAME   remote_name;
+\end_layout
+
+\begin_layout Plain Layout
+
+	...
+\end_layout
+
+\begin_layout Plain Layout
+
+} tACL_CONN;
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Dove 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+BD_NAME
+\end_layout
+
+\end_inset
+
+ è definito in 
+\begin_inset CommandInset href
+LatexCommand href
+name "/stack/include/bt_types.h"
+target "https://android.googlesource.com/platform/system/bt/+/android-7.1.1_r44/stack/include/bt_types.h#346"
+
+\end_inset
+
+ come
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+#define BD_NAME_LEN     248
+\end_layout
+
+\begin_layout Plain Layout
+
+typedef UINT8 BD_NAME[BD_NAME_LEN + 1]; /* Device name */
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
 Bypassare la randomizzazione degli indirizzi
 \end_layout
 
