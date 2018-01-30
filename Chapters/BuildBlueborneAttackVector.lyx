@@ -4858,6 +4858,16 @@ Bypassare la randomizzazione degli indirizzi
 \end_layout
 
 \begin_layout Standard
+\begin_inset CommandInset citation
+LatexCommand nocite
+key "android_hacker_s_handbook"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 Prima che l'
 \begin_inset Flex CT - acronym
 status collapsed
@@ -5538,6 +5548,16 @@ Calcolo dell'indirizzo del payload
 \end_layout
 
 \begin_layout Standard
+\begin_inset CommandInset citation
+LatexCommand nocite
+key "blueborne_rce_on_android_6_0_1"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 Per prima cosa dobbiamo assicurarci di poter fare 
 \emph on
 debugging
@@ -5888,6 +5908,16 @@ Found 1 results, display max 1 items:
 
 \begin_layout Section
 Post-exploitation
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset citation
+LatexCommand nocite
+key "android_hacker_s_handbook"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard

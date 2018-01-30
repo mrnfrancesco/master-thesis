@@ -82,6 +82,16 @@ name "ch:the-securing-problem"
 
 \end_layout
 
+\begin_layout Standard
+\begin_inset CommandInset citation
+LatexCommand nocite
+key "protecting_the_enterprise_from_blueborne_white_paper"
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section
 Impatto
 \end_layout

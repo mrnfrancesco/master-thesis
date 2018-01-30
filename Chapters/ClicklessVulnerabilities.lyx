@@ -233,6 +233,16 @@ Broadpwn
 \end_layout
 
 \begin_layout Standard
+\begin_inset CommandInset citation
+LatexCommand nocite
+key "broadpwn_blog_post_part_1,broadpwn_blog_post_part_2"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 \begin_inset Note Note
 status open
 
@@ -247,6 +257,16 @@ TODO
 
 \begin_layout Subsection
 KRACK
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset citation
+LatexCommand nocite
+key "krack_white_paper"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard

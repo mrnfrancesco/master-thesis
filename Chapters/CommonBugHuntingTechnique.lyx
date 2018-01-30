@@ -82,6 +82,16 @@ name "ch:common-bug-hunting-technique"
 
 \end_layout
 
+\begin_layout Standard
+\begin_inset CommandInset citation
+LatexCommand nocite
+key "a_bug_hunter_s_diary,the_art_of_software_security_assessment"
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section
 Analisi statica
 \end_layout
@@ -118,6 +128,10 @@ TODO
 
 \begin_layout Section
 Entry Point comuni
+\end_layout
+
+\begin_layout Standard
+
 \end_layout
 
 \begin_layout Standard
