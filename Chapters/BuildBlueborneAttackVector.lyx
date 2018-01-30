@@ -265,19 +265,6 @@ OEM
  uguali o al più contigui.
 \end_layout
 
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-TODO: Aggiungi screenshot del Samsung Galaxy S3
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
 \begin_layout Subsection
 Brute-force del BDADDR
 \end_layout
@@ -534,6 +521,500 @@ dots
 \end_inset
 
 
+\end_layout
+
+\begin_layout Section
+Heap Canary
+\end_layout
+
+\begin_layout Standard
+I 
+\emph on
+canary
+\emph default
+ sono un meccanismo di mitigazione alle vulnerabilità di tipo 
+\emph on
+overflow
+\emph default
+.
+ Si tratta di parole il cui valore è noto che vengono aggiunte alle strutture
+ dati come gli 
+\emph on
+stack frame
+\emph default
+ o gli 
+\emph on
+heap chunk
+\emph default
+ tra i dati e le strutture di controllo.
+\end_layout
+
+\begin_layout Standard
+In questo modo se avviene un 
+\emph on
+overflow
+\emph default
+ il valore del 
+\emph on
+canary
+\emph default
+ viene corrotto ed è possibile interrompere l'esecuzione e gestire l'evento,
+ ad esempio invalidando i dati corrotti.
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+newcommand{
+\backslash
+colorbitbox}[3]{%
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+rlap{
+\backslash
+bitbox{#2}{
+\backslash
+color{#1}
+\backslash
+rule{
+\backslash
+width}{
+\backslash
+height}}}%
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitbox{#2}{#3}}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{bytefield}[%
+\end_layout
+
+\begin_layout Plain Layout
+
+	boxformatting={
+\backslash
+centering
+\backslash
+itshape},
+\end_layout
+
+\begin_layout Plain Layout
+
+	bitwidth=0.6em]{24}
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+wordbox{1}{
+\backslash
+scriptsize Dimensione del chunk precedente} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitbox{18}{
+\backslash
+scriptsize Dimensione del chunk} &
+\end_layout
+
+\begin_layout Plain Layout
+
+		
+\backslash
+bitbox{2}{
+\backslash
+scriptsize N} & 
+\backslash
+bitbox{2}{
+\backslash
+scriptsize M} & 
+\backslash
+bitbox{2}{
+\backslash
+scriptsize P} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{red!15}{24}{
+\backslash
+scriptsize 
+\backslash
+texttt{"tinybird"}} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+wordbox[ltr]{1}{
+\backslash
+scriptsize Chunk di dati allocato} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+bitbox[lbr]{16}{} & 
+\backslash
+colorbitbox{gray!15}{8}{
+\backslash
+scriptsize 
+\backslash
+texttt{-- padding --}} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+colorbitbox{red!15}{24}{
+\backslash
+scriptsize 
+\backslash
+texttt{"tinybird"}} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+wordbox{1}{
+\backslash
+scriptsize Dimensione 
+\backslash
+
+\backslash
+ 
+\backslash
+tiny Inizio del prossimo chunk contiguo} 
+\backslash
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{bytefield}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:heap-canary"
+
+\end_inset
+
+Illustrazione di un chunk allocato nell'heap con aggiunti i valori canary
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Anche Android implementa questo meccanismo di mitigazione per le strutture
+ dell'heap, in particolare aggiungendo la stringa 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+tinybird
+\end_layout
+
+\end_inset
+
+ prima e dopo i dati utente (Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:heap-canary"
+
+\end_inset
+
+) come è possibile vedere in 
+\begin_inset CommandInset href
+LatexCommand href
+name "/osi/src/allocation_tracker.c"
+target "https://android.googlesource.com/platform/system/bt/+/android-7.1.1_r44/osi/src/allocation_tracker.c#143"
+
+\end_inset
+
+ di cui è riportato un estratto:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+static const char *canary = "tinybird";
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+void *allocation_tracker_notify_alloc(uint8_t allocator_id, void *ptr, size_t
+ requested_size) {
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	...
+\end_layout
+
+\begin_layout Plain Layout
+
+	char *return_ptr = (char *)ptr;
+\end_layout
+
+\begin_layout Plain Layout
+
+	...
+\end_layout
+
+\begin_layout Plain Layout
+
+	// Add the canary on both sides
+\end_layout
+
+\begin_layout Plain Layout
+
+	memcpy(return_ptr - canary_size, canary, canary_size);
+\end_layout
+
+\begin_layout Plain Layout
+
+	memcpy(return_ptr + requested_size, canary, canary_size);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	return return_ptr;
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Quindi, un dubbio lecito che potrebbe essere sollevato dopo la trattazione
+ in 
+\begin_inset CommandInset ref
+LatexCommand nameref
+reference "sec:Andorid-RCE-(CVE-2017-0781)"
+
+\end_inset
+
+ 
+\begin_inset CommandInset ref
+LatexCommand vpageref
+reference "sec:Andorid-RCE-(CVE-2017-0781)"
+
+\end_inset
+
+ è che il 
+\emph on
+crash
+\emph default
+ del servizio Bluetooth avvenga a causa della corruzione del 
+\emph on
+canary
+\emph default
+.
+\end_layout
+
+\begin_layout Standard
+Dopo una semplice analisi notiamo come il 
+\emph on
+tracker
+\emph default
+ delle allocazioni che si occupa di inserire e controllare il 
+\emph on
+canary
+\emph default
+ è inizializzato con la funzione 
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+allocation_tracker_init
+\end_layout
+
+\end_inset
+
+ che viene invocata nel file 
+\begin_inset CommandInset href
+LatexCommand href
+name "/btif/src/bluetooth.c"
+target "https://android.googlesource.com/platform/system/bt/+/android-7.1.1_r44/btif/src/bluetooth.c#134"
+
+\end_inset
+
+ in cui si nota:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language={C++},tabsize=4"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+static int init(bt_callbacks_t *callbacks) {
+\end_layout
+
+\begin_layout Plain Layout
+
+	...
+\end_layout
+
+\begin_layout Plain Layout
+
+#ifdef BLUEDROID_DEBUG
+\end_layout
+
+\begin_layout Plain Layout
+
+	allocation_tracker_init();
+\end_layout
+
+\begin_layout Plain Layout
+
+#endif
+\end_layout
+
+\begin_layout Plain Layout
+
+	...
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Sostanzialmente l'uso del 
+\emph on
+canary
+\emph default
+ come meccanismo di mitigazione a protezione dell'heap avviene solo quando
+ Android viene compilato per il debug, ma viene eliminato dalle 
+\emph on
+build
+\emph default
+ in produzione, quindi non è presente in nessun dispositivo che sia in commercio.
 \end_layout
 
 \begin_layout Section
@@ -3233,6 +3714,13 @@ list_node_t
 
 \begin_layout Section
 Costruzione del payload
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:payload-building"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -4081,6 +4569,13 @@ payload
 
 \begin_layout Section
 Caricare il payload in memoria
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:load-payload-in-memory"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -5042,16 +5537,348 @@ system
 Calcolo dell'indirizzo del payload
 \end_layout
 
-\begin_layout Section
-Workflow del Proof of Concept (PoC)
-\end_layout
-
 \begin_layout Standard
-\begin_inset Note Note
+Per prima cosa dobbiamo assicurarci di poter fare 
+\emph on
+debugging
+\emph default
+ del processo 
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
 status open
 
 \begin_layout Plain Layout
-TODO
+
+com.android.bluetooth
+\end_layout
+
+\end_inset
+
+.
+ Questo è possibile utilizzando 
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+gdbserver
+\end_layout
+
+\end_inset
+
+ che però non è installato nelle versioni di Android commerciali, quindi
+ ne scarichiamo una versione precompilata per l'architettura del nostro
+ dispositivo dal 
+\emph on
+package
+\emph default
+ Android NDK e la installiamo manualmente:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "tabsize=4"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+shell@linux:/ $ adb push gdbserver /sdcard/Download/
+\end_layout
+
+\begin_layout Plain Layout
+
+gdbserver: 1 file pushed.
+ 9.0 MB/s (847048 bytes in 0.090s)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+shell@android:/ # mount -t ext4 -o rw,remount /system
+\end_layout
+
+\begin_layout Plain Layout
+
+shell@android:/ # cp /sdcard/Download/gdbserver /system/bin/
+\end_layout
+
+\begin_layout Plain Layout
+
+shell@android:/ # chown root:shell /system/bin/gdbserver
+\end_layout
+
+\begin_layout Plain Layout
+
+shell@android:/ # chmod 0755 /system/bin/gdbserver
+\end_layout
+
+\begin_layout Plain Layout
+
+shell@android:/ # mount -t ext4 -o ro,remount /system
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+A questo punto impostiamo il nome del nostro controller in qualcosa di facilment
+e riconoscibile, ad esempio 
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+TEST_TEST_TEST_TEST
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Ora, il problema che si pone è quello di essere in grado di bloccare l'esecuzion
+e del processo bluetooth dopo che il nome del dispositivo, quindi il nostro
+ 
+\emph on
+payload
+\emph default
+, è stato caricato in memoria e mentre durante una connessione attiva.
+ Non possiamo impostare un 
+\emph on
+breakpoint
+\emph default
+ su un indirizzo che sappiamo rispondere ai requisiti sia perché non conosciamo
+ tale indirizzo, sia perché questo potrebbe cambiare da dispositivo a dispositiv
+o e da versione a versione.
+ Sfruttiamo allora il fatto che il 
+\emph on
+debugger
+\emph default
+ si blocca per 
+\emph on
+default
+\emph default
+ al momento di un 
+\emph on
+Segmentation Fault
+\emph default
+, lo stesso evento che generiamo quando sfruttiamo la vulnerabilità 
+\begin_inset CommandInset ref
+LatexCommand nameref
+reference "sec:Andorid-RCE-(CVE-2017-0781)"
+
+\end_inset
+
+ con un indirizzo non valido a cui puntare, ad esempio 
+\begin_inset Formula $0\text{x}41414141$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "tabsize=4"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+shell@android:/ # forward tcp:5039 tcp:5039
+\end_layout
+
+\begin_layout Plain Layout
+
+shell@android:/ # gdbserver :5039 --attach $(pidof com.android.bluetooth)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+peda-arm > target remote :5039
+\end_layout
+
+\begin_layout Plain Layout
+
+Remote debugging using :5039
+\end_layout
+
+\begin_layout Plain Layout
+
+Reading /system/bin/app_process32 from remote target...
+\end_layout
+
+\begin_layout Plain Layout
+
+Reading symbols from target:/system/bin/app_process32...(no debugging symbols
+ found)...done.
+\end_layout
+
+\begin_layout Plain Layout
+
+Reading /system/bin/linker from remote target...
+\end_layout
+
+\begin_layout Plain Layout
+
+Reading symbols from target:/system/bin/linker...(no debugging symbols found)...done.
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+peda-arm > continue
+\end_layout
+
+\begin_layout Plain Layout
+
+Continuing.
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+Thread 22 "bluetooth wake" received signal SIGSEGV, Segmentation fault.
+\end_layout
+
+\begin_layout Plain Layout
+
+[Switching to Thread 25421.25466]
+\end_layout
+
+\begin_layout Plain Layout
+
+Stopped reason: SIGSEGV
+\end_layout
+
+\begin_layout Plain Layout
+
+0xee61747c in ?? ()
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+A questo punto abbiamo il processo bluetooth bloccato sull'evento del 
+\emph on
+crash
+\emph default
+ e nel range di indirizzi del segmento 
+\begin_inset Flex CT - acronym
+status collapsed
+
+\begin_layout Plain Layout
+
+BSS
+\end_layout
+
+\end_inset
+
+ sappiamo risiedere il nome del dispositivo remoto contenente il nostro
+ 
+\emph on
+payload
+\emph default
+.
+\end_layout
+
+\begin_layout Standard
+Eseguiamo quindi:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "tabsize=4"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+shell@android:/ # cat /proc/$(pidof com.android.bluetooth)/maps | grep -A1
+ bluetooth.default.so
+\end_layout
+
+\begin_layout Plain Layout
+
+...
+\end_layout
+
+\begin_layout Plain Layout
+
+ee6a4000-ee780000 rw-p 00000000 00:00 0 [anon:.bss]
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+All'interno di questo range cerchiamo la stringa 
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+TEST_TEST_TEST_TEST
+\end_layout
+
+\end_inset
+
+ impostata come nome del controller Bluetooth ottenendo così l'indirizzo
+ cercato:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "tabsize=4"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+peda-arm > searchmem "TEST_TEST_TEST_TEST" 0xee66f000 0xee74b000
+\end_layout
+
+\begin_layout Plain Layout
+
+[*] Searching for 'TEST_TEST_TEST_TEST' in range: ee6a4000 - ee780000
+\end_layout
+
+\begin_layout Plain Layout
+
+Found 1 results, display max 1 items:
+\end_layout
+
+\begin_layout Plain Layout
+
+[anon:.bss] : 0xee731ee1 ("TEST_TEST_TEST_TEST")
 \end_layout
 
 \end_inset
@@ -5061,6 +5888,674 @@ TODO
 
 \begin_layout Section
 Post-exploitation
+\end_layout
+
+\begin_layout Standard
+Come mostrato in 
+\begin_inset CommandInset ref
+LatexCommand nameref
+reference "sec:payload-building"
+
+\end_inset
+
+ 
+\begin_inset CommandInset ref
+LatexCommand vpageref
+reference "sec:payload-building"
+
+\end_inset
+
+ l'
+\emph on
+exploit
+\emph default
+ che possiamo eseguire consta di comandi bash che verranno eseguiti sul
+ dispositivo vittima.
+ Questo potrebbe essere sufficiente se vogliamo eseguire operazioni per
+ cui la sequenza di comandi non superi la dimensione massima consentita
+ e per cui non ci interessi avere la risposta indietro.
+ Volendo superare questi due limiti possiamo utilizzare 
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+nc
+\end_layout
+
+\end_inset
+
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+
+\emph on
+Utility
+\emph default
+ per leggere e scrivere su una connessione di rete utilizzando TCP o UDP
+\end_layout
+
+\end_inset
+
+ (già preinstallato in tutte le versione di Android dalla versione 
+\begin_inset Formula $6$
+\end_inset
+
+ in poi tramite 
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+toybox
+\end_layout
+
+\end_inset
+
+) per avviare una 
+\emph on
+reverse shell
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+È quando una 
+\emph on
+shell
+\emph default
+ avviata sul dispositivo vittima si connette all'attaccante per permettergli
+ di superare le limitazioni imposte da eventuali firewall di rete
+\end_layout
+
+\end_inset
+
+
+\emph default
+ verso un dispositivo sotto il controllo dell'attaccante.
+\end_layout
+
+\begin_layout Standard
+In questo modo possiamo utilizzare la rete internet per continuare ad inviare
+ comandi al dispositivo della vittima senza più avere bisogno di mantenere
+ la prossimità fisica imposta dalla connessione Bluetooth.
+\end_layout
+
+\begin_layout Standard
+Una volta avviata la 
+\emph on
+shell
+\emph default
+ avremo modo di interagire col sistema con i privilegi del servizio 
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+com.android.bluetooth
+\end_layout
+
+\end_inset
+
+ cioè con
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "tabsize=4"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+uid=1002(bluetooth)
+\end_layout
+
+\begin_layout Plain Layout
+
+gid=1002(bluetooth)
+\end_layout
+
+\begin_layout Plain Layout
+
+groups=1002(bluetooth), 1016(vpn), 3001(net_bt_admin), 3002(net_bt), 3003(inet),
+ 3005(net_admin), 3008(net_bt_stack), 3010(wakelock), 9997(everybody), 41002(u0_
+a31002)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Questo si traduce nei seguenti permessi: 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+TODO: Completa la descrizione di alcuni dei permessi
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=bash,tabsize=4"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+# Accesso alla posizione approssimativa
+\end_layout
+
+\begin_layout Plain Layout
+
+android.permission.ACCESS_COARSE_LOCATION
+\end_layout
+
+\begin_layout Plain Layout
+
+# Accesso alla lista degli utenti
+\end_layout
+
+\begin_layout Plain Layout
+
+android.permission.GET_ACCOUNTS
+\end_layout
+
+\begin_layout Plain Layout
+
+# Permettono tutti i tipi di interazione con gli altri utenti
+\end_layout
+
+\begin_layout Plain Layout
+
+android.permission.INTERACT_ACROSS_USERS
+\end_layout
+
+\begin_layout Plain Layout
+
+android.permission.INTERACT_ACROSS_USERS_FULL
+\end_layout
+
+\begin_layout Plain Layout
+
+# Permette di gestire gli utenti, compresi interrogazione, creazione e cancellaz
+ione
+\end_layout
+
+\begin_layout Plain Layout
+
+android.permission.MANAGE_USERS
+\end_layout
+
+\begin_layout Plain Layout
+
+# Permettono di leggere e scrivere il registro delle chiamate
+\end_layout
+
+\begin_layout Plain Layout
+
+android.permission.READ_CALL_LOG
+\end_layout
+
+\begin_layout Plain Layout
+
+android.permission.WRITE_CALL_LOG
+\end_layout
+
+\begin_layout Plain Layout
+
+# Permettono di leggere e scrivere la rubrica
+\end_layout
+
+\begin_layout Plain Layout
+
+android.permission.READ_CONTACTS
+\end_layout
+
+\begin_layout Plain Layout
+
+android.permission.WRITE_CONTACTS
+\end_layout
+
+\begin_layout Plain Layout
+
+# Permettono di leggere e scrivere file sulla SD Card
+\end_layout
+
+\begin_layout Plain Layout
+
+android.permission.READ_EXTERNAL_STORAGE
+\end_layout
+
+\begin_layout Plain Layout
+
+android.permission.WRITE_EXTERNAL_STORAGE
+\end_layout
+
+\begin_layout Plain Layout
+
+# Permettono di leggere, scrivere, processare, cancellare
+\end_layout
+
+\begin_layout Plain Layout
+
+# e inviare SMS
+\end_layout
+
+\begin_layout Plain Layout
+
+android.permission.READ_SMS
+\end_layout
+
+\begin_layout Plain Layout
+
+android.permission.WRITE_SMS
+\end_layout
+
+\begin_layout Plain Layout
+
+android.permission.RECEIVE_SMS
+\end_layout
+
+\begin_layout Plain Layout
+
+android.permission.SEND_SMS
+\end_layout
+
+\begin_layout Plain Layout
+
+# Permette di scrivere direttamente sul
+\end_layout
+
+\begin_layout Plain Layout
+
+# Content Provider Bluetooth
+\end_layout
+
+\begin_layout Plain Layout
+
+android.permission.ACCESS_BLUETOOTH_SHARE
+\end_layout
+
+\begin_layout Plain Layout
+
+# Permette di accedere alla configurazione Bluetooth
+\end_layout
+
+\begin_layout Plain Layout
+
+# del dispositivo e di fare e accettare connessioni
+\end_layout
+
+\begin_layout Plain Layout
+
+android.permission.BLUETOOTH
+\end_layout
+
+\begin_layout Plain Layout
+
+# Permette di configurare il dispositivo Bluetooth
+\end_layout
+
+\begin_layout Plain Layout
+
+# eseguire scansioni per trovare dispositivi Bluetooth
+\end_layout
+
+\begin_layout Plain Layout
+
+# vicini e avviare il pairing con questi
+\end_layout
+
+\begin_layout Plain Layout
+
+android.permission.BLUETOOTH_ADMIN
+\end_layout
+
+\begin_layout Plain Layout
+
+# TODO
+\end_layout
+
+\begin_layout Plain Layout
+
+android.permission.BLUETOOTH_MAP
+\end_layout
+
+\begin_layout Plain Layout
+
+# Permette di fare pairing con dispositivi Bluetooth
+\end_layout
+
+\begin_layout Plain Layout
+
+# senza interazione l'utente
+\end_layout
+
+\begin_layout Plain Layout
+
+android.permission.BLUETOOTH_PRIVILEGED
+\end_layout
+
+\begin_layout Plain Layout
+
+# TODO
+\end_layout
+
+\begin_layout Plain Layout
+
+android.permission.BLUETOOTH_STACK
+\end_layout
+
+\begin_layout Plain Layout
+
+# Permette di accedere a internet
+\end_layout
+
+\begin_layout Plain Layout
+
+android.permission.INTERNET
+\end_layout
+
+\begin_layout Plain Layout
+
+# Permette di leggere e modificare lo stato della rete
+\end_layout
+
+\begin_layout Plain Layout
+
+android.permission.ACCESS_NETWORK_STATE
+\end_layout
+
+\begin_layout Plain Layout
+
+android.permission.CHANGE_NETWORK_STATE
+\end_layout
+
+\begin_layout Plain Layout
+
+# TODO
+\end_layout
+
+\begin_layout Plain Layout
+
+android.permission.NET_ADMIN
+\end_layout
+
+\begin_layout Plain Layout
+
+android.permission.NET_TUNNELING
+\end_layout
+
+\begin_layout Plain Layout
+
+android.permission.TETHER_PRIVILEGED
+\end_layout
+
+\begin_layout Plain Layout
+
+android.permission.CONNECTIVITY_INTERNAL
+\end_layout
+
+\begin_layout Plain Layout
+
+# Permette di chiamare qualunque numero, anche se di
+\end_layout
+
+\begin_layout Plain Layout
+
+# emergenza, senza che compaia il dialer per chiedere
+\end_layout
+
+\begin_layout Plain Layout
+
+# conferma all'utente
+\end_layout
+
+\begin_layout Plain Layout
+
+android.permission.CALL_PRIVILEGED
+\end_layout
+
+\begin_layout Plain Layout
+
+# Permette di ottenere i dump delle informazioni
+\end_layout
+
+\begin_layout Plain Layout
+
+# dai servizi di sistema
+\end_layout
+
+\begin_layout Plain Layout
+
+android.permission.DUMP
+\end_layout
+
+\begin_layout Plain Layout
+
+# Permette di sapere se ci sono contenuti audio/video
+\end_layout
+
+\begin_layout Plain Layout
+
+# in esecuzione e di controllarli
+\end_layout
+
+\begin_layout Plain Layout
+
+android.permission.MEDIA_CONTENT_CONTROL
+\end_layout
+
+\begin_layout Plain Layout
+
+# TODO
+\end_layout
+
+\begin_layout Plain Layout
+
+android.permission.MODIFY_AUDIO_ROUTING
+\end_layout
+
+\begin_layout Plain Layout
+
+# Permette di modificare le impostazioni globali
+\end_layout
+
+\begin_layout Plain Layout
+
+# dell'audio
+\end_layout
+
+\begin_layout Plain Layout
+
+android.permission.MODIFY_AUDIO_SETTINGS
+\end_layout
+
+\begin_layout Plain Layout
+
+# Permette di modificare lo stato del telefono
+\end_layout
+
+\begin_layout Plain Layout
+
+android.permission.MODIFY_PHONE_STATE
+\end_layout
+
+\begin_layout Plain Layout
+
+# TODO
+\end_layout
+
+\begin_layout Plain Layout
+
+android.permission.READ_PRIVILEGED_PHONE_STATE
+\end_layout
+
+\begin_layout Plain Layout
+
+android.permission.NFC_HANDOVER_STATUS
+\end_layout
+
+\begin_layout Plain Layout
+
+android.permission.READ_PROFILE
+\end_layout
+
+\begin_layout Plain Layout
+
+android.permission.REAL_GET_TASKS
+\end_layout
+
+\begin_layout Plain Layout
+
+# Permette di sapere quando il dispositivo ha concluso
+\end_layout
+
+\begin_layout Plain Layout
+
+# la fase di avvio
+\end_layout
+
+\begin_layout Plain Layout
+
+android.permission.RECEIVE_BOOT_COMPLETED
+\end_layout
+
+\begin_layout Plain Layout
+
+# TODO
+\end_layout
+
+\begin_layout Plain Layout
+
+android.permission.UPDATE_APP_OPS_STATS
+\end_layout
+
+\begin_layout Plain Layout
+
+# Permette di aggiornare le statistiche del dispositivo
+\end_layout
+
+\begin_layout Plain Layout
+
+android.permission.UPDATE_DEVICE_STATS
+\end_layout
+
+\begin_layout Plain Layout
+
+# Permette di far vibrare il dispositivo
+\end_layout
+
+\begin_layout Plain Layout
+
+android.permission.VIBRATE
+\end_layout
+
+\begin_layout Plain Layout
+
+# Permette di prevenire lo schermo dallo spegnersi e il
+\end_layout
+
+\begin_layout Plain Layout
+
+# processore dall'andare in sleep
+\end_layout
+
+\begin_layout Plain Layout
+
+android.permission.WAKE_LOCK
+\end_layout
+
+\begin_layout Plain Layout
+
+# TODO
+\end_layout
+
+\begin_layout Plain Layout
+
+android.permission.DEVICE_POWER
+\end_layout
+
+\begin_layout Plain Layout
+
+# Permette di scrivere le impostazioni APN
+\end_layout
+
+\begin_layout Plain Layout
+
+android.permission.WRITE_APN_SETTINGS
+\end_layout
+
+\begin_layout Plain Layout
+
+# Permette di leggere e scrivere le impostazioni di sistema
+\end_layout
+
+\begin_layout Plain Layout
+
+# comprese quelle di sicurezza
+\end_layout
+
+\begin_layout Plain Layout
+
+android.permission.WRITE_SETTINGS
+\end_layout
+
+\begin_layout Plain Layout
+
+android.permission.WRITE_SECURE_SETTINGS
+\end_layout
+
+\begin_layout Plain Layout
+
+# TODO
+\end_layout
+
+\begin_layout Plain Layout
+
+com.android.gallery3d.permission.GALLERY_PROVIDER
+\end_layout
+
+\begin_layout Plain Layout
+
+com.google.android.gallery3d.permission.GALLERY_PROVIDER
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+TODO: Controlla se è possibile continuare questa sezione
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Workflow del Proof of Concept (PoC)
 \end_layout
 
 \begin_layout Standard
