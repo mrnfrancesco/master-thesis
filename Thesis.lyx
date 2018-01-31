@@ -339,16 +339,15 @@ filename "Chapters/BuildBlueborneAttackVector.lyx"
 \end_layout
 
 \begin_layout Part Introduction (ClassicThesis)
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-TODO: Introduzione della parte
-\end_layout
-
+I sistemi moderni crescono ogni giorno in complessità, ma nonostante gli
+ sforzi non sono, né saranno mai, immuni dalla presenza di vulnerabilità.
+\begin_inset Newline newline
 \end_inset
 
-
+Nonostante non sia possibile realizzare una metodologia universale che permetta
+ di individuare le vulnerabilità del codice questa sezione mira a dare alcune
+ linee guida anche attraverso l'analisi del metodo utilizzato per scoprire
+ BlueBorne.
 \end_layout
 
 \begin_layout Part
