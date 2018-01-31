@@ -6835,19 +6835,6 @@ Workflow del Proof of Concept (PoC)
 \end_layout
 
 \begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-TODO: Aggiungi workflow dell'attacco
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
 \align center
 \begin_inset Float figure
 placement H
@@ -6885,7 +6872,595 @@ Schema esemplificativo dell'attacco BlueBorne
 
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Supponiamo che in qualche modo abbiamo ottenuto il BDADDR del dispositivo
+ vittima, che abbiamo calcolato la posizione in memoria di indirizzi validi
+ da sfruttare per bypassare l'ASLR e che ci troviamo in prossimità fisica
+ del dispositivo da attaccare.
+ Date queste premesse il workflow del PoC di un attacco che sfrutta BlueBorne
+ è quello mostrato a seguire in Figura 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:poc-workflow"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
 \begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+tikzset{>={Latex[width=2mm,length=2mm]},
+\end_layout
+
+\begin_layout Plain Layout
+
+	% Specifications for style of nodes:
+\end_layout
+
+\begin_layout Plain Layout
+
+	base/.style = {rectangle, rounded corners, draw=black,
+\end_layout
+
+\begin_layout Plain Layout
+
+	               minimum width=4cm, minimum height=1cm,
+\end_layout
+
+\begin_layout Plain Layout
+
+	               text centered, font=
+\backslash
+sffamily},
+\end_layout
+
+\begin_layout Plain Layout
+
+	blueProcess/.style = {base, fill=blue!15},
+\end_layout
+
+\begin_layout Plain Layout
+
+	redProcess/.style = {base, fill=red!15},
+\end_layout
+
+\begin_layout Plain Layout
+
+	greenProcess/.style = {base, fill=green!15},
+\end_layout
+
+\begin_layout Plain Layout
+
+	process/.style = {base, minimum width=2.5cm, fill=orange!15,
+\end_layout
+
+\begin_layout Plain Layout
+
+	               font=
+\backslash
+ttfamily
+\backslash
+small},
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{tikzpicture}[node distance=1.4cm,
+\end_layout
+
+\begin_layout Plain Layout
+
+    every node/.style={fill=white, font=
+\backslash
+sffamily
+\backslash
+small}, align=center, text width=5cm]
+\end_layout
+
+\begin_layout Plain Layout
+
+	% Specification of nodes (position, etc.)
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+node (socketsForConnectback) [greenProcess, text width=6cm] {Creazione socket
+ per reverse shell};
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+node (establishSdpConnection) [blueProcess, below of=socketsForConnectback]
+ {Creazione connessione SDP con 
+\backslash
+(
+\backslash
+text{MTU}=48
+\backslash
+)};
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+node (sendSdpReq) [process, below of=establishSdpConnection] {Invio SDP
+\backslash
+_SERVICE
+\backslash
+_SEARCH
+\backslash
+_REQ per 
+\backslash
+(
+\backslash
+text{UUID}=
+\backslash
+text{L2CAP}
+\backslash
+)};
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+node (receiveSdpRsp) [process, below of=sendSdpReq, yshift=-0.1cm] {Ricezione
+ SDP
+\backslash
+_SERVICE
+\backslash
+_SEARCH
+\backslash
+_RSP con continuation state};
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+node (sendSdpMaliciousReq) [process, below of=receiveSdpRsp, yshift=-0.3cm]
+ {Invio SDP
+\backslash
+_SERVICE
+\backslash
+_SEARCH
+\backslash
+_REQ 
+\backslash
+
+\backslash
+ per 
+\backslash
+(
+\backslash
+text{UUID}=
+\backslash
+text{ATT}
+\backslash
+) con continuation state ricevuto};
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+node (closeConnection) [blueProcess, below of=sendSdpMaliciousReq] {Close
+ connection};
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+node (getLeakedLibcAddr) [process, below of=closeConnection, xshift=-3cm]
+ {Preleva indirizzo di libc.so da posizione nota nel dump};
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+node (libcBaseAddr) [process, below of=getLeakedLibcAddr] {Calcolo indirizzo
+ base libc.so};
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+node (systemAddr) [greenProcess, below of=libcBaseAddr] {Calcolo indirizzo
+ funzione system};
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+node (getLeakedBluetoothAddr) [process, below of=closeConnection, xshift=3cm]
+ {Preleva indirizzo di bluetooth.default.so da posizione nota nel dump};
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+node (bluetoothBaseAddr) [process, below of=getLeakedBluetoothAddr] {Calcolo
+ indirizzo base bluetooth.default.so};
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+node (payloadAddr) [greenProcess, below of=bluetoothBaseAddr] {Calcolo indirizzo
+ payload};
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+node (aslrBypassed) [redProcess, below of=payloadAddr, xshift=-3cm, text
+ width=8.5cm] {ASLR bypassato};
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+node (buildPayload) [greenProcess, below of=aslrBypassed, text width=8.5cm]
+ {Costruisci payload e imposta come nome controller};
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+node (heapShaping) [process, below of=buildPayload, text width=8.5cm] {Invia
+ pacchetti per heap shaping 
+\backslash
+
+\backslash
+ 
+\backslash
+scriptsize (Ripetere più volte)};
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+node (sendOverflow) [process, below of=heapShaping, text width=8.5cm] {Invia
+ pacchetti che inducono overflow 
+\backslash
+
+\backslash
+ 
+\backslash
+scriptsize (con indirizzo del payload)};
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+node (checkConnectback) [blueProcess, below of=sendOverflow, text width=8.5cm]
+ {Controllo connessione reverse shell};
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+node (postExploitation) [greenProcess, below of=checkConnectback, text width=8.5c
+m] {Post-Exploitation};
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	% Specification of lines between nodes specified above
+\end_layout
+
+\begin_layout Plain Layout
+
+	% with aditional nodes for description 
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+draw[->] (socketsForConnectback) -- (establishSdpConnection);
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+draw[->] (establishSdpConnection) -- (sendSdpReq);
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+draw[->] (sendSdpReq) -- (receiveSdpRsp);
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+draw[->] (receiveSdpRsp) -- (sendSdpMaliciousReq);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+draw[->] (sendSdpMaliciousReq.west) -- ++(-2.4,0) -- ++(0,1.7) -- ++(0,0) --
+\end_layout
+
+\begin_layout Plain Layout
+
+	 node[xshift=-0.8cm,yshift=-0.9cm, text width=3.6cm]
+\end_layout
+
+\begin_layout Plain Layout
+
+	 {Ripetere fino a ottenere il dump della dimensione voluta}(receiveSdpRsp.west);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+draw[->] (sendSdpMaliciousReq) -- (closeConnection);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+draw[->] (closeConnection) --  (getLeakedLibcAddr);
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+draw[->] (getLeakedLibcAddr) --  (libcBaseAddr);
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+draw[->] (libcBaseAddr) --  (systemAddr);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+draw[->] (closeConnection) -- (getLeakedBluetoothAddr);
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+draw[->] (getLeakedBluetoothAddr) --  (bluetoothBaseAddr);
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+draw[->] (bluetoothBaseAddr) --  (payloadAddr);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+draw[->] (systemAddr) --  (aslrBypassed);
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+draw[->] (payloadAddr) --  (aslrBypassed);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+draw[->] (aslrBypassed) --  (buildPayload);
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+draw[->] (buildPayload) --  (heapShaping);
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+draw[->] (heapShaping) --  (sendOverflow);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+draw[->] (sendOverflow.west) -- ++(-2,0) -- ++(0,15.8) -- ++(0,0) --
+\end_layout
+
+\begin_layout Plain Layout
+
+	 node[xshift=-1.5cm, yshift=-2cm, text width=4.2cm]
+\end_layout
+
+\begin_layout Plain Layout
+
+	 {Ricominciare in caso di crash del demone Bluetooth}(establishSdpConnection.wes
+t);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+draw[->] (sendOverflow) --  (checkConnectback);
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+draw[->] (checkConnectback.east) -- ++(2,0) -- ++(0,17.2) -- ++(0,0) --
+\end_layout
+
+\begin_layout Plain Layout
+
+	 node[xshift=0.9cm, yshift=-3cm, text width=3cm]
+\end_layout
+
+\begin_layout Plain Layout
+
+	 {Ricominciare in caso di errore di connessione}(establishSdpConnection.east);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	
+\backslash
+draw[->] (checkConnectback) --  (postExploitation);
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{tikzpicture}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:poc-workflow"
+
+\end_inset
+
+Sequenza di passi da eseguire per completare un attacco utilizzando BlueBorne
+\end_layout
+
+\end_inset
+
 
 \end_layout
 
