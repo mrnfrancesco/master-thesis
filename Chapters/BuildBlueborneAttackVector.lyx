@@ -4987,15 +4987,15 @@ Questo estratto mostra chiaramente che la randomizzazione degli indirizzi
 
  l'indirizzo di base (il primo numero mostrato) cambia tra due esecuzioni
  differenti assumendo nel primo caso il valore 
-\begin_inset Formula $4000\text{e}000$
+\begin_inset Formula $0\text{x}4000\text{e}000$
 \end_inset
 
  e nel secondo 
-\begin_inset Formula $40078000$
+\begin_inset Formula $0\text{x}40078000$
 \end_inset
 
 , mentre rimane uguale a 
-\begin_inset Formula $00008000$
+\begin_inset Formula $0\text{x}00008000$
 \end_inset
 
  in Android 
@@ -5872,7 +5872,7 @@ TEST_TEST_TEST_TEST
 \end_inset
 
  impostata come nome del controller Bluetooth ottenendo così l'indirizzo
- cercato:
+ cercato, quindi il suo offset:
 \end_layout
 
 \begin_layout Standard
