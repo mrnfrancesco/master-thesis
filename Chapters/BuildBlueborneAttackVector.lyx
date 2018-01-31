@@ -6066,17 +6066,7 @@ a31002)
 \end_layout
 
 \begin_layout Standard
-Questo si traduce nei seguenti permessi: 
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-TODO: Completa la descrizione di alcuni dei permessi
-\end_layout
-
-\end_inset
-
-
+Questo si traduce nei seguenti permessi:
 \end_layout
 
 \begin_layout Standard
@@ -6248,7 +6238,12 @@ android.permission.BLUETOOTH
 
 \begin_layout Plain Layout
 
-# vicini e avviare il pairing con questi
+# vicini e avviare il pairing con questi anche senza
+\end_layout
+
+\begin_layout Plain Layout
+
+# interazione con l'utente
 \end_layout
 
 \begin_layout Plain Layout
@@ -6258,22 +6253,7 @@ android.permission.BLUETOOTH_ADMIN
 
 \begin_layout Plain Layout
 
-# TODO
-\end_layout
-
-\begin_layout Plain Layout
-
 android.permission.BLUETOOTH_MAP
-\end_layout
-
-\begin_layout Plain Layout
-
-# Permette di fare pairing con dispositivi Bluetooth
-\end_layout
-
-\begin_layout Plain Layout
-
-# senza interazione l'utente
 \end_layout
 
 \begin_layout Plain Layout
@@ -6283,7 +6263,7 @@ android.permission.BLUETOOTH_PRIVILEGED
 
 \begin_layout Plain Layout
 
-# TODO
+# Permette allo stack Bluetooth di accedere ai file
 \end_layout
 
 \begin_layout Plain Layout
@@ -6318,7 +6298,17 @@ android.permission.CHANGE_NETWORK_STATE
 
 \begin_layout Plain Layout
 
-# TODO
+# Permette l'accesso alla configurazione delle
+\end_layout
+
+\begin_layout Plain Layout
+
+# interfacce di rete e la configurazione e l'uso di
+\end_layout
+
+\begin_layout Plain Layout
+
+# IPSec, ecc.
 \end_layout
 
 \begin_layout Plain Layout
@@ -6328,12 +6318,37 @@ android.permission.NET_ADMIN
 
 \begin_layout Plain Layout
 
+# Permette l'accesso a basso livello al driver dei tap
+\end_layout
+
+\begin_layout Plain Layout
+
 android.permission.NET_TUNNELING
 \end_layout
 
 \begin_layout Plain Layout
 
+# Permette di gestire il tethering del dispositivo senza
+\end_layout
+
+\begin_layout Plain Layout
+
+# interazione con l'utente
+\end_layout
+
+\begin_layout Plain Layout
+
 android.permission.TETHER_PRIVILEGED
+\end_layout
+
+\begin_layout Plain Layout
+
+# Permette di utilizzare le API privilegiate del
+\end_layout
+
+\begin_layout Plain Layout
+
+# ConnectivityManager
 \end_layout
 
 \begin_layout Plain Layout
@@ -6393,7 +6408,7 @@ android.permission.MEDIA_CONTENT_CONTROL
 
 \begin_layout Plain Layout
 
-# TODO
+# Permette di modificare il routing dell'audio
 \end_layout
 
 \begin_layout Plain Layout
@@ -6428,7 +6443,12 @@ android.permission.MODIFY_PHONE_STATE
 
 \begin_layout Plain Layout
 
-# TODO
+# Permette di accedere in modo privilegiato allo stato
+\end_layout
+
+\begin_layout Plain Layout
+
+# del telefono
 \end_layout
 
 \begin_layout Plain Layout
@@ -6438,17 +6458,37 @@ android.permission.READ_PRIVILEGED_PHONE_STATE
 
 \begin_layout Plain Layout
 
+# Permette di inviare e ricevere lo stato di consegna
+\end_layout
+
+\begin_layout Plain Layout
+
+# dal Bluetooth e dal WiFi
+\end_layout
+
+\begin_layout Plain Layout
+
 android.permission.NFC_HANDOVER_STATUS
 \end_layout
 
 \begin_layout Plain Layout
 
-android.permission.READ_PROFILE
+# Permette l'accesso alle informazioni sui task
 \end_layout
 
 \begin_layout Plain Layout
 
 android.permission.REAL_GET_TASKS
+\end_layout
+
+\begin_layout Plain Layout
+
+# Permette di leggere le vCard dalla lista contatti
+\end_layout
+
+\begin_layout Plain Layout
+
+android.permission.READ_PROFILE
 \end_layout
 
 \begin_layout Plain Layout
@@ -6468,7 +6508,12 @@ android.permission.RECEIVE_BOOT_COMPLETED
 
 \begin_layout Plain Layout
 
-# TODO
+# Permette di aggiornare le statistiche sulle operazioni
+\end_layout
+
+\begin_layout Plain Layout
+
+# delle applicazioni
 \end_layout
 
 \begin_layout Plain Layout
@@ -6513,7 +6558,7 @@ android.permission.WAKE_LOCK
 
 \begin_layout Plain Layout
 
-# TODO
+# Permette l'accesso a basso livello del gestore dell'alimentazione
 \end_layout
 
 \begin_layout Plain Layout
@@ -6553,7 +6598,12 @@ android.permission.WRITE_SECURE_SETTINGS
 
 \begin_layout Plain Layout
 
-# TODO
+# Permette l'accesso ai contenuti multimediali presenti sul
+\end_layout
+
+\begin_layout Plain Layout
+
+# cloud sul proprio account Google Photo
 \end_layout
 
 \begin_layout Plain Layout
@@ -6576,7 +6626,15 @@ com.google.android.gallery3d.permission.GALLERY_PROVIDER
 status open
 
 \begin_layout Plain Layout
-TODO: Controlla se è possibile continuare questa sezione
+TODO: Capitolo 5 (Local Attack Surface) di 
+\begin_inset Quotes eld
+\end_inset
+
+Android's Hackers Handbook
+\begin_inset Quotes erd
+\end_inset
+
+
 \end_layout
 
 \end_inset
