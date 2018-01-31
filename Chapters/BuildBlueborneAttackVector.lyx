@@ -6112,8 +6112,12 @@ android.permission.INTERACT_ACROSS_USERS_FULL
 
 \begin_layout Plain Layout
 
-# Permette di gestire gli utenti, compresi interrogazione, creazione e cancellaz
-ione
+# Permette di gestire gli utenti, compresi interrogazione,
+\end_layout
+
+\begin_layout Plain Layout
+
+# creazione e cancellazione
 \end_layout
 
 \begin_layout Plain Layout
@@ -6558,7 +6562,12 @@ android.permission.WAKE_LOCK
 
 \begin_layout Plain Layout
 
-# Permette l'accesso a basso livello del gestore dell'alimentazione
+# Permette l'accesso a basso livello del gestore
+\end_layout
+
+\begin_layout Plain Layout
+
+# dell'alimentazione
 \end_layout
 
 \begin_layout Plain Layout
