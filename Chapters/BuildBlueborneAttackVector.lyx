@@ -6630,25 +6630,204 @@ com.google.android.gallery3d.permission.GALLERY_PROVIDER
 
 \end_layout
 
+\begin_layout Subsection
+Superficie di attacco locale
+\end_layout
+
 \begin_layout Standard
-\begin_inset Note Note
-status open
+Quando un attaccante ha ottenuto esecuzione di codice arbitrario su un dispositi
+vo, il passo successivo è ovviamente la 
+\emph on
+privilege escalation
+\emph default
+
+\begin_inset Foot
+status collapsed
 
 \begin_layout Plain Layout
-TODO: Capitolo 5 (Local Attack Surface) di 
-\begin_inset Quotes eld
+Atto di aumentare i privilegi dell'utente corrente tramite vulnerabilità
+ locali o errori di configurazione
+\end_layout
+
 \end_inset
 
-Android's Hackers Handbook
-\begin_inset Quotes erd
+.
+ L'obiettivo finale è quello di eseguire del codice in 
+\emph on
+kernel space
+\emph default
+ o come utente 
+\emph on
+root
+\emph default
+/
+\emph on
+system
+\emph default
+ così da non avere limitazioni sulle operazioni che si possono compiere.
+\end_layout
+
+\begin_layout Standard
+Nel nostro caso la superficie di attacco è piuttosto ampia, ma bisogna che
+ venga analizzata con cura per capire come sfruttarla.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
 \end_inset
 
 
 \end_layout
 
+\begin_layout Standard
+Il retaggio Unix di Android porta all'esposizione di una vasta superficie
+ di attacco attraverso diverse 
+\emph on
+entry
+\emph default
+ nel file system: 
+\emph on
+endpoint
+\emph default
+ sia in 
+\emph on
+kernel space 
+\emph default
+che in 
+\emph on
+user space
+\emph default
+.
+ Lato 
+\emph on
+kernel 
+\emph default
+ci sono i driver dei dispositivi e i file system virtuali, lato utente molte
+ componenti, come servizi privilegiati, espongono funzionalità di 
+\begin_inset Flex CT - acronym
+status collapsed
+
+\begin_layout Plain Layout
+
+IPC
+\end_layout
+
+\end_inset
+
+ tramite socket della famiglia 
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+PF_UNIX
+\end_layout
+
+\end_inset
+
+.
+ Oltre questi, anche file e cartelle normali con permessi troppo lascivi
+ danno la possibilità di aumentare la superficie di attacco, quindi le probabili
+tà di successo.
+\end_layout
+
+\begin_layout Standard
+Semplicemente esaminando il file system, manualmente o in modo automatico,
+ è possibile trovare questi possibili punti d'ingresso per proseguire con
+ la successiva fase di analisi ed eventualmente 
+\emph on
+exploitation
+\emph default
+.
+\end_layout
+
+\begin_layout Standard
+Ogni 
+\emph on
+entry
+\emph default
+ nel file system ha differenti proprietà.
+ Prima e più importante è l'appartenenza a uno specifico utente/gruppo;
+ in secondo luogo i permessi che l'utente o il gruppo hanno rispetto alla
+ 
+\emph on
+entry
+\emph default
+.
+ Questi permessi specificano chi tra proprietario, gruppo e resto del mondo
+ può eseguire lettura, scrittura ed esecuzione sulla 
+\emph on
+entry
+\emph default
+ in questione.
+ Sono presenti inoltre permessi speciali come ad esempio il 
+\emph on
+set-user-id
+\emph default
+ (o SETUID) che permettono a chiunque di eseguire un un programma elevando
+ temporaneamente i propri privilegi a quelli del proprietario del file.
+\end_layout
+
+\begin_layout Standard
+È importante considerare queste e molte altre proprietà nella determinazione
+ dell'esatta superificie di attacco raggiungibile dato un particolare livello
+ di accesso.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+È possibile che un utente non privilegiato possa accedere ad un file che
+ però si trova in una cartella di cui gli è impossibile mostrare il contenuto.
+ In questa situazione è possibile non avere una visione completa della superfici
+e d'attacco a disposizione.
+ Avendo a disposizione la possibilità di elevare i nostri privilegi a quelli
+ di 
+\emph on
+root
+\emph default
+ su un dispositivo di test (uguale a quello vittima) possiamo investigare
+ a fondo il file system senza restrizione alla ricerca di 
+\emph on
+entry
+\emph default
+ che siano di interesse durante una reale fase di post-exploitation.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Non tutta la superficie d'attacco è esposta tramite il file system.
+ Altre superfici d'attacco esposte dal kernel Linux includono le chiamate
+ di sistema, l'implementazione dei socket, porzioni di memoria condivisa,
+ ecc.
+ C'è poi da considerare la parte più strettamente legata all'hardware e
+ ai servizi che permettono di dialogarci.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Una trattazione completa sulla fase di post-exploitation, tuttavia, va oltre
+ lo scopo di questo testo, perciò non verrà ulteriormente approfondita.
 \end_layout
 
 \begin_layout Section

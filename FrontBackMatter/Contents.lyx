@@ -696,6 +696,13 @@ acro{ACL}{Asynchronous Connection-Less}
 
 \begin_layout Plain Layout
 
+  
+\backslash
+acro{IPC}{Inter Process Communication}
+\end_layout
+
+\begin_layout Plain Layout
+
 
 \backslash
 end{acronym}              
