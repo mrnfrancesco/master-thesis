@@ -906,188 +906,11 @@ sideways false
 status open
 
 \begin_layout Plain Layout
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-begin{sequencediagram}
-\end_layout
-
-\begin_layout Plain Layout
-
-	
-\backslash
-renewcommand
-\backslash
-unitfactor{0.75}
-\end_layout
-
-\begin_layout Plain Layout
-
-	
-\end_layout
-
-\begin_layout Plain Layout
-
-	
-\backslash
-newthread{client}{SDP Client}
-\end_layout
-
-\begin_layout Plain Layout
-
-	
-\backslash
-newinst[6]{server}{SDP Server}
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-	
-\backslash
-begin{call}{client}{
-\backslash
-small ServiceSearchRequest(UUID=
-\backslash
-(0
-\backslash
-)xDEAD)}{server}{
-\backslash
-small ServiceSearchResponse 
-\backslash
-((1/N)
-\backslash
-) + CS 
-\backslash
-((1)
-\backslash
-)}
-\backslash
-end{call}
-\end_layout
-
-\begin_layout Plain Layout
-
-	
-\backslash
-begin{call}{client}{
-\backslash
-small ServiceSearchRequest(UUID=
-\backslash
-(0
-\backslash
-)xBEEF) + CS 
-\backslash
-((1)
-\backslash
-)}{server}{
-\backslash
-small ServiceSearchResponse 
-\backslash
-((2/N)
-\backslash
-) + CS 
-\backslash
-((2)
-\backslash
-)}
-\backslash
-end{call}
-\end_layout
-
-\begin_layout Plain Layout
-
-	
-\backslash
-begin{call}{client}{
-\backslash
-dots}{server}{
-\backslash
-dots}
-\backslash
-end{call}
-\end_layout
-
-\begin_layout Plain Layout
-
-	
-\backslash
-begin{call}{client}{
-\backslash
-small ServiceSearchRequest(UUID=
-\backslash
-(0
-\backslash
-)xBEEF) + CS 
-\backslash
-((i)
-\backslash
-)}{server}{
-\backslash
-small ServiceSearchResponse 
-\backslash
-((2/N)
-\backslash
-) + CS 
-\backslash
-((2)
-\backslash
-)}
-\backslash
-end{call}
-\end_layout
-
-\begin_layout Plain Layout
-
-	
-\backslash
-begin{call}{client}{
-\backslash
-dots}{server}{
-\backslash
-dots}
-\backslash
-end{call}
-\end_layout
-
-\begin_layout Plain Layout
-
-	
-\backslash
-begin{call}{client}{
-\backslash
-small ServiceSearchRequest(UUID=
-\backslash
-(0
-\backslash
-)xBEEF) + CS 
-\backslash
-((N)
-\backslash
-)}{server}{
-\backslash
-small ServiceSearchResponse 
-\backslash
-((N/N)
-\backslash
-)}
-\backslash
-end{call}
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-end{sequencediagram}
-\end_layout
+\align center
+\begin_inset Graphics
+	filename /home/mrnfrancesco/git/master-thesis/gfx/sdp-confused-continuation-state.png
+	display false
+	width 100col%
 
 \end_inset
 
@@ -1130,11 +953,7 @@ underflow
 
 \begin_layout Enumerate
 Il client (attaccante) effettuata una richiesta SDP per un servizio con
- 
-\begin_inset Formula $\text{UUID}=0\text{xDEAD}$
-\end_inset
-
-.
+ uno specifico UUID
 \end_layout
 
 \begin_layout Enumerate
@@ -1159,19 +978,16 @@ MTU
 \end_layout
 
 \begin_layout Enumerate
-Il client effettua una seconda richiesta SDP per un servizio con 
-\begin_inset Formula $\text{UUID}=0\text{xBEEF}$
+Il client effettua una seconda richiesta SDP per un servizio con UUID differente
+ (
+\begin_inset Formula $\text{UUID-}2$
 \end_inset
 
- apponendo alla richiesta il 
+) apponendo alla richiesta il 
 \emph on
 continuation state
 \emph default
- ricevuto dalla risposta precedente riferita al servizio con 
-\begin_inset Formula $\text{UUID}=0\text{xDEAD}$
-\end_inset
-
-.
+ ricevuto dalla risposta precedente riferita al servizio precedente.
  Nella scelta dei due UUID è importante che il servizio interrogato per
  primo restituisca un numero di risposte superiore a quelle restituite dal
  secondo servizio scelto.
@@ -1209,19 +1025,8 @@ num_rsp_handles
 
 \end_inset
 
- del servizio 
-\emph on
-con 
-\emph default
-
-\begin_inset Formula $\text{UUID}=0\text{xBEEF}$
-\end_inset
-
- è minore di quello del servizio con 
-\begin_inset Formula $\text{UUID}=0\text{xDEAD}$
-\end_inset
-
-, si otterrà l'
+ del servizio interrogato per secondo è minore di quello del servizio interrogat
+o per primo, si otterrà l'
 \emph on
 underflow
 \emph default
@@ -1262,11 +1067,7 @@ for (xx = cont_offset; xx < cont_offset + cur_handles; xx++)
 
 \begin_layout Enumerate
 Da questo punto in poi l'attaccante può ripetere la stessa richiesta al
- servizio con 
-\begin_inset Formula $\text{UUID}=0\text{xBEEF}$
-\end_inset
-
- apponendo il valore di 
+ secondo servizio apponendo il valore di 
 \begin_inset listings
 lstparams "language={C++},tabsize=4"
 inline true
