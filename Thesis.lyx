@@ -377,7 +377,7 @@ filename "Chapters/CodeNavigation.lyx"
 \begin_layout Standard
 \begin_inset CommandInset include
 LatexCommand include
-filename "Chapters/FindNewClicklessVulnerability.lyx"
+filename "Chapters/BriefEconomicalAnalysis.lyx"
 
 \end_inset
 
