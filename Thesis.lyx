@@ -357,7 +357,7 @@ Bug Hunting
 \begin_layout Standard
 \begin_inset CommandInset include
 LatexCommand include
-filename "Chapters/CommonBugHuntingTechnique.lyx"
+filename "Chapters/SoftwareReviewProcess.lyx"
 
 \end_inset
 
