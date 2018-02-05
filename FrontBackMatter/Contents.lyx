@@ -703,6 +703,13 @@ acro{IPC}{Inter Process Communication}
 
 \begin_layout Plain Layout
 
+  
+\backslash
+acro{KLOC}{Kilo Line Of Code}
+\end_layout
+
+\begin_layout Plain Layout
+
 
 \backslash
 end{acronym}              

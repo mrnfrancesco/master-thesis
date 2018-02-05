@@ -496,24 +496,379 @@ Prezzo di vendita e ricavo interno
 \end_layout
 
 \begin_layout Standard
-\begin_inset Note Note
+Trovare e sfruttare vulnerabilità differenti richiede competenze e sforzi
+ differenti.
+ Alcuni credono che il costo di un 
+\emph on
+exploit
+\emph default
+ dovrebbe essere tanto maggiore quanto è stato difficile trovare e sfruttare
+ la vulnerabilità.
+ Altri credono che a determinare il costo debbano essere l'impatto e la
+ gravità della vulnerabilità.
+ Un altro fattore è la ricchezza nel mercato del prodotto affetto dalla
+ vulnerabilità trovata.
+\end_layout
+
+\begin_layout Standard
+Inoltre è facile che mercati differenti abbiano schemi di pagamento differenti.
+ È stato stimato ad esempio che i prezzi nei 
+\emph on
+black market
+\emph default
+ (il mercato illegale) e 
+\emph on
+gray market
+\emph default
+ (il mercato dei governi) sono fino a dieci volte maggiori di quelli nel
+ 
+\emph on
+white market
+\emph default
+ (il mercato legale, ad esempio i 
+\emph on
+bug bounty program
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+È un accordo offerto da molti siti web e software house per cui individui
+ non appartenenti all'azienda possono ricevere dei compensi in denaro per
+ segnalare bug, soprattutto se portano a vulnerabilità sfruttabili.
+\end_layout
+
+\begin_layout Plain Layout
+Questi programmi permettono agli sviluppatori di risolvere bug prima che
+ il grande pubblico possa accorgersi della loro esistenza, prevenendo così
+ incidenti e abusi su larga scala.
+\end_layout
+
+\end_inset
+
+
+\emph default
+), soprattutto perché i primi due mirano ad avere 
+\emph on
+exploit
+\emph default
+ funzionanti di cui si acquista anche l'esclusività, mentre nell'ultimo
+ caso spesso sono sufficienti solo i dettagli che descrivono la vulnerabilità,
+ anche senza alcun codice funzionante.
+\end_layout
+
+\begin_layout Standard
+Stabilire un prezzo per una vulnerabilità 
+\emph on
+
+\begin_inset Formula $0$
+\end_inset
+
+-day
+\emph default
+ è difficile, ma ci vengono in aiuto alcune risorse 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "bugcrowd_payout_model,zerodium_payout"
+
+\end_inset
+
+ che possono darci un'idea dei criteri da utilizzare.
+\end_layout
+
+\begin_layout Subsection
+Maturità dell'azienda
+\end_layout
+
+\begin_layout Standard
+La maturità dell'azienda in materia di sicurezza è un elemento fondamentale
+ per determinare il modello di costo per le vulnerabilità.
+ Un'organizzazione con un programma di sicurezza più maturo avrà dei processi
+ interni di analisi e gestione della sicurezza, quindi sarà più difficile
+ trovare delle vulnerabilità che pertanto dovranno essere pagate in modo
+ adeguato.
+\end_layout
+
+\begin_layout Standard
+In Tabella 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "tab:company-security-maturity"
+
+\end_inset
+
+ sono presentati alcuni fattori che permettono di classificare la maturità
+ di un'azienda in materia di sicurezza:
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float table
+placement H
+wide false
+sideways false
 status open
 
 \begin_layout Plain Layout
-TODO: pagina 103 (
-\begin_inset Quotes eld
+\align center
+\begin_inset Graphics
+	filename /home/mrnfrancesco/git/master-thesis/gfx/company-security-maturity.png
+	display false
+	width 100col%
+
 \end_inset
 
-Pricing to Sell
-\begin_inset Quotes erd
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:company-security-maturity"
+
 \end_inset
 
-) di 
-\begin_inset Quotes eld
+Tabella che permette di identificare la maturità di un'azienda in termini
+ di sicurezza
+\end_layout
+
 \end_inset
 
-Zero Days, Thousand of Nights
-\begin_inset Quotes erd
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Priorità di un bug
+\end_layout
+
+\begin_layout Standard
+Una volta stabilita la maturità dell'azienda è necessario dare alle vulnerabilit
+à una priorità per poterne stabilire un prezzo appropriato.
+ Per ottenere un valore di priorità appropriato bisogna valutare la vulnerabilit
+à dal punto di vista dell'impatto tecnico e di business.
+ Mentre l'aspetto tecnico può essere ottenuto in maniera obiettiva sulla
+ base di un questionario standard, l'impatto sull'azienda deve essere valutata
+ dall'azienda stessa sulla base di alcuni parametri ambientali come la presenza
+ o meno di macchine vulnerabili, la loro raggiungibilità, ecc.
+\end_layout
+
+\begin_layout Standard
+È stato studiato che una scala di priorità che va da un minimo di 
+\begin_inset Formula $1$
+\end_inset
+
+ (vulnerabilità critiche) a un massimo di 
+\begin_inset Formula $5$
+\end_inset
+
+ (rischi accettabili) è funzionale per questo scopo.
+ In Tabella 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "tab:bug-priority"
+
+\end_inset
+
+ è riportato un esempio di matrice di priorità che può essere utilizzata
+ come riferimento.
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float table
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /home/mrnfrancesco/git/master-thesis/gfx/bug-priority.png
+	display false
+	width 100col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:bug-priority"
+
+\end_inset
+
+Tabella che permette di identificare la priorità di un bug
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Modello di costo
+\end_layout
+
+\begin_layout Standard
+Una volta calcolate la maturità dell'azienda e la priorità della vulnerabilità
+ si hanno abbastanza informazioni per creare un modello di costo che sia
+ utilizzabile come riferimento.
+ Un esempio è mostrato in Tabella 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "tab:bug-payout-model"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float table
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /home/mrnfrancesco/git/master-thesis/gfx/bug-payout-model.png
+	display false
+	width 100col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:bug-payout-model"
+
+\end_inset
+
+Tabella che permette di identificare il possibile costo di un bug
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+È importante notare che ogni riferimento va inserito in un contesto in cui
+ vengono prese in considerazione ulteriori informazioni che possono essere
+ determinanti nello stabilire il prezzo finale anche in funzione degli obiettivi
+ aziendali.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In Figura 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:zerodium-payout"
+
+\end_inset
+
+ è mostrato un esempio di modello di costo dell'azienda Zerodium.
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /home/mrnfrancesco/git/master-thesis/gfx/zerodium-payout-for-desktop-server.png
+	display false
+	width 100col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset VSpace 4em
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /home/mrnfrancesco/git/master-thesis/gfx/zerodium-payout-for-mobile.png
+	display false
+	width 100col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:zerodium-payout"
+
+\end_inset
+
+Costi per vulnerabilità 
+\begin_inset Formula $0$
+\end_inset
+
+-day secondo il modello di Zerodium
+\end_layout
+
 \end_inset
 
 
