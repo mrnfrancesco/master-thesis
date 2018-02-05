@@ -72,10 +72,10 @@
 \begin_body
 
 \begin_layout Chapter
-Tecniche comuni di Bug Hunting
+Il processo di revisione del software
 \begin_inset CommandInset label
 LatexCommand label
-name "ch:common-bug-hunting-technique"
+name "ch:software-review-process"
 
 \end_inset
 
@@ -92,16 +92,1744 @@ key "a_bug_hunter_s_diary,the_art_of_software_security_assessment"
 
 \end_layout
 
+\begin_layout Standard
+Nonostante non esista nessuna documentazione formale che descriva un processo
+ standard per l'analisi di un software per la ricerca di bug, esistono tecniche
+ e linee guida comunemente accettate.
+\end_layout
+
+\begin_layout Standard
+Si possono individuare tre fasi principali:
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Fase preliminare
+\series default
+
+\begin_inset Newline newline
+\end_inset
+
+include la pianificazione e la definizione dell'ambito di ricerca, così
+ come la raccolta di informazioni iniziali e di documentazione.
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Fase di analisi
+\series default
+
+\begin_inset Newline newline
+\end_inset
+
+è quella principale.
+ Può includere qualche forma di analisi della progettazione e della logica
+ del software per poi procedere all'analisi dell'implementazione, eventualmente
+ supportata dall'esecuzione dell'applicativo stesso.
+ È importante notare che la fase di analisi non è rigidamente strutturata:
+ il team di analisi può capire ad esempio alcune scelte progettuali dall'analisi
+ dei sorgenti.
+ Lo scopo finale è quello di scoprire nuove vulnerabilità che possano essere
+ sfruttate.
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Fase di documentazione
+\series default
+
+\begin_inset Newline newline
+\end_inset
+
+comporta la raccolta e la documentazione dei risultati della fase di analisi
+ e può essere accompagata dalla valutazione dei rischi e dalla stima dei
+ costi delle vulnerabilità scoperte.
+\end_layout
+
 \begin_layout Section
+Fase preliminare
+\end_layout
+
+\begin_layout Standard
+Prima di analizzare il codice sorgente (o il disassemblato dei binari) è
+ necessario pianificare e definire l'ambito di ricerca in modo da supportare
+ le fasi successive del processo.
+ Raccogliendo più informazioni possibili prima di iniziare la fase di analisi
+ è possibile costruire un miglior piano d'attacco che permetta di analizzare
+ solo le parti del software che risultano essere di qualche interesse ai
+ fini della ricerca, ad esempio perché sono le migliori candidate a contenere
+ un certo tipo di vulnerabilità che si sta cercando.
+\end_layout
+
+\begin_layout Subsection
+Ambito di ricerca
+\end_layout
+
+\begin_layout Standard
+Prima di iniziare qualunque fase è necessario chiedersi qual'è l'obiettivo
+ finale.
+ Nonostante la domanda possa sembrare semplice il numero di risposte possibili
+ è piuttosto elevato e deve tenere in considerazioni diversi fattori.
+ Generalmente l'obiettivo di un ricercatore è quello di trovare la vulnerabilità
+ considerata più di valore nel minor tempo possibile.
+ Al contrario un consulente che si occupa di sicurezza delle applicazioni
+ è interessato a ottenere la percentuale di codice analizzato maggiore possibile
+ nei limiti del budget.
+ Infine, uno sviluppatore potrebbe voler andare più a fondo possibile nell'anali
+si avendo come vincolo principale il rispetto della scadenza per il rilascio
+ del prodotto.
+\end_layout
+
+\begin_layout Standard
+Non è però da dimenticare l'aspetto economico, per cui un'azienda potrebbe
+ essere più interessata ad eliminare le vulnerabilità considerate più semplici
+ da trovare piuttosto che quelle più pericolose, ma difficili da trovare.
+ Questo perché dal punto di vista dell'attaccante l'investimento necessario
+ per ricercare vulnerabilità pericolose potrebbe non essere compensato dal
+ guadagno che se ne potrebbe trarre.
+ Lo scopo della maggioranza delle aziende non è infatti quello di scoprire
+ l'ultima frontiera tecnologica in campo 
+\emph on
+cybersecurity
+\emph default
+, ma semplicemente evitare il danno d'immagine che ne trarrebbero dalla
+ pubblicazione di vulnerabilità anche semplici da parte di ricercatori indipende
+nti.
+\end_layout
+
+\begin_layout Subsection
+Livello di accesso
+\end_layout
+
+\begin_layout Standard
+I livelli di accesso che si possono avere rispetto a un software di cui
+ si sta facendo analisi di sicurezza sono cinque e sono riassunti in Tabella
+ 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "tab:bug-hunting-access-level"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float table
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="6" columns="2">
+<features tabularvalignment="middle" tabularwidth="100col%">
+<column alignment="center" valignment="top" width="15col%">
+<column alignment="center" valignment="top" width="75col%">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Categoria
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Descrizione
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Codice sorgente
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Viene fornito solamente il codice sorgente, senza ambiente di 
+\emph on
+build
+\emph default
+ o binari precompilati.
+ In alcuni casi e non senza sforzo è possibile compilare i sorgenti, ma
+ generalmente non vengono fornite alcune componenti essenziali.
+ Questo implica che la fase di analisi viene condotta esclusivamente in
+ modo statico (vedi Sez.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:static-analysis"
+
+\end_inset
+
+).
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Binari
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Vengono forniti i binari precompilati del software, ma non il codice sorgente.
+ Nella fase di analisi si procede generalmente tramite analisi dinamica
+ (vedi Sez.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:dynamic-analysis"
+
+\end_inset
+
+) o tramite 
+\emph on
+reverse engineering
+\emph default
+.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Codice sorgente e binari
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Vengono forniti sia i sorgenti che i binari precompilati del software da
+ analizzare.
+ Questo tipo di accesso permette di compiere un'analisi anche approfondita
+ in tempi rapidi e per questo è il tipo più auspicabile per il ricercatore.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Binari con simboli di debug
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Vengono forniti i binari precompilati del software con ancora i simboli
+ di debug.
+ È pratica comune nel caso in cui il cliente voglia favorire l'analisi senza
+ fornire il codice sorgente.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Black box
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Non si ha l'accesso né ai sorgenti né ai binari, ma solo l'accesso a un'interfac
+cia che espone alcune funzionalità.
+ In questo contesto è possibile procedere solo tramite test di tipo 
+\emph on
+black box
+\emph default
+ e 
+\emph on
+fuzzing
+\emph default
+.
+ È pratica comune nel caso di applicazioni web.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:bug-hunting-access-level"
+
+\end_inset
+
+Livelli di accesso possibili durante la ricerca di vulnerabilità per un
+ applicativo
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Le distinzioni ovviamente non sono assolute e possono esserci altre varianti
+ in cui ad esempio si ha l'accesso a solo una parte dei sorgenti, o si ha
+ un ambiente di test diverso da quello di 
+\emph on
+deploy
+\emph default
+, ecc.
+\end_layout
+
+\begin_layout Subsection
+Tempistiche
+\end_layout
+
+\begin_layout Standard
+Oltre al livello di accesso è necessario tener conto il tempo spendibile
+ nella fase di analisi per rispondere ai vincoli imposti dal committente.
+\end_layout
+
+\begin_layout Standard
+Un ricercatore analizza da 
+\begin_inset Formula $100$
+\end_inset
+
+ a 
+\begin_inset Formula $1000$
+\end_inset
+
+ linee di codice l'ora, dipendentemente dall'esperienza personale e dalla
+ complessità e ricchezza in dettagli del codice.
+\end_layout
+
+\begin_layout Standard
+Il tipo e la qualità del codice su cui fare ricerca ha un grandissimo impatto
+ sulla velocità di analisi.
+ Linguaggi come il 
+\family typewriter
+C/C++
+\family default
+ generalmente richiedono un esame più approfondito dei dettagli a basso
+ livello, mentre linguaggi 
+\emph on
+memory-safe
+\emph default
+ come 
+\family typewriter
+Java
+\family default
+ è più facile che abbiano errori ad alto livello nella logica applicativa.
+ Fattori indipendenti dal linguaggio che comunque possono influenzare fortemente
+ la velocità di analisi sono la qualità della documentazione interna e la
+ presenza o meno di commenti nel codice.
+ Per questa ragione è consigliato analizzare alcuni campioni di codice del
+ software così da poter stimare il tempo necessario all'analisi.
+\end_layout
+
+\begin_layout Standard
+È importante notare che la dimensione totale dell'applicazione impatta sul
+ tempo necessario all'analisi in modo non lineare, cioè analizzare un software
+ da 
+\begin_inset Formula $100\text{KLOC}$
+\end_inset
+
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Il 
+\begin_inset Flex CT - acronym
+status collapsed
+
+\begin_layout Plain Layout
+
+KLOC
+\end_layout
+
+\end_inset
+
+ è l'unità di misura più comunemente utilizzata per la stima della dimensione
+ di un'applicazione.
+ Nonostante non sia uno strumento ideale per stimare la reale dimensione
+ e complessità di un'applicazione, è comunque una buona metrica per scopi
+ generali come la quantità di codice che un ricercatore è in grado di analizzare
+ in un'unità di tempo.
+\end_layout
+
+\end_inset
+
+ generalmente non richiede il doppio del tempo necessario ad analizzarne
+ uno da 
+\begin_inset Formula $50\text{KLOC}$
+\end_inset
+
+, ma meno.
+ Il motivo di questo è che dopo l'analisi delle prime 
+\begin_inset Formula $50\text{KLOC}$
+\end_inset
+
+ il ricercatore acquisisce familiarità con il codice e con 
+\emph on
+pattern
+\emph default
+ comuni ripetuti più volte.
+ È importante tenere in considerazione anche queste economie di scala al
+ momento di stabilire le tempistiche dell'analisi.
+\end_layout
+
+\begin_layout Section
+Fase di analisi
+\end_layout
+
+\begin_layout Standard
+Le persone sono inclini ad approcciarsi all'analisi di un software in maniera
+ strutturata con un processo 
+\begin_inset Quotes eld
+\end_inset
+
+a cascata
+\begin_inset Quotes erd
+\end_inset
+
+.
+ Questo tipo di approccio dovrebbe dare al ricercatore tutte le informazioni
+ necessarie per pianificare ed eseguire un'analisi efficace e mirata del
+ software in esame.
+ Tuttavia questo approccio non porta necessariamente ad identificare nel
+ minor tempo possibile vulnerabilità di medio e alto livello che riguardano
+ la progettazione e la logica applicativa in quanto non viene preso in considera
+zione un semplice fatto riguardo la fase di analisi: 
+\emph on
+il momento in cui sappiamo meno riguardo un'applicazione è durante la fase
+ iniziale dell'analisi
+\emph default
+.
+ Questa frase appare piuttosto ovvia, ma spesso le persone sottostimano
+ quanto si possa imparare durante il corso dell'analisi.
+ Durante il primo approccio al codice non si conosce come questo sia stato
+ organizzato né da dove cominciare.
+ Alla fine dell'analisi l'applicazione risulta familiare al punto tale da
+ carpire le personalità e l'esperienza degli sviluppatori così come le parti
+ di codice da cui tutti si tengono lontani e ovviamente la logica generale.
+\end_layout
+
+\begin_layout Standard
+Il punto è che il momento in cui il ricercatore è più qualificato per scoprire
+ vulnerabilità nella logica applicativa o nella progettazione è verso la
+ fine dell'analisi, quando si è acquisita una conoscenza dettagliata di
+ come l'applicazione funzioni.
+ Nello sviluppare un proprio processo di analisi bisognerebbe concentrarsi
+ su questa osservazione.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+L'analisi della progettazione è ottima per iniziare il processo, per stabilire
+ le priorità dell'analisi e per dividere il lavoro tra il team di analisi.
+ Tuttavia si incontreranno spesso situazioni in cui sarà necessario saltare
+ questa fase, ad esempio quando:
+\end_layout
+
+\begin_layout Itemize
+Non sono stati forniti documenti di progetto da analizzare
+\end_layout
+
+\begin_layout Itemize
+La documentazione è non aggiornata, tanto da renderla inutile
+\end_layout
+
+\begin_layout Itemize
+Né la documentazione né gli sviluppatori sono disponibili
+\end_layout
+
+\begin_layout Itemize
+I vincoli di budget non lo permettono
+\end_layout
+
+\begin_layout Standard
+Tenendo sempre in considerazione i punti precedenti, eseguire un'analisi
+ della progettazione e costruire un modello di rischio è sempre consigliato
+ lì dove possibile.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+A questo punto si dovrebbero avere molte informazioni, ma comunque spesso
+ queste potrebbero non essere sufficienti per sapere con esattezza da dove
+ cominciare l'analisi del codice.
+\end_layout
+
+\begin_layout Standard
+Nel caso non si abbia documentazione sufficiente la decisione è semplice:
+ bisogna ricavare le specifiche di progettazione dall'implementazione durante
+ il corso dell'analisi.
+ In caso contrario abbiamo già le linee guida necessarie per strutturare
+ l'analisi.
+\end_layout
+
+\begin_layout Standard
+Esistono tre approcci generali da poter seguire a questo punto: top-down,
+ bottom-up e ibrido.
+\end_layout
+
+\begin_layout Subsection
+Approccio top-down
+\end_layout
+
+\begin_layout Standard
+L'approccio top-down (o 
+\series bold
+specializzazione
+\series default
+) rispecchia il classico processo di sviluppo a cascata.
+ Quando si utilizza questo approccio si parte da una conoscenza generale
+ dell'applicazione che va ad ampliarsi man mano che si conduce l'analisi
+ dell'applicativo.
+\end_layout
+
+\begin_layout Standard
+Questo approccio permette l'identificazione innanzitutto di vulnerabilità
+ a livello di progettazione, seguite da vulnerabilità a livello di logica
+ applicativa e infine 
+\end_layout
+
+\begin_layout Standard
+Questo approccio permette di identificare in ordine:
+\end_layout
+
+\begin_layout Enumerate
+vulnerabilità nella progettazione
+\end_layout
+
+\begin_layout Enumerate
+vulnerabilità nella logica applicativa
+\end_layout
+
+\begin_layout Enumerate
+vulnerabilità nell'implementazione di funzionalità a basso livello
+\end_layout
+
+\begin_layout Standard
+Questo approccio risulta accurato se la documentazione è completa; tuttavia,
+ qualcunque discrepanza tra progetto e implementazione potrebbe portare
+ il ricercatore a ignorare del codice rilevante dal punto di vista dell'analisi
+ di sicurezza.
+ Nella pratica discrepanze di questo tipo sono frequenti, quindi se si decide
+ di utilizzare l'approccio top-down bisogna predisporre ulteriori controlli
+ per evitare questo genere di mancanze.
+\end_layout
+
+\begin_layout Subsection
+Approccio bottom-up
+\end_layout
+
+\begin_layout Standard
+Utilizzando l'approccio bottom-up (o 
+\series bold
+generalizzazione
+\series default
+) si inizia l'analisi dall'implementazione per trovare per prime le vulnerabilit
+à di più basso livello.
+ Andando avanti con l'analisi si costruisce una più ampia conoscenza della
+ logica applicativa e della progettazione, anche se non si ha a disposizione
+ alcuna documentazione.
+ In questo modo man mano che si acquisisce conoscenza si possono costruire
+ dei modelli di rischio 
+\emph on
+ad-hoc
+\emph default
+ da seguire per proseguire l'analisi.
+\end_layout
+
+\begin_layout Standard
+Lo svantaggio di questo approccio sta nella sua lentezza; infatti, iniziando
+ l'analisi dall'implementazione, è possibile che si perda molto tempo su
+ del codice che si rivela successivamente non essere rilevante ai fini della
+ sicurezza.
+ D'altra parte non è suscettibile a problemi legati all'inconsistenza tra
+ implementazione e documentazione.
+\end_layout
+
+\begin_layout Subsection
+Approccio ibrido
+\end_layout
+
+\begin_layout Standard
+L'approccio ibrido è semplicemente la combinazione dei due approcci top-down
+ e bottom-up che vengono alternati in base alle necessità.
+ Questo tipo di approccio è la migliore opzione quando non si hanno le basi
+ per una progettazione accurata del metodo di analisi.
+ In questi casi si utilizzano le informazioni che si raccolgono man mano
+ per individuare dettagli dell'applicazione che si rivelano essere critici.
+\end_layout
+
+\begin_layout Standard
+Quando si utilizza l'approccio ibrido è pratica comune cercare di rispondere
+ ad alcune domande chiave durante l'analisi in modo tale da individuare
+ le caratteristiche ad alto livello dell'applicazione, ad esempio:
+\end_layout
+
+\begin_layout Itemize
+Scopo generale dell'applicazione: cosa ci si aspetta che l'applicazione
+ faccia?
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Asset
+\emph default
+ ed 
+\emph on
+entry point
+\emph default
+: In che modo i dati entrano nel sistema e quali sono quelli che potrebbero
+ essere d'interesse per un attaccante?
+\end_layout
+
+\begin_layout Itemize
+Componenti e moduli: In quali componenti e moduli principali è suddiviso
+ l'applicativo?
+\end_layout
+
+\begin_layout Itemize
+Relazioni tra moduli: In che modo comunicano i differenti moduli dell'applicazio
+ne?
+\end_layout
+
+\begin_layout Itemize
+Aspettative in ambito sicurezza: Quali aspettative di sicurezza hanno gli
+ utenti del sistema?
+\end_layout
+
+\begin_layout Itemize
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+dots
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Questi punti possono sembrare fin troppo generici quando si incontrano la
+ prima volta, soprattutto rispetto ad applicazioni di dimensione elevata,
+ ma nel procedere con l'analisi si vanno a dettagliare sempre di più.
+ In questo modo ad ogni iterazione si hanno dettagli in più che possono
+ dare una direzione all'analisi.
+\end_layout
+
+\begin_layout Section
+Fase di documentazione
+\end_layout
+
+\begin_layout Standard
+Completata la fase di analisi è tassativo documentare quanto scoperto.
+ Anche in questo caso non esiste un modello standard da seguire, ma ne viene
+ riportato uno di esempio in Tabella 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "tab:application-review-documentation-example"
+
+\end_inset
+
+ che risulta essere funzionale nella maggior parte dei casi.
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float table
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="9" columns="2">
+<features booktabs="true" tabularvalignment="middle">
+<column alignment="left" valignment="top" width="20col%">
+<column alignment="left" valignment="top" width="70col%">
+<row>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Rischio
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\emph on
+Brute-force
+\emph default
+ del login
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Componenti vulnerabili
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Component per l'accesso alla gestione delle risorse umane
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Dettagli del modulo
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+login.php
+\end_layout
+
+\end_inset
+
+ (linea 
+\begin_inset Formula $4963$
+\end_inset
+
+)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Classe di vulnerabilità
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Elusione del meccanismo di autenticazione
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Descrizione
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+In caso di errore di autenticazione vengono restituiti messaggi differenti
+ nel caso in cui lo username o la password siano errati rendendo semplice
+ identificare un utente valido.
+ Questo rende possibile portare a termine con successo un attacco 
+\emph on
+brute-force
+\emph default
+ nel caso di utenti con password deboli o comuni.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Risultato
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+È possibile accedere al sistema utilizzando le credenziali di utenti con
+ eventuali privilegi di lettura/scrittura di informazioni sensibili.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Prerequisiti
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+L'applicazione è visibile solo sulla intranet aziendale, limitando così
+ l'esposizione
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Impatto sull'azienda
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Una terza parte con accesso all'applicazione potrebbe accedere ai dati personali
+ di un utente con eventuale violazione della privacy
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Rischio
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Danno potenziale: 
+\begin_inset Formula $6$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+Riproducibilità: 
+\begin_inset Formula $8$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+Sfruttabilità: 
+\begin_inset Formula $4$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+Utenti affetti: 
+\begin_inset Formula $5$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+Rilevabilità: 
+\begin_inset Formula $8$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+Rischio totale: 
+\begin_inset Formula $6.2$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:application-review-documentation-example"
+
+\end_inset
+
+Esempio di modello per la documentazione delle scoperte dalla fase di analisi
+ delle vulnerabilità del software
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Importante tener presente che il livello di dettaglio cambia non solo in
+ base allo scopo dell'analisi, ma anche e soprattutto in base al destinatario:
+ un tecnico vorrà quanti più dettagli possibili, un dirigente vorrà sapere
+ quanti soldi rischia di perdere l'azienda se quella vulnerabilità venisse
+ sfruttata.
+\end_layout
+
+\begin_layout Section
+Navigazione del codice
+\end_layout
+
+\begin_layout Standard
+In base a quali sono il punto di ingresso nel codice dove si inizia l'analisi,
+ l'obiettivo finale e il modo in cui si segue il codice vengono definiti
+ diversi modi di navigare il codice tra funzioni e moduli.
+\end_layout
+
+\begin_layout Subsection
+External Flow Sensitivity
+\end_layout
+
+\begin_layout Standard
+Sulla base del principio 
+\emph on
+divide et impera
+\emph default
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Approccio che funziona dividendo ricorsivamente un problema in due o più
+ sotto-problemi fino a renderli semplici al punto da essere risolti direttamente.
+ Le soluzioni ai sotto-problemi vengono poi combinati per ottenere la soluzione
+ del problema originale.
+\end_layout
+
+\end_inset
+
+, quando si analizza un'intera applicazione è necessario dividerla in parti
+ che siano più gestibili.
+ Uno dei modi più semplici di fare questo è di isolare il flusso di codice
+ esterno, cioè come l'esecuzione procede da funzione a funzione, ma non
+ all'interno delle funzioni.
+ È possibile fare questo in due modi differenti: 
+\emph on
+control-flow sensitive
+\emph default
+ e 
+\emph on
+data-flow sensitive
+\emph default
+.
+ Un breve esempio aiuterà ad illustrare questi due concetti:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=C,tabsize=4"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+void bob(int c)
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+	if (c == 4)
+\end_layout
+
+\begin_layout Plain Layout
+
+		fred(c);
+\end_layout
+
+\begin_layout Plain Layout
+
+	else if (c == 72)
+\end_layout
+
+\begin_layout Plain Layout
+
+		jim();
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	while(c)
+\end_layout
+
+\begin_layout Plain Layout
+
+		updateGlobalState();
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Analizzare la funzione appena illustrata senza utilizzare nessun approccio
+ particolare significa semplicemente leggere il suo codice dall'inizio alla
+ fine, senza analizzare nessuna chiamata a funzione.
+ Si può notare quindi che viene utilizzato un valore 
+\begin_inset Quotes eld
+\end_inset
+
+sentinella
+\begin_inset Quotes erd
+\end_inset
+
+ 
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+c
+\end_layout
+
+\end_inset
+
+ per eseguire le chiamate a 
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+fred()
+\end_layout
+
+\end_inset
+
+ e 
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+jim()
+\end_layout
+
+\end_inset
+
+, tuttavia l'analisi rimane isolata alla funzione 
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+bob()
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Consideriamo lo stesso esempio utilizzando l'approccio 
+\emph on
+control-flow sensitive
+\emph default
+.
+ In questo caso si inizia leggendo la funzione 
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+bob()
+\end_layout
+
+\end_inset
+
+ fino a vedere la chiamata a 
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+fred()
+\end_layout
+
+\end_inset
+
+.
+ Supponendo di non aver ancora mai visto la funzione 
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+fred()
+\end_layout
+
+\end_inset
+
+ prima, cominciamo ad analizzare la sua implementazione.
+ Finito questo, tornati alla funzione 
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+bob()
+\end_layout
+
+\end_inset
+
+, incontriamo le chiamate alle funzioni 
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+jim()
+\end_layout
+
+\end_inset
+
+ e 
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+updateGlobalState()
+\end_layout
+
+\end_inset
+
+ su cui eseguiamo lo stesso processo.
+ Ovviamente ognuna di queste funzioni potrebbe invocare altre funzioni ancora
+ non analizzate e secondo questo approccio dovremo analizzarle tutte.
+ È chiaro quindi che questo approccio potrebbe portare a dover analizzare
+ decine di funzioni prima di completare l'analisi di un codice apparentemente
+ semplice come quello mostrato.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Ora, supponiamo invece di utilizzare l'approccio 
+\emph on
+data-flow sensitive
+\emph default
+.
+ Quello che si fa è seguire il flusso di dati corrispondente al valore della
+ variabile 
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+c
+\end_layout
+
+\end_inset
+
+ ignorando qualunque funzione che non la utilizzi direttamente.
+ Con questpo approccio, quindi, andremo ad analizzare la funzione 
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+fred()
+\end_layout
+
+\end_inset
+
+ perché utilizza il valore di 
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+c
+\end_layout
+
+\end_inset
+
+ come parametro, mentre ignoreremo la chiamata alla funzione 
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+jim()
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Inoltre, seguendo il flusso di controllo e di dati, una volta arrivati ad
+ analizzare la funzione 
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+bob()
+\end_layout
+
+\end_inset
+
+, potremmo avere un'idea sui possibili valori che la variabile 
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+c
+\end_layout
+
+\end_inset
+
+ potrebbe assumere e quindi escludere determinate invocazioni di funzioni.
+ Ad esempio, se dall'analisi sappiamo che la variabile 
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+c
+\end_layout
+
+\end_inset
+
+ non assumerà il valore 
+\begin_inset Formula $4$
+\end_inset
+
+, ma potrebbe assumere il valore 
+\begin_inset Formula $72$
+\end_inset
+
+, allora potremmo decidere di ignorare l'analisi della funzione 
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+fred()
+\end_layout
+
+\end_inset
+
+ e indagare invece la funzione 
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+jim()
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Nonostante entrambi gli approcci appena illustrati siano piuttosto efficaci
+ e possono essere combinati per ottenere risultati migliori, è da notare
+ come questi vengano utilizzati solo dopo analisi condotte con altri metodi.
+ Il motivo di questo è limitare il più possibile il campo d'indagine e soprattut
+to i cambi di contesto che il ricercatore è obbligato a seguire per ottimizzare
+ l'uso del proprio tempo e semplificare l'analisi.
+ In generale, quindi, dà risultati più efficaci analizzare ogni funzione
+ in modo indipendente e seguire il flusso (di controllo o di dati) solo
+ quando strettamente necessario.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Shadowbox
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+
+\series bold
+Nota
+\end_layout
+
+\begin_layout Plain Layout
+L'analisi del flusso è un concetto complesso molto importante ad esempio
+ nella progettazione dei compilatori e la caratterizzazione che è stata
+ appena fatta è stata volutamente semplificata per lo scopo della trattazione.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Tracing Direction
+\end_layout
+
+\begin_layout Standard
+Quando si analizza del codice si può seguire il suo flusso secondo due modalità
+ differenti: 
+\emph on
+forward-tracing
+\emph default
+, generalmente utilizzata per valutare la funzionalità del codice, e 
+\emph on
+back-tracing
+\emph default
+, utilizzata invece per valutare la raggiungibilità del codice.
+\end_layout
+
+\begin_layout Description
+Forward-tracing quando si utilizzano i due approcci di controllo del flusso
+ appena illustrati si comincia analizzando gli 
+\emph on
+entry point
+\emph default
+, i 
+\emph on
+trust boundaries
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+È un termine utilizzato per descrivere i confini dove i dati del programma
+ provengono da una sorgente non autorizzata, o quando l'esecuzione cambia
+ il proprio livello di privilegi, ad esempio passando da un'esecuzione come
+ utente non privilegiato all'esecuzione come utente 
+\emph on
+root
+\emph default
+.
+\end_layout
+
+\begin_layout Plain Layout
+Una violazione di questi confini si riferisce a una vulnerabilità per cui
+ i dati utilizzati dal software provenienti da una sorgente non fidata non
+ vengono validati prima del loro utilizzo.
+\end_layout
+
+\end_inset
+
+
+\emph default
+ o la prima riga di un algoritmo.
+ Se invece non si utilizza nessuno dei due approcci precedenti si comincia
+ analizzando la prima riga di un file o l'inizio dell'implementazione di
+ un modulo.
+ Una volta scelto il punto di partenza dell'analisi si prosegue verso il
+ basso.
+\end_layout
+
+\begin_layout Description
+Back-tracing generalmente si inizia l'analisi da una porzione di codice
+ identificato come un candidato potenziale che si ritiene possa contenere
+ delle vulnerabilità.
+ Possibili candidati sono istruzioni SQL create dinamicamente e senza controlli
+ di sorta sulle stringhe utilizzate, accesso a file di cui è l'utente a
+ specificare il percorso, funzioni che effettuano 
+\emph on
+parsing
+\emph default
+ di dati forniti dall'utente, conversioni implicite o operazioni su dati
+ numerici con/senza segno, meccanismi di frammentazione nei protocolli,
+ ecc.
+\begin_inset Newline newline
+\end_inset
+
+I candidati potenziali sono generalmente identificati tramite qualche forma
+ di analisi automatica o navigando il codice alla ricerca di 
+\emph on
+pattern
+\emph default
+ noti per essere vulnerabili.
+ Una volta identificati l'analisi prosegue all'indietro fino a individuare
+ gli 
+\emph on
+entry point
+\emph default
+ dell'applicazione che li possono raggiungere.
+\end_layout
+
+\begin_layout Standard
+Il vantaggio del 
+\emph on
+back-tracing
+\emph default
+ sta nel fatto che viene analizzato meno codice rispetto al 
+\emph on
+forward-tracing
+\emph default
+.
+ Lo svantaggio, d'altra parte, è che come metodologia è tanto valida quanto
+ sono validi i candidati potenziali scelti.
+ In questo modo, infatti, si corre il rischio di non considerare tutte quelle
+ vulnerabilità legate alla logica applicativa che difficilmente si mappano
+ uno-a-uno con chiamate a funzioni o 
+\emph on
+pattern
+\emph default
+ di codice noti.
+\end_layout
+
+\begin_layout Section
+Automazione
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+TODO
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
 Analisi statica
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:static-analysis"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-\begin_inset Note Note
+Quando si sceglie un approccio di analisi statica si legge il codice sorgente
+ o il disassemblato del software da esaminare riga per riga per cercare
+ di comprenderlo.
+ Tuttavia, leggere tutto il codice dall'inizio alla fine non è generalmente
+ praticabile se non per piccoli progetti.
+ Questa considerazione risulta più evidente se si analizzano i dati in Figura
+ 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:android-sloc-timeline"
+
+\end_inset
+
+ in cui vengono mostrati il numero di linguaggi e di righe di codice che
+ compongono Android
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Dati aggiornati a Ottobre 2017, consultabili sul sito 
+\begin_inset CommandInset href
+LatexCommand href
+name "https://www.openhub.net/"
+target "https://www.openhub.net/p/android/analyses/latest/languages_summary"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float figure
+placement h
+wide false
+sideways false
 status open
 
 \begin_layout Plain Layout
-TODO
+\align center
+\begin_inset Graphics
+	filename /home/mrnfrancesco/git/master-thesis/gfx/android-sloc-timeline.png
+	display false
+	width 100col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:android-sloc-timeline"
+
+\end_inset
+
+Principali linguaggi utilizzati in Android e conteggio totale righe di codice
 \end_layout
 
 \end_inset
@@ -109,16 +1837,8 @@ TODO
 
 \end_layout
 
-\begin_layout Section
-Analisi dinamica: il fuzzing
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
 \begin_layout Plain Layout
-TODO
+
 \end_layout
 
 \end_inset
@@ -126,11 +1846,40 @@ TODO
 
 \end_layout
 
-\begin_layout Section
-Entry Point comuni
+\begin_layout Standard
+Quello che si fa quindi è cercare di ridurre il più possibile la superficie
+ d'attacco da analizzare concentrandosi su una specifica funzione, uno specifico
+ componente o protocollo, ecc.
 \end_layout
 
 \begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+TODO: da completare
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Quello che si fa è quindi cercare di identificare quali sono gli input che
+ l'utente dà al programma e dove questi vengono utilizzati nel codice.
+ Da notare che quando si parla di input si intendono vari tipi di dati:
+ provenienti dalla rete, file, richiesti in fase di esecuzione, ecc.
+\end_layout
+
+\begin_layout Subsection
+Analisi dinamica
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:dynamic-analysis"
+
+\end_inset
+
 
 \end_layout
 
