@@ -710,6 +710,13 @@ acro{KLOC}{Kilo Line Of Code}
 
 \begin_layout Plain Layout
 
+  
+\backslash
+acro{TTM}{Time To Market}
+\end_layout
+
+\begin_layout Plain Layout
+
 
 \backslash
 end{acronym}              

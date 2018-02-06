@@ -1740,39 +1740,19 @@ Automazione
 \end_layout
 
 \begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-TODO
+Le tecniche e gli approcci discussi finora unitamente all'esperienza maturata
+ portano il ricercatore stesso ad essere il miglior strumento per individuare
+ nuove vulnerabilità in un software.
+ Tuttavia nel fare questo bisogna tener conto alcuni fattori importanti:
 \end_layout
 
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsection
-Analisi statica
-\begin_inset CommandInset label
-LatexCommand label
-name "sec:static-analysis"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Quando si sceglie un approccio di analisi statica si legge il codice sorgente
- o il disassemblato del software da esaminare riga per riga per cercare
- di comprenderlo.
- Tuttavia, leggere tutto il codice dall'inizio alla fine non è generalmente
- praticabile se non per piccoli progetti.
+\begin_layout Enumerate
+Leggere tutto il codice dall'inizio alla fine non è generalmente praticabile
+ se non per piccoli progetti.
  Questa considerazione risulta più evidente se si analizzano i dati in Figura
  
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:android-sloc-timeline"
 
 \end_inset
@@ -1797,12 +1777,7 @@ target "https://www.openhub.net/p/android/analyses/latest/languages_summary"
 \end_inset
 
 .
-\end_layout
-
-\begin_layout Standard
-\align center
 \begin_inset Float figure
-placement h
 wide false
 sideways false
 status open
@@ -1837,43 +1812,305 @@ Principali linguaggi utilizzati in Android e conteggio totale righe di codice
 
 \end_layout
 
-\begin_layout Plain Layout
-
-\end_layout
-
 \end_inset
 
 
 \end_layout
 
-\begin_layout Standard
-Quello che si fa quindi è cercare di ridurre il più possibile la superficie
- d'attacco da analizzare concentrandosi su una specifica funzione, uno specifico
- componente o protocollo, ecc.
+\begin_layout Enumerate
+Il software evolve nel tempo; se si impiega troppo tempo ad analizzare il
+ codice sorgente è possibile che nel momento in cui viene trovata una vulnerabil
+ità questa sia già stata eliminata in modo più o meno consapevole, ad esempio
+ perché il codice vulnerabile è stato riscritto per aggiungere una funzionalità.
 \end_layout
 
-\begin_layout Standard
-\begin_inset Note Note
-status open
+\begin_layout Enumerate
+Il 
+\begin_inset Flex CT - acronym
+status collapsed
 
 \begin_layout Plain Layout
-TODO: da completare
+
+TTM
 \end_layout
 
 \end_inset
 
 
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Indica il tempo che intercorre dall'ideazione di un prodotto alla sua effettiva
+ commercializzazione.
+\end_layout
+
+\begin_layout Plain Layout
+Comprende le fasi di studi di mercato, studi di fattibilità, ingegnerizzazione,
+ creazione di un prototipo, produzione in larga scala, immissione sul mercato.
+\end_layout
+
+\begin_layout Plain Layout
+Nel campo delle nuove tecnologie è di fondamentale importanza abbassare
+ il TTM per imporsi sul mercato prima dei concorrenti.
+ 
+\end_layout
+
+\end_inset
+
+ impone forti limiti al tempo massimo che si può impiegare nel fare ricerca;
+ è ad esempio il caso in cui sulla base delle vulnerabilità trovate bisogna
+ costruire un prodotto finito commercializzabile.
 \end_layout
 
 \begin_layout Standard
-Quello che si fa è quindi cercare di identificare quali sono gli input che
- l'utente dà al programma e dove questi vengono utilizzati nel codice.
- Da notare che quando si parla di input si intendono vari tipi di dati:
- provenienti dalla rete, file, richiesti in fase di esecuzione, ecc.
+Per facilitare e velocizzare il compito di ricerca delle vulnerabilità vengono
+ quindi in aiuto due diversi approcci per automatizzare, almeno in parte,
+ il processo di ricerca di nuove vulnerabilità: l'analisi statica e l'analisi
+ dinamica.
 \end_layout
 
 \begin_layout Subsection
-Analisi dinamica
+Analisi statica
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:static-analysis"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+L'analisi statica non coinvolge l'esecuzione del software e può rilevare
+ possibili difetti del codice già nelle prime fasi di sviluppo.
+ È un'attività svolta da software automatici che navigano il codice utilizzando
+ delle regole e dei 
+\emph on
+pattern
+\emph default
+ preimpostati e cercano sequenze di codice che una volta eseguite possono
+ risultare in 
+\emph on
+buffer overflow
+\emph default
+, 
+\emph on
+memory leak
+\emph default
+, o altri problemi che minano la sicurezza.
+ Gli analizzatori statici risultano piuttosto efficaci nell'individuare
+ una classe significativa di problemi che non sono individuati dai compilatori
+ durante la fase di 
+\emph on
+build
+\emph default
+.
+ Questo perché mentre un compilatore può segnalare tramite 
+\emph on
+warning
+\emph default
+ alcuni potenziali problemi del codice come conversioni implicite tra tipi
+ di dati, uso di variabili non inizializzati, ecc.
+ un analizzatore statico è in grado di effettuare un'analisi completa del
+ programma, trovando bug causati da interazioni complesse tra parti di codice
+ anche se residenti in differenti file sorgenti.
+\end_layout
+
+\begin_layout Standard
+Gli analizzatori statici sono in grado di individuare potenziali percorsi
+ d'esecuzione nel codice navigando tra le diverse chiamate a funzione e
+ di tracciare come i valori delle variabili possono cambiare durante l'esecuzion
+e.
+\end_layout
+
+\begin_layout Standard
+A seguire una lista di tipici errori che possono essere individuati tramite
+ analisi statica:
+\end_layout
+
+\begin_layout Itemize
+dereferenziazione di puntatori NULL
+\end_layout
+
+\begin_layout Itemize
+buffer overflow
+\end_layout
+
+\begin_layout Itemize
+scrittura di aree di memoria a sola lettura
+\end_layout
+
+\begin_layout Itemize
+lettura di dati non inizializzati
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+leak 
+\emph default
+di risorse (memoria, descrittori di file, 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+dots
+\end_layout
+
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+utilizzo di aree di memoria che sono già state deallocate
+\end_layout
+
+\begin_layout Itemize
+utilizzo di aree di memoria 
+\emph on
+out-of-scope
+\emph default
+ (restituire l'indirizzo di una variabile interna a una funzione)
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+underflow
+\emph default
+ di buffer e array
+\end_layout
+
+\begin_layout Itemize
+condizioni di controllo sempre vere o sempre false
+\end_layout
+
+\begin_layout Itemize
+scrittura di variabili che non vengono mai lette
+\end_layout
+
+\begin_layout Itemize
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+dots
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Gli analizzatori statici inoltre hanno conoscenza del comportamento a 
+\emph on
+runtime 
+\emph default
+di alcune funzioni presenti nelle librerie standard.
+ Ad esempio, possono sapere che alla funzione 
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+free
+\end_layout
+
+\end_inset
+
+ bisogna passare come parametro il puntatore a un'area di memoria allocata
+ tramite una delle funzioni della famiglia di 
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+malloc
+\end_layout
+
+\end_inset
+
+.
+ Gli analizzatori utilizzano queste informazioni per individuare errori
+ legati all'invocazione errata di queste funzioni o all'utilizzo dei valori
+ restituiti.
+ Lo stesso principio viene poi utilizzato anche per funzioni non standard
+ scritte dal programmatore del software in esame.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Uno dei principali obiettivi di un analizzatore statico è quello di ridurre
+ al minimo il numero di falsi positivi
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Potenziale problema identificato che non può realmente presentarsi durante
+ l'esecuzione del software
+\end_layout
+
+\end_inset
+
+ di modo da ridurre la quantità di codice che il ricercatore dovrà poi controlla
+re per verificare o meno la presenza di un bug o di una vulnerabilità.
+ Tuttavia, dato che un analizzatore non è in grado di capire a fondo la
+ semantica del software in esame, eliminare completamente i falsi positivi
+ è un obiettivo che non è possibile raggiungere.
+\end_layout
+
+\begin_layout Subsubsection*
+Pro e contro dell'analisi statica
+\end_layout
+
+\begin_layout Standard
+Il vantaggio principale dell'analisi statica è che è in grado di individuare
+ dei bug nel codice prima ancora che questo sia stato completato, riducendo
+ sia il tempo che il costo necessari a risolverli.
+ Tramite l'analisi statica, inoltre, è possibile individuare con precisione
+ dove risiede un bug e segnalare codice non raggiungibile, funzioni che
+ non vengono mai chiamate, variabili dichiarate e non usate e problemi simili.
+\end_layout
+
+\begin_layout Standard
+D'altro canto bisogna tener conto che l'analisi statica può produrre molti
+ falsi negativi
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Bug o vulnerabilità non identificato pur essendo presente
+\end_layout
+
+\end_inset
+
+ (es.
+ vulnerabilità introdotte in fase di esecuzione) e molti falsi positivi.
+ Inoltre, lo ripetiamo, la bontà di un analizzatore statico sta nella bontà
+ delle regole che utilizza.
+\end_layout
+
+\begin_layout Subsection
+Analisi dinamica: il fuzzing
 \begin_inset CommandInset label
 LatexCommand label
 name "sec:dynamic-analysis"
@@ -1884,16 +2121,297 @@ name "sec:dynamic-analysis"
 \end_layout
 
 \begin_layout Standard
-\begin_inset Note Note
+Al contrario dell'analisi statica in cui il codice del software non viene
+ eseguito, l'analisi dinamica tramite fuzzing fornisce input creati in modo
+ pseudo-casuale al software in fase di esecuzione analizzando poi la risposta
+ ottenuta che può o meno differire da quella attesa.
+\end_layout
+
+\begin_layout Standard
+Un'analisi completa dovrebbe sempre combinare sia l'analisi statica sia
+ quella dinamica.
+ È semplice mostrare il motivo di questa necessità con un esempio.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=C,tabsize=4"
+inline false
 status open
 
 \begin_layout Plain Layout
-TODO
+
+int *getval(void)
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+	return 0;
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+void foo(void)
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+	int *b = getval();
+\end_layout
+
+\begin_layout Plain Layout
+
+	...
+\end_layout
+
+\begin_layout Plain Layout
+
+	*b = 0;
+\end_layout
+
+\begin_layout Plain Layout
+
+}
 \end_layout
 
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+L'estratto di codice mostrato verrebbe segnalato (correttamente) come errore
+ da un analizzatore statico in quanto il puntatore 
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+b
+\end_layout
+
+\end_inset
+
+ viene inizializzato usando il valore di ritorno della funzione 
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+getval
+\end_layout
+
+\end_inset
+
+ (un puntatore nullo) che successivamente viene dereferenziato.
+\end_layout
+
+\begin_layout Standard
+Tuttavia il codice che segue, simile al precedente, potrebbe non essere
+ segnalato come errore.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=C,tabsize=4"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+int fd;
+\end_layout
+
+\begin_layout Plain Layout
+
+...
+\end_layout
+
+\begin_layout Plain Layout
+
+int *getval(void)
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+	int *tmp;
+\end_layout
+
+\begin_layout Plain Layout
+
+	read(fd, &tmp, sizeof(tmp));
+\end_layout
+
+\begin_layout Plain Layout
+
+	return tmp;
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+void foo(void)
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+	int *b = getval();
+\end_layout
+
+\begin_layout Plain Layout
+
+	...
+\end_layout
+
+\begin_layout Plain Layout
+
+	*b = 0;
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Nonostante possa aver passato tutti i controlli questo codice contiene lo
+ stesso bug presente nell'estratto precedente.
+ Infatti se il file da cui la funzione 
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+getval
+\end_layout
+
+\end_inset
+
+ legge contenesse un valore uguale a zero porterebbe il software a terminare
+ in seguito a un 
+\emph on
+crash
+\emph default
+.
+ Tuttavia, altri tipi di bug sono molto più insidiosi e possono portare
+ a comportamenti errati che non causano alcun fallimento evidente e possono
+ passare inosservati anche a un'analisi dinamica tramite fuzzing.
+\end_layout
+
+\begin_layout Standard
+Tipici errori che possono essere individuati tramite fuzzing sono:
+\end_layout
+
+\begin_layout Itemize
+buffer overflow
+\end_layout
+
+\begin_layout Itemize
+integer overflow/underflow
+\end_layout
+
+\begin_layout Itemize
+mancanza di gestione di tutti i casi possibili in una catena di 
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+if/else
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+memory leak
+\end_layout
+
+\begin_layout Itemize
+errori di allocazione dinamica della memoria
+\end_layout
+
+\begin_layout Subsubsection*
+Pro e contro dell'analisi dinamica tramite fuzzing
+\end_layout
+
+\begin_layout Standard
+Un punto a favore dell'analisi dinamica è che permette di testare un'applicazion
+e anche quando non si ha a disposizione il codice sorgente o i binari precompila
+ti.
+ Se usata congiuntamente all'analisi statica permette di verificare i bug
+ segnalati e di trovare quelli presenti, ma non segnalati.
+\end_layout
+
+\begin_layout Standard
+D'altro canto il fuzzing tende a scalfire solo la superficie del software
+ in esame mantenendo una percentuale di copertura che in molti casi rimane
+ al di sotto del 
+\begin_inset Formula $10\%$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Come nel caso dell'analisi statica, anche con il fuzzing la bontà dei risultati
+ è strettamente correlata con la bontà delle regole con cui vengono generati
+ i dati di test, ma mentre con l'analisi statica possiamo individuare con
+ precisione la posizione del bug, nel caso del fuzzing può essere difficile
+ risalire all'esatta posizione nel codice che ha generato l'errore, richiedendo
+ quindi più tempo per risolvere il problema.
 \end_layout
 
 \end_body
