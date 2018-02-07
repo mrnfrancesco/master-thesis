@@ -82,8 +82,31 @@ name "ch:software-review-case-study"
 
 \end_layout
 
-\begin_layout Section
-Com'è stato trovato BlueBorne
+\begin_layout Standard
+Nonostante spesso vengano pubblicate sia nuove vulnerabilità che gli 
+\emph on
+exploit
+\emph default
+ per sfruttarle (vedi Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:exploit-disclosed-1988-to-2018"
+
+\end_inset
+
+), quasi mai viene riportata la metodologia o gli strumenti utilizzati né
+ le competenze che è stato necessario avere o acquisire.
+ Lo scopo di questo capitolo è quello di riportare la metodologia che si
+ suppone sia stata utilizzata per trovare alcune delle vulnerabilità già
+ citate nella Sezione 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sec:some-clickless-vulnerabilities"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
@@ -91,12 +114,495 @@ Com'è stato trovato BlueBorne
 status open
 
 \begin_layout Plain Layout
-TODO
+TODO: Rivedere l'introduzione del capitolo in base alle sezioni successive
 \end_layout
 
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /home/mrnfrancesco/git/master-thesis/gfx/exploits-disclosed-1988-to-2018.png
+	display false
+	width 100col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:exploit-disclosed-1988-to-2018"
+
+\end_inset
+
+Numero di exploit pubblicati su 
+\begin_inset CommandInset href
+LatexCommand href
+name "exploit-db.com"
+target "https://www.exploit-db.com/"
+
+\end_inset
+
+ dal 1988 a Gennaio 2018
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Com'è stato trovato BlueBorne
+\end_layout
+
+\begin_layout Standard
+La scoperta di BlueBorne ha richiesto l'impiego di due sole persone (Ben
+ Seri e Gregory Vishnepolsky, ricercatori presso Armis Labs) per un periodo
+ di tempo di tre mesi.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Una volta scelto come obiettivo lo studio dello stack Bluetooth, il primo
+ passo è stato quello di fare ricerche riguardo la possibilità di individuare
+ dispositivi Bluetooth a prescindere dalle impostazioni di visibilità (Sez.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:discoverable-mode-problem"
+
+\end_inset
+
+); è chiaro infatti che se non ci si può connettere a un dispositivo, anche
+ se vulnerabile, questo non è attaccabile.
+\end_layout
+
+\begin_layout Standard
+Il secondo passo è stato quello di studiare lo stato dell'arte delle ricerche
+ in ambito sicurezza che riguardassero il Bluetooth con il duplice scopo
+ da una parte di evitare di analizzare nuovamente aspetti già analizzati
+ da altri, dall'altra di capire quali fossero gli aspetti meno analizzati
+ per avere un punto di partenza che avrebbe potuto portare a dei risultati
+ con più alta probabilità.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Dopo questa prima fase è iniziato lo studio della documentazione fornita
+ che riguardasse le specifiche del Bluetooth e dei vari protocolli e meccanismi
+ che lo compongono.
+ Tra tutti quelli esistenti, la prima scelta è ricaduta sul protocollo 
+\begin_inset Flex CT - acronym
+status collapsed
+
+\begin_layout Plain Layout
+
+SDP
+\end_layout
+
+\end_inset
+
+ (Sez.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:service-discovery-protocol-sdp"
+
+\end_inset
+
+) in quanto l'unico che non richiede autenticazione.
+ Per cercare di ridurre la quantità di codice su cui investigare è stato
+ fatto inizialmente un tentativo di trovare una debolezza nelle specifiche
+ del protocollo stesso.
+ Questo non ha portato a risultati.
+ Durante le investigazioni successive, l'attenzione è ricaduta sul particolare
+ meccanismo di frammentazione implementato dal protocollo, in particolare
+ sul meccanismo del 
+\emph on
+continuation state
+\emph default
+ (Sez.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:sdp-protocol-description"
+
+\end_inset
+
+).
+ La domanda che i due ricercatori si sono posti è stata: cosa accadrebbe
+ se venisse inviata una richiesta malformata nel valore del 
+\emph on
+continuation state
+\emph default
+ o di altri campi?
+\end_layout
+
+\begin_layout Standard
+Una volta fatte delle ipotesi è iniziata la fase di analisi (manuale) del
+ codice e successivamente di sviluppo di un 
+\emph on
+exploit
+\emph default
+ che permettesse di verificare le assunzioni fatte.
+\end_layout
+
+\begin_layout Standard
+In questo modo è stata individuata la vulnerabilità spiegata in dettaglio
+ nella Sezione 
+\begin_inset CommandInset ref
+LatexCommand nameref
+reference "sec:android-information-leak-(CVE-2017-0785)"
+
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand vpageref
+reference "sec:android-information-leak-(CVE-2017-0785)"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Utilizzando lo stesso SDP per la ricerca di servizi in un dispositivo campione
+ (Google Pixel) è stato ricavato il seguente risultato che mostra una vasta
+ superficie d'attacco su cui investigare:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "tabsize=4"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+shell@linux:/ $ sdptool browse 40:4e:36:xx:xx:xx
+\end_layout
+
+\begin_layout Plain Layout
+
+"Advanced Audio" (0x110d)
+\end_layout
+
+\begin_layout Plain Layout
+
+"ATT" (0x0007)
+\end_layout
+
+\begin_layout Plain Layout
+
+"Audio Source" (0x110a)
+\end_layout
+
+\begin_layout Plain Layout
+
+"AVCTP" (0x0017)
+\end_layout
+
+\begin_layout Plain Layout
+
+"AVDTP" (0x0019)
+\end_layout
+
+\begin_layout Plain Layout
+
+"AV Remote" (0x110e)
+\end_layout
+
+\begin_layout Plain Layout
+
+"AV Remote Target" (0x110c)
+\end_layout
+
+\begin_layout Plain Layout
+
+"BNEP" (0x000f)
+\end_layout
+
+\begin_layout Plain Layout
+
+"Generic Access" (0x1800)
+\end_layout
+
+\begin_layout Plain Layout
+
+"Generic Attribute" (0x1801)
+\end_layout
+
+\begin_layout Plain Layout
+
+"Generic Audio" (0x1203)
+\end_layout
+
+\begin_layout Plain Layout
+
+"Generic Telephony" (0x1204)
+\end_layout
+
+\begin_layout Plain Layout
+
+"Handsfree" (0x111e)
+\end_layout
+
+\begin_layout Plain Layout
+
+"Handsfree Audio Gateway" (0x111f)
+\end_layout
+
+\begin_layout Plain Layout
+
+"Headset" (0x1108)
+\end_layout
+
+\begin_layout Plain Layout
+
+"Headset Audio Gateway" (0x1112)
+\end_layout
+
+\begin_layout Plain Layout
+
+"L2CAP" (0x0100)
+\end_layout
+
+\begin_layout Plain Layout
+
+"Message Access" (0x1134)
+\end_layout
+
+\begin_layout Plain Layout
+
+"Network Access Point" (0x1116)
+\end_layout
+
+\begin_layout Plain Layout
+
+"OBEX" (0x0008)
+\end_layout
+
+\begin_layout Plain Layout
+
+"OBEX Object Push" (0x1105)
+\end_layout
+
+\begin_layout Plain Layout
+
+"PAN User" (0x1115)
+\end_layout
+
+\begin_layout Plain Layout
+
+"Phonebook Access" (0x1130)
+\end_layout
+
+\begin_layout Plain Layout
+
+"Phonebook Access - PSE" (0x112f)
+\end_layout
+
+\begin_layout Plain Layout
+
+"RFCOMM" (0x0003)
+\end_layout
+
+\begin_layout Plain Layout
+
+"SIM Access" (0x112d)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+I due ricercatori hanno scelto di iniziare da qualcosa di meno conosciuto,
+ in questo caso il protocollo 
+\begin_inset Flex CT - acronym
+status collapsed
+
+\begin_layout Plain Layout
+
+BNEP
+\end_layout
+
+\end_inset
+
+ (Sez.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:bluetooth-netword-encapsulation-protocol-bnep"
+
+\end_inset
+
+).
+ Una volta letta la documentazione a riguardo e capito a fondo il protocollo,
+ il passo successivo è stato quello di cominiciare la ricerca nel codice
+ della funzione di gestione dei messaggi.
+ Una volta trovata è stato studiato il suo codice fino a trovare una vulnerabili
+tà.
+ Per dimostrarne la sfruttabilità è stato utilizzato un approccio di navigazione
+ del codice di tipo 
+\emph on
+back-tracing
+\emph default
+ 
+\emph on
+data-flow sensitive
+\emph default
+ per capire se e come il codice vulnerabile è raggiungibile da un attaccante.
+ Una volta stabilita la sua raggiungibilità è stato utilizzato un forte
+ approccio 
+\emph on
+control-flow sensitive
+\emph default
+ per capire la reale sfruttabilità della vulnerabilità in funzione di eventuali
+ mitigazioni introdotte dal sistema operativo.
+\end_layout
+
+\begin_layout Standard
+Stabilito che non era presente alcuna mitigazione che impedisse 
+\emph on
+l'heap overflow
+\emph default
+ la ricerca è proseguita sviluppando un 
+\emph on
+exploit
+\emph default
+ 
+\emph on
+ad-hoc
+\emph default
+ che inviasse pacchetti malformati in modo da eseguire il codice vulnerabile.
+ Utilizzando gli strumenti messi a disposizione da Android per il 
+\emph on
+logging
+\emph default
+ degli errori (Logcat) è stato osservato che il demone Bluetooth mostrava
+ dei 
+\emph on
+crash
+\emph default
+ in 
+\begin_inset Formula $6\text{/}7$
+\end_inset
+
+ punti differenti, ma in uno solo di questi compariva come indirizzo della
+ funzione invocata prima del 
+\emph on
+crash
+\emph default
+ l'indirizzo inserito nel pacchetto malformato inviato.
+\end_layout
+
+\begin_layout Standard
+A partire dallo stack delle chiamate a funzione nel 
+\emph on
+report
+\emph default
+ del 
+\emph on
+crash
+\emph default
+ e utilizzando un approccio di 
+\emph on
+back-tracing control-flow 
+\emph default
+sensitive
+\emph on
+, 
+\emph default
+i ricercatori sono stati in grado di identificare l'intero flusso di invocazioni
+ coinvolte nel 
+\emph on
+crash
+\emph default
+.
+\end_layout
+
+\begin_layout Standard
+Una volta studiate queste, l'ultimo passo prima dello sviluppo di un 
+\emph on
+exploit
+\emph default
+ completo è stato quello di studiare le strutture dati coinvolte per capire
+ per quale motivo lo stesso pacchetto malformato fosse in grado di interrompere
+ il demone Bluetooth in tanti punti differenti.
+ Questo ha portato a studiare e comprendere il funzionamento del sistema
+ di allocazione dinamica di memoria di Andorid e le strutture dati coinvolte
+ nella memorizzazione del nome del dispositivo così da poter fare 
+\emph on
+shaping 
+\emph default
+della memoria (Sez.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:memory-shaping"
+
+\end_inset
+
+) e caricare il 
+\emph on
+payload
+\emph default
+ malevolo nel dispositivo vittima (Sez.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:load-payload-in-memory"
+
+\end_inset
+
+).
 \end_layout
 
 \begin_layout Section
