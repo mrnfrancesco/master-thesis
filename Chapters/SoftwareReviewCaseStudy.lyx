@@ -606,7 +606,7 @@ reference "sec:load-payload-in-memory"
 \end_layout
 
 \begin_layout Section
-Com'è stato trovato XXX
+Com'è stato trovato Broadpwn
 \end_layout
 
 \begin_layout Standard
@@ -614,7 +614,24 @@ Com'è stato trovato XXX
 status open
 
 \begin_layout Plain Layout
-TODO: Aggiungere anche le altre vulnerabilità (?)
+TODO
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Come sono state trovate le vulnerabilità del driver wifi qcacld
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+TODO
 \end_layout
 
 \end_inset
