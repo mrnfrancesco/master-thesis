@@ -1115,6 +1115,13 @@ reference "fig:bluetooth-stack-blocks-and-vulnerabilities"
 
 \begin_layout Section
 Service Discovery Protocol
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:service-discovery-protocol-sdp"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -2231,6 +2238,13 @@ Data Element
 
 \begin_layout Subsection
 Descrizione del protocollo
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:sdp-protocol-description"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -3541,6 +3555,13 @@ per la ricerca di un servizio
 
 \begin_layout Section
 Bluetooth Network Encapsulation Protocol (BNEP)
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:bluetooth-netword-encapsulation-protocol-bnep"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard

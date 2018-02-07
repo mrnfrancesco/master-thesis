@@ -142,6 +142,13 @@ discoverable mode
 \end_inset
 
 
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:discoverable-mode-problem"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1019,6 +1026,13 @@ build
 
 \begin_layout Section
 Shaping della memoria
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:memory-shaping"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
