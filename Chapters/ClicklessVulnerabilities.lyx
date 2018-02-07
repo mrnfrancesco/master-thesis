@@ -263,13 +263,13 @@ TODO
 \end_layout
 
 \begin_layout Subsection
-KRACK
+Vulnerabilità nel driver wifi qcacld
 \end_layout
 
 \begin_layout Standard
 \begin_inset CommandInset citation
 LatexCommand nocite
-key "krack_white_paper"
+key "qcacld_wifi_driver_rce"
 
 \end_inset
 
