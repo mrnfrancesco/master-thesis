@@ -265,7 +265,7 @@ pagenumbering{arabic}
 
 \begin_layout Part Introduction (ClassicThesis)
 La sicurezza informatica è da sempre un tema importante.
- In particolar modo oggi le vulnerabilità clickless rappresentano un nuovo
+ In particolar modo oggi le vulnerabilità zero-click rappresentano un nuovo
  punto di inizio per le aziende e i ricercatori che si occupano di sicurezza.
  È importante capire che tipo di minaccia ci troviamo a dover affrontare
  e come si differenzia dalle precendenti tipologie di vulnerabilità.
@@ -296,7 +296,7 @@ filename "Chapters/ZeroClickVulnerabilities.lyx"
 \end_layout
 
 \begin_layout Part Introduction (ClassicThesis)
-Tra gli attacchi clickless BlueBorne è sicuramente quello che oggi maggiormente
+Tra gli attacchi zero-click BlueBorne è sicuramente quello che oggi maggiormente
  mette in allarme.
 \begin_inset Newline newline
 \end_inset
