@@ -414,45 +414,6 @@ filename "Chapters/TheSecuringProblem.lyx"
 
 \end_layout
 
-\begin_layout Standard
-\begin_inset Newpage cleardoublepage
-\end_inset
-
-
-\end_layout
-
-\begin_layout Part
-\start_of_appendix
-Appendice
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-TODO: rinominare il file dell'appendice e aggiungere quelli mancanti con
- la descrizione delle metodologie utilizzate per trovare le vulnerabilità
- citate nel 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "ch:zero-click-vulnerabilities"
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\begin_inset CommandInset include
-LatexCommand include
-filename "Chapters/Chapter0A.lyx"
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Standard
