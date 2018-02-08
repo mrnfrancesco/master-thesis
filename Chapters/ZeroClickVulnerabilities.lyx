@@ -136,10 +136,10 @@ TODO
 \end_layout
 
 \begin_layout Chapter
-Vulnerabilità clickless
+Vulnerabilità zero-click
 \begin_inset CommandInset label
 LatexCommand label
-name "ch:clickless-vulnerabilities"
+name "ch:zero-click-vulnerabilities"
 
 \end_inset
 

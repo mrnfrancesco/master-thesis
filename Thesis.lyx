@@ -288,7 +288,7 @@ filename "Chapters/Introduction.lyx"
 \begin_layout Standard
 \begin_inset CommandInset include
 LatexCommand include
-filename "Chapters/ClicklessVulnerabilities.lyx"
+filename "Chapters/ZeroClickVulnerabilities.lyx"
 
 \end_inset
 
@@ -436,7 +436,7 @@ TODO: rinominare il file dell'appendice e aggiungere quelli mancanti con
  citate nel 
 \begin_inset CommandInset ref
 LatexCommand ref
-reference "ch:clickless-vulnerabilities"
+reference "ch:zero-click-vulnerabilities"
 
 \end_inset
 
