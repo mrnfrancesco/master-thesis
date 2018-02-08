@@ -610,6 +610,87 @@ Com'è stato trovato Broadpwn
 \end_layout
 
 \begin_layout Standard
+Broadpwn è una vulnerabilità clickless che riguarda la famiglia di chipset
+ WiFi Broadcom BCM43xx e permette esecuzione di codice remoto sia su smartphone
+ Android che iOS.
+\end_layout
+
+\begin_layout Standard
+È stata scoperta dal team Project Zero di Google grazie alla pubblicazione
+ dei 
+\emph on
+datasheet
+\emph default
+ del chipset WiFi Broadcom, utilizzati per studiare l'architettura del chipset.
+\end_layout
+
+\begin_layout Standard
+La metodologia utilizzata per trovare Broadpwn può essere suddivisa per
+ semplicità in 
+\begin_inset Formula $4$
+\end_inset
+
+ passi.
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Estrazione del contenuto della ROM
+\series default
+
+\begin_inset Newline newline
+\end_inset
+
+Per ottenere questo risultato sarebbe stato possibile modificare il driver
+ per leggere direttamente il contenuto della ROM, o direttamente il firmware
+ per inserire del codice in grado di fare il 
+\emph on
+dump
+\emph default
+.
+ Nonostante entrambe siano tecniche generalmente valide, è da tener presente
+ che Broadcom fornisce una 
+\emph on
+utility
+\emph default
+ (
+\emph on
+dhutil
+\emph default
+) per interagire direttamente con il chipset utilizzando il driver 
+\emph on
+bcmdhd
+\emph default
+.
+\begin_inset Newline newline
+\end_inset
+
+Dopo aver individuato il modo per estrarre il contenuto della ROM rimane
+ il problema fondamentale di individuare a che indirizzo risiede il firmware
+ in memoria.
+ Per sormontare questo problema sono venute in aiuto le ricerche precedenti
+ fatte dal seemoo-lab per il 
+\begin_inset CommandInset href
+LatexCommand href
+name "progetto NexMon"
+target "https://github.com/seemoo-lab/nexmon"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Individuazione dei dati caricati in RAM
+\series default
+
+\begin_inset Newline newline
+\end_inset
+
+
 \begin_inset Note Note
 status open
 
