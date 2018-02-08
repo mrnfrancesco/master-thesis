@@ -384,38 +384,6 @@ filename "Chapters/BriefEconomicalAnalysis.lyx"
 
 \end_layout
 
-\begin_layout Part Introduction (ClassicThesis)
-Le aziende nel mondo stanno sempre più incrementano l'adozione di programmi
- di mobilità per aumentare la produttività e il profitto.
- Di pari passo gli attacchi informatici crescono in complessità e frequenza.
-\begin_inset Newline newline
-\end_inset
-
-
-\begin_inset VSpace medskip
-\end_inset
-
-In questa sezione si vuole analizzare l'impatto causato dagli attacchi ai
- dispositivi mobili alle aziende evidenziando l'inefficacia o l'inapplicabilità
- delle normali procedure di sicurezza con particolare riferimento a BlueBorne.
-\end_layout
-
-\begin_layout Part
-Proteggere le aziende da BlueBorne
-\end_layout
-
-\begin_layout Standard
-\begin_inset CommandInset include
-LatexCommand include
-filename "Chapters/TheSecuringProblem.lyx"
-
-\end_inset
-
-
-\end_layout
-
-\end_layout
-
 \begin_layout Standard
 \begin_inset Newpage cleardoublepage
 \end_inset
