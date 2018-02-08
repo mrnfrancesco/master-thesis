@@ -98,28 +98,8 @@ reference "fig:exploit-disclosed-1988-to-2018"
 ), quasi mai viene riportata la metodologia o gli strumenti utilizzati né
  le competenze che è stato necessario avere o acquisire.
  Lo scopo di questo capitolo è quello di riportare la metodologia che si
- suppone sia stata utilizzata per trovare alcune delle vulnerabilità già
- citate nella Sezione 
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "sec:some-clickless-vulnerabilities"
-
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-TODO: Rivedere l'introduzione del capitolo in base alle sezioni successive
-\end_layout
-
-\end_inset
-
-
+ suppone sia stata utilizzata per trovare BlueBorne e altre vulnerabilità
+ simili trovate nel driver WiFi Qualcomm/Atheros qcacld prese come esempio.
 \end_layout
 
 \begin_layout Standard
@@ -606,96 +586,75 @@ reference "sec:load-payload-in-memory"
 \end_layout
 
 \begin_layout Section
-Com'è stato trovato Broadpwn
+Come sono state trovate alcune vulnerabilità del driver WiFi qcacld
 \end_layout
 
 \begin_layout Standard
-Broadpwn è una vulnerabilità clickless che riguarda la famiglia di chipset
- WiFi Broadcom BCM43xx e permette esecuzione di codice remoto sia su smartphone
- Android che iOS.
+\begin_inset CommandInset citation
+LatexCommand nocite
+key "qcacld_wifi_driver_rce"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-È stata scoperta dal team Project Zero di Google grazie alla pubblicazione
- dei 
-\emph on
-datasheet
-\emph default
- del chipset WiFi Broadcom, utilizzati per studiare l'architettura del chipset.
+Il driver WiFi Qualcomm/Atheros qcacld in cui sono state trovate 
+\begin_inset Formula $8$
+\end_inset
+
+ diverse vulnerabilità sono presenti in alcuni router e in almeno due smartphone
+ Android (Google Pixel prima e seconda generazione, e Google Nexus 5X).
 \end_layout
 
 \begin_layout Standard
-La metodologia utilizzata per trovare Broadpwn può essere suddivisa per
- semplicità in 
-\begin_inset Formula $4$
-\end_inset
+Le vulnerabilità in questione sono di tipo 
+\begin_inset Flex CT - acronym
+status collapsed
 
- passi.
+\begin_layout Plain Layout
+
+RCE
 \end_layout
 
-\begin_layout Enumerate
-
-\series bold
-Estrazione del contenuto della ROM
-\series default
-
-\begin_inset Newline newline
 \end_inset
 
-Per ottenere questo risultato sarebbe stato possibile modificare il driver
- per leggere direttamente il contenuto della ROM, o direttamente il firmware
- per inserire del codice in grado di fare il 
-\emph on
-dump
-\emph default
-.
- Nonostante entrambe siano tecniche generalmente valide, è da tener presente
- che Broadcom fornisce una 
-\emph on
-utility
-\emph default
- (
-\emph on
-dhutil
-\emph default
-) per interagire direttamente con il chipset utilizzando il driver 
-\emph on
-bcmdhd
-\emph default
-.
-\begin_inset Newline newline
-\end_inset
-
-Dopo aver individuato il modo per estrarre il contenuto della ROM rimane
- il problema fondamentale di individuare a che indirizzo risiede il firmware
- in memoria.
- Per sormontare questo problema sono venute in aiuto le ricerche precedenti
- fatte dal seemoo-lab per il 
-\begin_inset CommandInset href
-LatexCommand href
-name "progetto NexMon"
-target "https://github.com/seemoo-lab/nexmon"
-
-\end_inset
-
-.
+, questo significa che tramite pacchetti opportunamente malformati è possibile
+ ottenere esecuzione di codice sul dispositivo vittima con l'unico vincolo
+ della prossimità fisica (come per BlueBorne).
 \end_layout
 
-\begin_layout Enumerate
-
-\series bold
-Individuazione dei dati caricati in RAM
-\series default
-
-\begin_inset Newline newline
-\end_inset
-
-
-\begin_inset Note Note
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
 status open
 
 \begin_layout Plain Layout
-TODO
+\align center
+\begin_inset Graphics
+	filename /home/mrnfrancesco/git/master-thesis/gfx/fullmac-vs-softmac.png
+	display false
+	width 60col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:fullmac-vs-softmac"
+
+\end_inset
+
+Differenza tra dongle FullMAC e SoftMAC
 \end_layout
 
 \end_inset
@@ -703,21 +662,186 @@ TODO
 
 \end_layout
 
-\begin_layout Section
-Come sono state trovate le vulnerabilità del driver wifi qcacld
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-\begin_inset Note Note
-status open
+A differenza di Broadpwn
+\begin_inset Foot
+status collapsed
 
 \begin_layout Plain Layout
-TODO
+Vulnerabilità clickless scoperta da Gal Beniamini del team Project Zero
+ di Google che riguarda la famiglia di chipset WiFi Broadcom BCM43xx e permette
+ esecuzione di codice remoto sia su smartphone Android che iOS.
 \end_layout
 
 \end_inset
 
+ in cui il driver WiFi Broadcom è un 
+\begin_inset Flex CT - acronym
+status collapsed
 
+\begin_layout Plain Layout
+
+SoC
+\end_layout
+
+\end_inset
+
+ FullMAC, i driver WiFi Qualcomm sono in parte SoftMAC, cioè il 
+\begin_inset Flex CT - acronym
+status collapsed
+
+\begin_layout Plain Layout
+
+MLME
+\end_layout
+
+\end_inset
+
+ è gestito via software piuttosto che in hardware o nel firmware del 
+\begin_inset Flex CT - acronym
+status collapsed
+
+\begin_layout Plain Layout
+
+SoC
+\end_layout
+
+\end_inset
+
+ (vedi Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:fullmac-vs-softmac"
+
+\end_inset
+
+).
+ Questa scelta progettuale porta ad avere le funzioni di gestione dei frame
+ 
+\begin_inset Formula $802\text{.}11$
+\end_inset
+
+ sviluppate in software nel codice sorgente del driver che in questo caso
+ specifico è stato rilasciato pubblicamente.
+\end_layout
+
+\begin_layout Standard
+In questo scenario il primo passo è stato quello di acquisire informazioni
+ sul funzionamento del driver.
+ A questo scopo sono state fatte ricerche di pubblicazioni, articoli o documenta
+zione di qualunque genere che fossero state redatte dagli stessi sviluppatori
+ del driver o da ricercatori in sicurezza che avessero già approcciato il
+ problema.
+\end_layout
+
+\begin_layout Standard
+Dopo la prima fase di documentazione il primo approccio è stato quello di
+ cercare all'interno dei sorgenti la funzione di gestione degli 
+\emph on
+interrupt
+\emph default
+ provenienti dal firmware del chipset WiFi che avvisano della presenza di
+ frame da gestire.
+\end_layout
+
+\begin_layout Standard
+Nonostante questo approccio fosse valido, non sono stati trovati 
+\emph on
+entry point
+\emph default
+ nel codice del driver ché è risultato troppo confusionario ed esteso (
+\begin_inset Formula $\simeq691$
+\end_inset
+
+ KLOC).
+\end_layout
+
+\begin_layout Standard
+In questo caso il ricercatore
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Scotty Bauer, sviluppatore del kernel Linux e ricercatore indipendente di
+ vulnerabilità legate alla corruzione della memoria
+\end_layout
+
+\end_inset
+
+, esperto del settore, ha utilizzato una ricerca testuale nei sorgenti del
+ driver per trovare funzionalità che sicuramente dovevano essere state utilizzat
+e, in questo caso le funzioni di gestione dei frame di deautenticazione.
+ Tra i risultati il ricercatore ha isolato le funzioni che si occupano del
+ processamento e del parsing dei frame.
+\end_layout
+
+\begin_layout Standard
+A questo punto la ricerca è proseguita analizzando il codice delle funzioni
+ individuate con approccio 
+\emph on
+back-tracing control-flow sensitive
+\emph default
+ per trovare degli 
+\emph on
+entry point
+\emph default
+ che si adattassero alle necessità, in questo caso la funzione di gestione
+ dei frame (facilmente identificabile in quanto generalmente implementata
+ come un grande 
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+switch
+\end_layout
+
+\end_inset
+
+ in cui ogni 
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+case
+\end_layout
+
+\end_inset
+
+ chiama la funzione di gestione corretta per il tipo di frame in esame.
+\end_layout
+
+\begin_layout Standard
+A partire da qui, una volta analizzato il 
+\emph on
+mapping
+\emph default
+ tra byte grezzi letti e strutture dati, è stato seguito un approccio 
+\emph on
+forward-tracing data-flow sensitive
+\emph default
+ fino a trovare del codice che non eseguisse correttamente i dovuti controlli
+ prima della scrittura in memoria dei dati.
+\end_layout
+
+\begin_layout Standard
+Tutti i passi successivi riguardano lo sviluppo di un 
+\emph on
+exploit
+\emph default
+ che potesse sfruttare l'overflow trovato per ottenere esecuzione di codice
+ remota.
 \end_layout
 
 \begin_layout Section

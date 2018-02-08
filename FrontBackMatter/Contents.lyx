@@ -717,6 +717,27 @@ acro{TTM}{Time To Market}
 
 \begin_layout Plain Layout
 
+  
+\backslash
+acro{SoC}{System on a Chip}
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+acro{MAC}{Media Access Control}
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+acro{MLME}{MAC Sublayer Management Entity}
+\end_layout
+
+\begin_layout Plain Layout
+
 
 \backslash
 end{acronym}              
