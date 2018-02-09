@@ -347,7 +347,7 @@ I sistemi moderni crescono ogni giorno in complessità, ma nonostante gli
 Nonostante non sia possibile realizzare una metodologia universale che permetta
  di individuare le vulnerabilità del codice questa sezione mira a dare alcune
  linee guida anche attraverso l'analisi del metodo utilizzato per scoprire
- BlueBorne.
+ BlueBorne e altre vulnerabilità simili.
 \end_layout
 
 \begin_layout Part

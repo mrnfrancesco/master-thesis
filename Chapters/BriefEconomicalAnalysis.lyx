@@ -328,7 +328,7 @@ Analisi dei costi: quanto costa sviluppare un exploit?
 \begin_layout Standard
 Basandosi esclusivamente sul costo di uno sviluppatore in termini salariali
  e sul tempo impiegato a trovare una vulnerabilità e a sviluppare il codice
- che lo sfrutti, è possibile stimare in termini spannometrici il costo medio
+ che la sfrutti, è possibile stimare in termini spannometrici il costo medio
  di un 
 \emph on
 exploit
@@ -341,7 +341,7 @@ Definiamo con
 \begin_inset Formula $X$
 \end_inset
 
- il salario medio annuo di uno sviluppatore di exploit.
+ il salario medio annuo di specialista in sicurezza.
  Considerando i costi addizionali che per un lavoratore possono variare
  dal 
 \begin_inset Formula $18$
@@ -351,17 +351,17 @@ Definiamo con
 \begin_inset Formula $40\%$
 \end_inset
 
-, questo si traduce in un costo per impiegato fino a 
-\begin_inset Formula $1,4\cdot X$
+, questo si traduce in un costo medio per impiegato di 
+\begin_inset Formula $1,29\cdot X$
 \end_inset
 
 .
  Considerando una media di 
-\begin_inset Formula $261$
+\begin_inset Formula $253$
 \end_inset
 
  giorni lavorativi all'anno, il costo per giorno è di 
-\begin_inset Formula $\left(\frac{1,4}{261}\right)\cdot X$
+\begin_inset Formula $\left(\frac{1,29}{253}\right)\cdot X$
 \end_inset
 
 .
@@ -386,7 +386,7 @@ Considerando un tempo medio di
 
  giorni lavorativi) per lo sviluppo di un exploit, con un salario medio
  di 
-\begin_inset Formula $40'000\text{€}$
+\begin_inset Formula $\simeq49000\text{€}$
 \end_inset
 
 
@@ -419,13 +419,13 @@ reference "fig:average-salary-for-security-specialist"
 
 \end_inset
 
-) lordi annui otteniamo un costo medio totale per exploit di
+) lordi annui otteniamo un costo medio totale per exploit di:
 \end_layout
 
 \begin_layout Standard
 \begin_inset Formula 
 \[
-\left(\left(\frac{1,4}{261}\right)\cdot40000\right)\cdot\left(21,45+15,73\right)\simeq7977\text{€}
+\left(\left(\frac{1,29}{253}\right)\cdot49000\right)\cdot\left(21,45+15,73\right)\simeq9289\text{€}
 \]
 
 \end_inset
@@ -532,9 +532,9 @@ bug bounty program
 status collapsed
 
 \begin_layout Plain Layout
-È un accordo offerto da molti siti web e software house per cui individui
- non appartenenti all'azienda possono ricevere dei compensi in denaro per
- segnalare bug, soprattutto se portano a vulnerabilità sfruttabili.
+È un accordo offerto da molti siti web e software house per cui ricercatori
+ indipendenti possono ricevere dei compensi in denaro per segnalare bug,
+ soprattutto se portano a vulnerabilità sfruttabili.
 \end_layout
 
 \begin_layout Plain Layout
@@ -742,7 +742,7 @@ reference "tab:bug-payout-model"
 
 \end_inset
 
-.
+:
 \end_layout
 
 \begin_layout Standard

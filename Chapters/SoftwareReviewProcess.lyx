@@ -129,7 +129,7 @@ Fase di analisi
  del software per poi procedere all'analisi dell'implementazione, eventualmente
  supportata dall'esecuzione dell'applicativo stesso.
  È importante notare che la fase di analisi non è rigidamente strutturata:
- il team di analisi può capire ad esempio alcune scelte progettuali dall'analisi
+ il team di analisi ad esempio può capire alcune scelte progettuali dall'analisi
  dei sorgenti.
  Lo scopo finale è quello di scoprire nuove vulnerabilità che possano essere
  sfruttate.
@@ -169,7 +169,7 @@ Ambito di ricerca
 \end_layout
 
 \begin_layout Standard
-Prima di iniziare qualunque fase è necessario chiedersi qual'è l'obiettivo
+Prima di iniziare qualunque attività è necessario chiedersi qual'è l'obiettivo
  finale.
  Nonostante la domanda possa sembrare semplice il numero di risposte possibili
  è piuttosto elevato e deve tenere in considerazioni diversi fattori.
@@ -190,14 +190,14 @@ Non è però da dimenticare l'aspetto economico, per cui un'azienda potrebbe
  Questo perché dal punto di vista dell'attaccante l'investimento necessario
  per ricercare vulnerabilità pericolose potrebbe non essere compensato dal
  guadagno che se ne potrebbe trarre.
- Lo scopo della maggioranza delle aziende non è infatti quello di scoprire
+ Lo scopo della maggior parte delle aziende non è infatti quello di scoprire
  l'ultima frontiera tecnologica in campo 
 \emph on
 cybersecurity
 \emph default
 , ma semplicemente evitare il danno d'immagine che ne trarrebbero dalla
- pubblicazione di vulnerabilità anche semplici da parte di ricercatori indipende
-nti.
+ pubblicazione o dallo sfruttamente di vulnerabilità anche semplici da parte
+ di ricercatori indipendenti.
 \end_layout
 
 \begin_layout Subsection
@@ -359,7 +359,7 @@ Binari con simboli di debug
 \begin_inset Text
 
 \begin_layout Plain Layout
-Vengono forniti i binari precompilati del software con ancora i simboli
+Vengono forniti i binari precompilati del software con inclusi i simboli
  di debug.
  È pratica comune nel caso in cui il cliente voglia favorire l'analisi senza
  fornire il codice sorgente.
@@ -382,8 +382,8 @@ Black box
 \begin_inset Text
 
 \begin_layout Plain Layout
-Non si ha l'accesso né ai sorgenti né ai binari, ma solo l'accesso a un'interfac
-cia che espone alcune funzionalità.
+Non si ha l'accesso né ai sorgenti né ai binari, ma solo a un'interfaccia
+ che espone alcune funzionalità.
  In questo contesto è possibile procedere solo tramite test di tipo 
 \emph on
 black box
@@ -449,7 +449,7 @@ Tempistiche
 \end_layout
 
 \begin_layout Standard
-Oltre al livello di accesso è necessario tener conto il tempo spendibile
+Oltre al livello di accesso è necessario tener conto del tempo spendibile
  nella fase di analisi per rispondere ai vincoli imposti dal committente.
 \end_layout
 
@@ -494,7 +494,7 @@ Java
 È importante notare che la dimensione totale dell'applicazione impatta sul
  tempo necessario all'analisi in modo non lineare, cioè analizzare un software
  da 
-\begin_inset Formula $100\text{KLOC}$
+\begin_inset Formula $100\text{\,KLOC}$
 \end_inset
 
 
@@ -525,12 +525,12 @@ KLOC
 
  generalmente non richiede il doppio del tempo necessario ad analizzarne
  uno da 
-\begin_inset Formula $50\text{KLOC}$
+\begin_inset Formula $50\text{\,KLOC}$
 \end_inset
 
 , ma meno.
  Il motivo di questo è che dopo l'analisi delle prime 
-\begin_inset Formula $50\text{KLOC}$
+\begin_inset Formula $50\text{\,KLOC}$
 \end_inset
 
  il ricercatore acquisisce familiarità con il codice e con 
@@ -662,12 +662,6 @@ specializzazione
  Quando si utilizza questo approccio si parte da una conoscenza generale
  dell'applicazione che va ad ampliarsi man mano che si conduce l'analisi
  dell'applicativo.
-\end_layout
-
-\begin_layout Standard
-Questo approccio permette l'identificazione innanzitutto di vulnerabilità
- a livello di progettazione, seguite da vulnerabilità a livello di logica
- applicativa e infine 
 \end_layout
 
 \begin_layout Standard
@@ -1188,7 +1182,7 @@ status open
 
 \begin_layout Plain Layout
 
-void bob(int c)
+void foo(int c)
 \end_layout
 
 \begin_layout Plain Layout
@@ -1203,7 +1197,7 @@ void bob(int c)
 
 \begin_layout Plain Layout
 
-		fred(c);
+		bar(c);
 \end_layout
 
 \begin_layout Plain Layout
@@ -1213,7 +1207,7 @@ void bob(int c)
 
 \begin_layout Plain Layout
 
-		jim();
+		qux();
 \end_layout
 
 \begin_layout Plain Layout
@@ -1222,12 +1216,7 @@ void bob(int c)
 
 \begin_layout Plain Layout
 
-	while(c)
-\end_layout
-
-\begin_layout Plain Layout
-
-		updateGlobalState();
+	flob();
 \end_layout
 
 \begin_layout Plain Layout
@@ -1273,7 +1262,7 @@ status open
 
 \begin_layout Plain Layout
 
-fred()
+bar()
 \end_layout
 
 \end_inset
@@ -1286,7 +1275,7 @@ status open
 
 \begin_layout Plain Layout
 
-jim()
+qux()
 \end_layout
 
 \end_inset
@@ -1299,7 +1288,7 @@ status open
 
 \begin_layout Plain Layout
 
-bob()
+foo()
 \end_layout
 
 \end_inset
@@ -1328,7 +1317,7 @@ status open
 
 \begin_layout Plain Layout
 
-bob()
+foo()
 \end_layout
 
 \end_inset
@@ -1341,7 +1330,7 @@ status open
 
 \begin_layout Plain Layout
 
-fred()
+bar()
 \end_layout
 
 \end_inset
@@ -1355,12 +1344,12 @@ status open
 
 \begin_layout Plain Layout
 
-fred()
+bar()
 \end_layout
 
 \end_inset
 
- prima, cominciamo ad analizzare la sua implementazione.
+ prima, cominciamo ad analizzare ricorsivamente la sua implementazione.
  Finito questo, tornati alla funzione 
 \begin_inset listings
 lstparams "tabsize=4"
@@ -1369,7 +1358,7 @@ status open
 
 \begin_layout Plain Layout
 
-bob()
+foo()
 \end_layout
 
 \end_inset
@@ -1382,7 +1371,7 @@ status open
 
 \begin_layout Plain Layout
 
-jim()
+qux()
 \end_layout
 
 \end_inset
@@ -1395,7 +1384,7 @@ status open
 
 \begin_layout Plain Layout
 
-updateGlobalState()
+flob()
 \end_layout
 
 \end_inset
@@ -1444,7 +1433,7 @@ status open
 
 \begin_layout Plain Layout
 
-fred()
+bar()
 \end_layout
 
 \end_inset
@@ -1462,7 +1451,7 @@ c
 
 \end_inset
 
- come parametro, mentre ignoreremo la chiamata alla funzione 
+ come parametro, mentre ignoreremo le chiamata alle funzioni 
 \begin_inset listings
 lstparams "tabsize=4"
 inline true
@@ -1470,7 +1459,20 @@ status open
 
 \begin_layout Plain Layout
 
-jim()
+qux()
+\end_layout
+
+\end_inset
+
+ e 
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+flob()
 \end_layout
 
 \end_inset
@@ -1495,7 +1497,7 @@ status open
 
 \begin_layout Plain Layout
 
-bob()
+foo()
 \end_layout
 
 \end_inset
@@ -1543,7 +1545,7 @@ status open
 
 \begin_layout Plain Layout
 
-fred()
+bar()
 \end_layout
 
 \end_inset
@@ -1556,7 +1558,7 @@ status open
 
 \begin_layout Plain Layout
 
-jim()
+qux()
 \end_layout
 
 \end_inset
@@ -1911,7 +1913,7 @@ build
 warning
 \emph default
  alcuni potenziali problemi del codice come conversioni implicite tra tipi
- di dati, uso di variabili non inizializzati, ecc.
+ di dati, uso di variabili non inizializzate, ecc.
  un analizzatore statico è in grado di effettuare un'analisi completa del
  programma, trovando bug causati da interazioni complesse tra parti di codice
  anche se residenti in differenti file sorgenti.
@@ -1975,7 +1977,8 @@ utilizzo di aree di memoria
 \emph on
 out-of-scope
 \emph default
- (restituire l'indirizzo di una variabile interna a una funzione)
+ (ad esempio la restituzione dell'indirizzo di una variabile interna a una
+ funzione)
 \end_layout
 
 \begin_layout Itemize
@@ -2030,7 +2033,7 @@ free
 \end_inset
 
  bisogna passare come parametro il puntatore a un'area di memoria allocata
- tramite una delle funzioni della famiglia di 
+ tramite una delle funzioni della stessa famiglia di 
 \begin_inset listings
 lstparams "tabsize=4"
 inline true
@@ -2048,7 +2051,7 @@ malloc
  legati all'invocazione errata di queste funzioni o all'utilizzo dei valori
  restituiti.
  Lo stesso principio viene poi utilizzato anche per funzioni non standard
- scritte dal programmatore del software in esame.
+ scritte dal programmatore.
 \end_layout
 
 \begin_layout Standard
@@ -2128,7 +2131,14 @@ Al contrario dell'analisi statica in cui il codice del software non viene
 \end_layout
 
 \begin_layout Standard
-Un'analisi completa dovrebbe sempre combinare sia l'analisi statica sia
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Un'analisi completa dovrebbe sempre combinare sia l'analisi statica che
  quella dinamica.
  È semplice mostrare il motivo di questa necessità con un esempio.
 \end_layout
@@ -2226,7 +2236,8 @@ getval
 
 \end_inset
 
- (un puntatore nullo) che successivamente viene dereferenziato.
+ (un puntatore nullo) che successivamente viene dereferenziato, accedendo
+ così a un'area di memoria protetta.
 \end_layout
 
 \begin_layout Standard
@@ -2347,6 +2358,13 @@ crash
 \end_layout
 
 \begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 Tipici errori che possono essere individuati tramite fuzzing sono:
 \end_layout
 
@@ -2407,11 +2425,11 @@ D'altro canto il fuzzing tende a scalfire solo la superficie del software
 
 \begin_layout Standard
 Come nel caso dell'analisi statica, anche con il fuzzing la bontà dei risultati
- è strettamente correlata con la bontà delle regole con cui vengono generati
+ è strettamente correlata alla bontà delle regole con cui vengono generati
  i dati di test, ma mentre con l'analisi statica possiamo individuare con
  precisione la posizione del bug, nel caso del fuzzing può essere difficile
  risalire all'esatta posizione nel codice che ha generato l'errore, richiedendo
- quindi più tempo per risolvere il problema.
+ quindi più tempo per individuare il problema.
 \end_layout
 
 \end_body

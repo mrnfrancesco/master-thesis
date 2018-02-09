@@ -663,7 +663,16 @@ acro{MAC}{Media Access Control}
 
   
 \backslash
-acro{MLME}{MAC Sublayer Management Entity}
+acro{MLME}{
+\backslash
+ac{MAC} Sublayer Management Entity}
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+acro{DEP}{Data Execution Prevention}
 \end_layout
 
 \begin_layout Plain Layout

@@ -99,7 +99,7 @@ reference "fig:exploit-disclosed-1988-to-2018"
  le competenze che è stato necessario avere o acquisire.
  Lo scopo di questo capitolo è quello di riportare la metodologia che si
  suppone sia stata utilizzata per trovare BlueBorne e altre vulnerabilità
- simili trovate nel driver WiFi Qualcomm/Atheros qcacld prese come esempio.
+ simili trovate nel driver WiFi Qualcomm/Atheros qcacld.
 \end_layout
 
 \begin_layout Standard
@@ -176,7 +176,8 @@ La scoperta di BlueBorne ha richiesto l'impiego di due sole persone (Ben
 \begin_layout Standard
 Una volta scelto come obiettivo lo studio dello stack Bluetooth, il primo
  passo è stato quello di fare ricerche riguardo la possibilità di individuare
- dispositivi Bluetooth a prescindere dalle impostazioni di visibilità (Sez.
+ dispositivi Bluetooth a prescindere dalle impostazioni di visibilità (vedi
+ Sez.
  
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -205,9 +206,8 @@ Il secondo passo è stato quello di studiare lo stato dell'arte delle ricerche
 \end_layout
 
 \begin_layout Standard
-Dopo questa prima fase è iniziato lo studio della documentazione fornita
- che riguardasse le specifiche del Bluetooth e dei vari protocolli e meccanismi
- che lo compongono.
+Dopo questa prima fase è iniziato lo studio della documentazione delle specifich
+e del Bluetooth e dei vari protocolli e meccanismi che lo compongono.
  Tra tutti quelli esistenti, la prima scelta è ricaduta sul protocollo 
 \begin_inset Flex CT - acronym
 status collapsed
@@ -219,7 +219,7 @@ SDP
 
 \end_inset
 
- (Sez.
+ (vedi Sez.
  
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -238,7 +238,7 @@ reference "sec:service-discovery-protocol-sdp"
 \emph on
 continuation state
 \emph default
- (Sez.
+ (vedi Sez.
  
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -252,7 +252,7 @@ reference "subsec:sdp-protocol-description"
 \emph on
 continuation state
 \emph default
- o di altri campi?
+ o di altri campi tra due o più richieste successive?
 \end_layout
 
 \begin_layout Standard
@@ -266,7 +266,7 @@ exploit
 
 \begin_layout Standard
 In questo modo è stata individuata la vulnerabilità spiegata in dettaglio
- nella Sezione 
+ nella sezione 
 \begin_inset CommandInset ref
 LatexCommand nameref
 reference "sec:android-information-leak-(CVE-2017-0785)"
@@ -455,7 +455,7 @@ BNEP
 
 \end_inset
 
- (Sez.
+ (vedi Sez.
  
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -478,7 +478,7 @@ back-tracing
 \emph on
 data-flow sensitive
 \emph default
- per capire se e come il codice vulnerabile è raggiungibile da un attaccante.
+ per capire se e come il codice vulnerabile fosse raggiungibile da un attaccante.
  Una volta stabilita la sua raggiungibilità è stato utilizzato un forte
  approccio 
 \emph on
@@ -532,7 +532,7 @@ report
 \emph on
 crash
 \emph default
- e utilizzando un approccio di 
+ e utilizzando un approccio 
 \emph on
 back-tracing control-flow 
 \emph default
@@ -550,9 +550,16 @@ crash
 
 \begin_layout Standard
 Una volta studiate queste, l'ultimo passo prima dello sviluppo di un 
-\emph on
-exploit
-\emph default
+\begin_inset Flex CT - acronym
+status collapsed
+
+\begin_layout Plain Layout
+
+PoC
+\end_layout
+
+\end_inset
+
  completo è stato quello di studiare le strutture dati coinvolte per capire
  per quale motivo lo stesso pacchetto malformato fosse in grado di interrompere
  il demone Bluetooth in tanti punti differenti.
@@ -562,7 +569,7 @@ exploit
 \emph on
 shaping 
 \emph default
-della memoria (Sez.
+della memoria (vedi Sez.
  
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -574,7 +581,7 @@ reference "sec:memory-shaping"
 \emph on
 payload
 \emph default
- malevolo nel dispositivo vittima (Sez.
+ malevolo nel dispositivo vittima (vedi Sez.
  
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -600,11 +607,8 @@ key "qcacld_wifi_driver_rce"
 \end_layout
 
 \begin_layout Standard
-Il driver WiFi Qualcomm/Atheros qcacld in cui sono state trovate 
-\begin_inset Formula $8$
-\end_inset
-
- diverse vulnerabilità sono presenti in alcuni router e in almeno due smartphone
+I driver WiFi Qualcomm/Atheros qcacld, in cui sono state trovate diverse
+ vulnerabilità, sono presenti in alcuni router e in almeno due smartphone
  Android (Google Pixel prima e seconda generazione, e Google Nexus 5X).
 \end_layout
 
@@ -673,7 +677,7 @@ A differenza di Broadpwn
 status collapsed
 
 \begin_layout Plain Layout
-Vulnerabilità clickless scoperta da Gal Beniamini del team Project Zero
+Vulnerabilità zero-click scoperta da Gal Beniamini del team Project Zero
  di Google che riguarda la famiglia di chipset WiFi Broadcom BCM43xx e permette
  esecuzione di codice remoto sia su smartphone Android che iOS.
 \end_layout
@@ -755,7 +759,7 @@ Nonostante questo approccio fosse valido, non sono stati trovati
 \emph on
 entry point
 \emph default
- nel codice del driver ché è risultato troppo confusionario ed esteso (
+ nel codice del driver che è risultato troppo confusionario ed esteso (
 \begin_inset Formula $\simeq691$
 \end_inset
 
@@ -775,8 +779,8 @@ Scotty Bauer, sviluppatore del kernel Linux e ricercatore indipendente di
 \end_inset
 
 , esperto del settore, ha utilizzato una ricerca testuale nei sorgenti del
- driver per trovare funzionalità che sicuramente dovevano essere state utilizzat
-e, in questo caso le funzioni di gestione dei frame di deautenticazione.
+ driver per trovare funzionalità che sicuramente dovevano essere state implement
+ate, in questo caso le funzioni di gestione dei frame di deautenticazione.
  Tra i risultati il ricercatore ha isolato le funzioni che si occupano del
  processamento e del parsing dei frame.
 \end_layout
@@ -792,8 +796,8 @@ back-tracing control-flow sensitive
 entry point
 \emph default
  che si adattassero alle necessità, in questo caso la funzione di gestione
- dei frame (facilmente identificabile in quanto generalmente implementata
- come un grande 
+ dei frame (facilmente identificabile perchè generalmente implementata come
+ un grande 
 \begin_inset listings
 lstparams "tabsize=4"
 inline true
@@ -819,7 +823,7 @@ case
 
 \end_inset
 
- chiama la funzione di gestione corretta per il tipo di frame in esame.
+ invoca la funzione di gestione adeguata per il tipo di frame in esame).
 \end_layout
 
 \begin_layout Standard
