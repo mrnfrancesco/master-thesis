@@ -71,6 +71,74 @@
 
 \begin_body
 
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begingroup
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+let
+\backslash
+clearpage
+\backslash
+relax
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+let
+\backslash
+cleardoublepage
+\backslash
+relax
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align right
+
+\shape slanted
+A medieval castle is only going to channel the bad guys,
+\begin_inset Newline newline
+\end_inset
+
+not deter someone who really wants to get into your data.
+\begin_inset Newline newline
+\end_inset
+
+
+\shape default
+
+\begin_inset VSpace medskip
+\end_inset
+
+ — 
+\series bold
+Jon Rigby
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace bigskip
+\end_inset
+
+
+\end_layout
+
 \begin_layout Chapter
 Breve analisi economica
 \begin_inset CommandInset label
@@ -872,6 +940,22 @@ Costi per vulnerabilità
 \end_inset
 
 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+endgroup
 \end_layout
 
 \end_inset

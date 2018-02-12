@@ -71,6 +71,82 @@
 
 \begin_body
 
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begingroup
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+let
+\backslash
+clearpage
+\backslash
+relax
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+let
+\backslash
+cleardoublepage
+\backslash
+relax
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align right
+
+\shape slanted
+The mantra of any good security engineer is:
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Quotes eld
+\end_inset
+
+Security is a not a product, but a process
+\begin_inset Quotes erd
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\shape default
+
+\begin_inset VSpace medskip
+\end_inset
+
+ — 
+\series bold
+Bruce Schneier
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace bigskip
+\end_inset
+
+
+\end_layout
+
 \begin_layout Chapter
 Il processo di revisione del software
 \begin_inset CommandInset label
@@ -2526,6 +2602,22 @@ Come nel caso dell'analisi statica, anche con il fuzzing la bontà dei risultati
  precisione la posizione del bug, nel caso del fuzzing può essere difficile
  risalire all'esatta posizione nel codice che ha generato l'errore, richiedendo
  quindi più tempo per individuare il problema.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+endgroup
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_body
