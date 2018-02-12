@@ -677,6 +677,20 @@ acro{DEP}{Data Execution Prevention}
 
 \begin_layout Plain Layout
 
+  
+\backslash
+acro{DoS}{Denial of Service}
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+acro{APT}{Advanced Persistent Threat}
+\end_layout
+
+\begin_layout Plain Layout
+
 
 \backslash
 end{acronym}              

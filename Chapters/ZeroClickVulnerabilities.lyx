@@ -146,30 +146,283 @@ name "ch:zero-click-vulnerabilities"
 
 \end_layout
 
+\begin_layout Standard
+Le aziende nel mondo stanno sempre più incrementando l'adozione di programmi
+ di mobilità per aumentare la produttività e il profitto.
+ Di pari passo gli attacchi informatici crescono in complessità e frequenza.
+\end_layout
+
+\begin_layout Standard
+In questo capitolo si vuole dare una breve panoramica delle vulnerabilità
+ zero-click e l'impatto degli attacchi ai dispositivi mobili sulle aziende
+ evidenziando l'inefficacia o l'inapplicabilità delle normali procedure
+ di sicurezza con particolare riferimento a BlueBorne.
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+TODO: Mantenere il riferimento a BlueBorne?
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section
 Cosa sono
 \end_layout
 
 \begin_layout Standard
-Le vulnerabilità sono dinamiche: l'utilità di un errore potrebbe cambiare
- a seconda di dove si trova il codice che lo genera.
- Per di più, non tutti gli errori sono vulnerabilità, non tutte le vulnerabilità
- possono essere sfruttate e non tutte le vulnerabilità sfruttabili sono
- di qualche interesse per un attaccante.
- Nonostante questo l'utilità di un errore può cambiare di giorno in giorno:
- una vulnerabilità che inizialmente non è sfruttabile lo potrebbe essere
- dopo che il software che ne è affetto viene aggiornato o viceversa.
- Nuove tecniche di attacco vengono costantemente sviluppate permettendo
- di sfruttare vulnerabilità prima irraggiungibili così come nuove mitigazioni
- vengono introdotte per prevenire lo sfruttamento della stessa vulnerabilità.
+Quando si parla di vulnerabilità zero-click si parla di vulnerabilità che
+ sono sfruttabili senza alcuna interazione con l'utente.
 \end_layout
 
 \begin_layout Standard
-\begin_inset Note Note
+Mentre vulnerabilità di questo tipo vengono ancora trovate di tanto in tanto
+ su dispositivi non sicuri o non 
+\emph on
+patchati
+\emph default
+ come router, alcuni dispositivi 
+\begin_inset Flex CT - acronym
+status collapsed
+
+\begin_layout Plain Layout
+
+IoT
+\end_layout
+
+\end_inset
+
+ o versioni obsolete di Windows, attacchi funzionanti su smartphone Android
+ e iOS che siano anche in grado di bypassare i meccanismi di mitigazione
+ come la 
+\begin_inset Flex CT - acronym
+status collapsed
+
+\begin_layout Plain Layout
+
+DEP
+\end_layout
+
+\end_inset
+
+ o l'
+\begin_inset Flex CT - acronym
+status collapsed
+
+\begin_layout Plain Layout
+
+ASLR
+\end_layout
+
+\end_inset
+
+ sono piuttosto rari.
+ Per compromettere questi dispositivi un attaccante generalmente ricorre
+ all'uso di vulnerabilità del browser.
+ Lo svantaggio di questo approccio dal punto di vista dell'attaccante è
+ che è necessario che la vittima clicchi su un link non fidato o si connetta
+ alla rete dell'attaccante e navighi un sito malevolo non certificato.
+ Utenti accorti potrebbero insospettirsi da richieste di questo tipo e bloccare
+ l'attacco sul nascere.
+\end_layout
+
+\begin_layout Standard
+Tuttavia è da ingenui pensare che un attaccante ben finanziato possa accettare
+ queste limitazioni.
+ Per questo motivo, di pari passo con i moderni sistemi operativi e le nuove
+ tecniche di mitigazione introdotte, gli attaccanti lavorano duramente per
+ trovare vettori d'attacco nuovi, efficaci e fantasiosi.
+ Tuttavia, gli exploit remoti non sono semplici da realizzare.
+ Gli attacchi locali traggono beneficio da una ricca interazione con la
+ piattaforma attraverso diverse interfacce che permettono all'attaccante
+ di fare assunzioni sullo stato della memoria, sul range di indirizzi utilizzati
+, ecc.
+ Gli attaccanti remoti, al contrario, possono interagire in modo molto più
+ limitato, quindi la vulnerabilità che si vuole utilizzare deve permettere
+ di fare meno assunzioni possibili sullo stato del dispositivo della vittima.
+\end_layout
+
+\begin_layout Section
+Impatto
+\end_layout
+
+\begin_layout Standard
+Finora i criminali informatici hanno utilizzato 
+\emph on
+malware
+\emph default
+, 
+\emph on
+botnet
+\emph default
+ o altre forme sofisticate di attacco per minare la sicurezza delle aziende
+ per diversi motivi inclusi l'accrescimento economico, l'interruzione dell'attiv
+ità dell'azienza o per motivi politici.
+ In molti casi non viene colpita una singola azienda, ma più di una per
+ aumentare la possibilità di avere successo.
+\end_layout
+
+\begin_layout Standard
+I rischi che più preoccupano le aziende variano non solo nel tempo, ma anche
+ tra paese e paese.
+ Una statistica condotta alcuni anni fa 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "the_impact_of_cybercrime_on_business"
+
+\end_inset
+
+ mostra che gli attacchi rilevati più di frequente dalle aziende sono 
+\emph on
+SQL Injection
+\emph default
+ per il 
+\begin_inset Formula $43\%$
+\end_inset
+
+, 
+\begin_inset Flex CT - acronym
+status collapsed
+
+\begin_layout Plain Layout
+
+APT
+\end_layout
+
+\end_inset
+
+ per il 
+\begin_inset Formula $35\%$
+\end_inset
+
+, 
+\emph on
+botnet
+\emph default
+ per il 
+\begin_inset Formula $33\%$
+\end_inset
+
+ e attacchi 
+\begin_inset Flex CT - acronym
+status collapsed
+
+\begin_layout Plain Layout
+
+DoS
+\end_layout
+
+\end_inset
+
+ per il restante 
+\begin_inset Formula $32\%$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Tra le conseguenze di questi attacchi troviamo il danno d'immagine, la perdita
+ di informazioni sensibili inclusi segreti aziendali e proprietà intellettuali,
+ senza dimenticare il danno economico che può portare fino alla bancarotta
+ nel caso peggiore.
+\end_layout
+
+\begin_layout Standard
+Per questo motivo le aziende hanno cominciato a combattere questo tipo di
+ minacce acquistando sistemi sempre più sofisticati di prevenzione e protezione
+ dei sistemi informatici, realizzando una maggiore (e migliore) segmentazione
+ delle reti aziendali per rendere irraggiugibili dall'esterno le proprie
+ risorse, e facendo corsi di formazione e sensibilizzazione ai propri dipendenti.
+\end_layout
+
+\begin_layout Standard
+Nonostante questo gli attacchi non sono cessati né hanno perso efficacia,
+ ma qualcosa è cambiato: sempre più spesso a veicolare un vettore d'attacco
+ sono gli 
+\emph on
+smartphone
+\emph default
+ che i dipendenti portano dall'esterno nell'ambiente di lavoro.
+ BlueBorne è un chiaro esempio di questo 
+\emph on
+trend
+\emph default
+.
+\end_layout
+
+\begin_layout Section
+Inefficacia dei tradizionali sistemi di sicurezza
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset citation
+LatexCommand nocite
+key "protecting_the_enterprise_from_blueborne_white_paper"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In questo contesto è importante considerare l'impatto di vulnerabilità come
+ BlueBorne sui tradizionali sistemi di sicurezza aziendali.
+ Il controllo degli accessi fornisce solo un piccolo aiuto dato che BlueBorne
+ permette di compromettere dispositivi autorizzati ad essere sulla rete
+ (vedi Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:cutting-across-boundaries"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+Gli 
+\begin_inset Flex CT - acronym
+status collapsed
+
+\begin_layout Plain Layout
+
+IPS
+\end_layout
+
+\end_inset
+
+ e i 
+\emph on
+firewall
+\emph default
+ vengono facilmente bypassati grazie al fatto che l'attacco si può diffondere
+ direttamente da dispositivo a dispositivo attraverso il Bluetooth.
+ Inoltre tutti i controlli che possono essere fatti su computer o smartphone
+ non possono essere fatti su dispositivi 
+\shape italic
+unmanaged
+\shape default
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Dispositivi su cui l'azienda non ha il controllo o la gestione.
+ In questa classe rientrano dispositivi connessi in rete come stampanti,
+ mouse e tastiere, videocamere, 
+\begin_inset ERT
 status open
 
 \begin_layout Plain Layout
-TODO
+
+
+\backslash
+dots
 \end_layout
 
 \end_inset
@@ -177,28 +430,71 @@ TODO
 
 \end_layout
 
-\begin_layout Section
-Differenza con le vulnerabilità tradizionali
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
-\begin_inset Note Note
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Più significativo ancora è il fatto che BlueBorne possa potenzialmente diffonder
+si attraversando qualunque meccanismo di segmentazione della rete, ad esempio
+ le 
+\begin_inset Flex CT - acronym
+status collapsed
+
+\begin_layout Plain Layout
+
+VLAN
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
 status open
 
 \begin_layout Plain Layout
-TODO
-\end_layout
+\align center
+\begin_inset Graphics
+	filename ../gfx/cutting-across-boundaries.png
+	display false
+	width 90text%
 
 \end_inset
 
 
 \end_layout
 
-\begin_layout Section
-Alcuni esempi
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
 \begin_inset CommandInset label
 LatexCommand label
-name "sec:some-clickless-vulnerabilities"
+name "fig:cutting-across-boundaries"
+
+\end_inset
+
+Inefficacia dei normali meccanismi di protezione e prevenzione
+\end_layout
+
+\end_inset
+
+
+\end_layout
 
 \end_inset
 
@@ -206,87 +502,98 @@ name "sec:some-clickless-vulnerabilities"
 \end_layout
 
 \begin_layout Standard
-\begin_inset Note Note
-status open
+Una possibile infezione potrebbe iniziare a partire da un fattorino con
+ uno smartphone infetto che entra nell'azienda per consegnare un pacco,
+ o da un dipendente che attraversa luoghi affollati in cui il suo smartphone
+ può essere facilmente attaccato.
+ L'infezione potrebbe diffondersi da dispositivo a dispositivo fino a creare
+ una mesh
+\begin_inset Foot
+status collapsed
 
 \begin_layout Plain Layout
-TODO
+Rete fortemente interconnessa di computer o dispositivi con capacità di
+ networking
 \end_layout
 
 \end_inset
 
-
+ di 
+\emph on
+device
+\emph default
+ compromessi.
 \end_layout
 
-\begin_layout Subsection
-Stagefright
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-TODO
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsection
-Broadpwn
+\begin_layout Section
+Il problema del patching
 \end_layout
 
 \begin_layout Standard
-\begin_inset CommandInset citation
-LatexCommand nocite
-key "broadpwn_blog_post_part_1,broadpwn_blog_post_part_2"
+Certamente aggiornare i sistemi vulnerabili è il primo passo da fare per
+ rispondere a una nuova minaccia.
+ Tuttavia nel caso di BlueBorne non è così semplice.
+ Mentre per i vari sistemi operativi sono state o verranno rilasciate delle
+ patch di sicurezza, per gli altri dispositivi 
+\shape italic
+unmanaged
+\shape default
+ che supportano il Bluetooth come quelli dell'IoT spesso questo è estremamente
+ complesso se non a volte impossibile.
+\end_layout
 
+\begin_layout Standard
+\begin_inset VSpace defskip
 \end_inset
 
 
 \end_layout
 
 \begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-TODO
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsection
-Vulnerabilità nel driver wifi qcacld
+Mentre i pc possono essere facilmente aggiornati automaticamente, per gli
+ altri device questo processo può essere molto complesso.
+ Gli aggiornamenti del sistema operativo di uno smartphone ad esempio sono
+ per lo più sotto il controllo del vendor, quindi possono essere forniti
+ in ritardo o addirittura non essere forniti per dispositivi più vecchi
+ per promuovere l'acquisto di dispositivi più recenti.
+ È altresì possibile che l'utente rimandi o disabiliti gli aggiornamenti
+ per propria scelta.
+ 
 \end_layout
 
 \begin_layout Standard
-\begin_inset CommandInset citation
-LatexCommand nocite
-key "qcacld_wifi_driver_rce"
-
+\begin_inset VSpace defskip
 \end_inset
 
 
 \end_layout
 
 \begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-TODO
+Ancora, la maggior parte dei dispositivi IoT si basano su distribuzioni
+ Linux.
+ Nonostante queste possano essere facilmente aggiornate, spesso vengono
+ lasciate versioni obsolete per limitare le spese legate alle possibili
+ incompatibilità tra il sistema aggiornato e il software proprietario che
+ implementa le funzionalità del dispositivo.
+ Questo significa che un dispositivo una volta acquistato non verrà mai
+ aggiornato durante tutto il proprio ciclo di vita, mantenendo inalterate
+ funzionalità, ma anche vulnerabilità.
 \end_layout
 
+\begin_layout Standard
+\begin_inset VSpace defskip
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+Questi scenari mostrano il problema fondamentale dei dispositivi 
+\shape italic
+unmanaged
+\shape default
+, cioè che le aziende non hanno il controllo su alcuni aspetti fondamentali
+ che riguardano la sicurezza dei device che utilizzano.
 \end_layout
 
 \begin_layout Standard
