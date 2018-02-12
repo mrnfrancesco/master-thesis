@@ -853,17 +853,102 @@ Considerazioni finali
 \end_layout
 
 \begin_layout Standard
-\begin_inset Note Note
-status open
+In entrambi i casi sopra riportati possiamo riconoscere le fasi e gli approcci
+ tipici del processo di revisione del software discussi nel capitolo precedente.
+ Nonostante entrambi i casi fossero limitati a software di cui si aveva
+ il codice sorgente, ulteriori studi su vulnerabilità che ricoprono casistiche
+ differenti 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "broadpwn_blog_post_part_1,broadpwn_blog_post_part_2"
+
+\end_inset
+
+ mostrano che la metodologia applicata è pressoché la stessa.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Un'osservazione che sarebbe possibile fare a questo punto è: si è parlato
+ anche di automazione tramite analisi statica (vedi Sez.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:static-analysis"
+
+\end_inset
+
+) e dinamica (vedi Sez.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:dynamic-analysis"
+
+\end_inset
+
+) del codice.
+ Perché non sono riportate in nessuno dei casi in esame?
+\end_layout
+
+\begin_layout Standard
+Nella maggior parte dei casi affidarsi completamente a metodi automatici
+ non è una scelta possibile né consigliabile.
+ Per questo motivo molti team di ricerca come l'Android Attack Team
+\begin_inset Foot
+status collapsed
 
 \begin_layout Plain Layout
-TODO: Descrivere sulla base di quanto detto le skill e i tool necessari
- per trovare nuove vulnerabilità
+Team ufficiale Android per la ricerca di vulnerabilità
 \end_layout
 
 \end_inset
 
+ dichiarano 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "android_bootcamp_2016"
 
+\end_inset
+
+ di utilizzare gli strumenti automatici solo come supporto, ma mantenendo
+ come principale strumento l'analisi manuale del codice.
+\end_layout
+
+\begin_layout Standard
+Lì dove l'uomo fallisce interviene generalmente l'analisi dinamica tramite
+ 
+\emph on
+fuzzing
+\emph default
+, tecnica molto utilizzata perché scalabile: una volta configurato e avviato,
+ si può lasciare il 
+\emph on
+fuzzer
+\emph default
+ anche per mesi senza averne alcuna interazione e intervenire solo quando
+ viene rilevato un possibile bug.
+\end_layout
+
+\begin_layout Standard
+Anche gli attacanti esterni utilizzano il 
+\emph on
+fuzzing
+\emph default
+ per trovare nuove vulnerabilità; utilizzare le loro stesse tecniche (ed
+ eventualmente gli stessi 
+\emph on
+tool
+\emph default
+) permette di risolvere delle vulnerabilità prima che possano essere sfruttate.
+ Ogni volta che questo accade, trovare nuove vulnerabilità diventa difficile
+ e più costoso e spesso questo è sufficiente per far desistere ricercatori
+ indipendenti o piccoli gruppi dal continuare la loro ricerca.
 \end_layout
 
 \end_body
