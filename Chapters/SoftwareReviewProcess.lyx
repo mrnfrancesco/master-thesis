@@ -2354,7 +2354,103 @@ crash
 .
  Tuttavia, altri tipi di bug sono molto più insidiosi e possono portare
  a comportamenti errati che non causano alcun fallimento evidente e possono
- passare inosservati anche a un'analisi dinamica tramite fuzzing.
+ passare inosservati anche a un'analisi dinamica tramite 
+\emph on
+fuzzing
+\emph default
+.
+ Questo perché non tutto il software viene sollecitato dal 
+\emph on
+fuzzer
+\emph default
+, ma solo alcune componenti più a rischio come:
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Codec
+\emph default
+ di formati multimediali
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Flex CT - acronym
+status collapsed
+
+\begin_layout Plain Layout
+
+IPC
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Servizi di sistema
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Pipe
+\emph default
+/
+\emph on
+Socket 
+\emph default
+locali
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Kernel 
+\emph default
+(
+\emph on
+driver
+\emph default
+ di dispositivi, chiamate di sistema, 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+dots
+\end_layout
+
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+Porte aperte
+\end_layout
+
+\begin_layout Itemize
+File scrivibili
+\end_layout
+
+\begin_layout Itemize
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+dots
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
