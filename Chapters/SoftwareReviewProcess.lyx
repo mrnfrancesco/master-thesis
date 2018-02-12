@@ -161,7 +161,7 @@ name "ch:software-review-process"
 \begin_layout Standard
 \begin_inset CommandInset citation
 LatexCommand nocite
-key "a_bug_hunter_s_diary,the_art_of_software_security_assessment"
+key "a_bug_hunter_s_diary,the_art_of_software_security_assessment,the_shellcoder_s_handbook"
 
 \end_inset
 
