@@ -169,16 +169,43 @@ Sommario
 \end_layout
 
 \begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-TODO (probabilmente alla fine della tesi)
+Introdotto per la prima volta nel 1998, il Bluetooth è tutt'oggi il protocollo
+ più diffuso per le comunicazioni senza fili a corto raggio.
+ È presente in quasi tutti i dispositivi moderni, dai computer agli 
+\emph on
+smart watch
+\emph default
+ fino addirittura ai frigorigeri.
 \end_layout
 
+\begin_layout Standard
+A colpire il Bluetooth un insieme di nuove vulnerabilità critiche sotto
+ il nome di 
+\begin_inset Quotes eld
+\end_inset
+
+BlueBorne
+\begin_inset Quotes erd
+\end_inset
+
+.
+ Quello che le rende critiche è il fatto che possono colpire virtualmente
+ ogni dispositivo prendendone il pieno controllo e utilizzandolo per replicare
+ l'attacco ai dispositivi vicini.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+Lo scopo di questa tesi è duplice: da un lato analizzare in dettaglio il
+ caso Blueborne su smartphone Android, dall'altro approfondire i passi e
+ i diversi approcci che insieme costituiscono il processo di ricerca di
+ nuove vulnerabilità.
 \end_layout
 
 \begin_layout Standard
