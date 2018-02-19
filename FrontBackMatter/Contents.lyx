@@ -467,6 +467,13 @@ acro{IPS}{Intrusion Prevention System}
 
   
 \backslash
+acro{IDS}{Intrusion Detection System}
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
 acro{VLAN}{Virtual LAN}
 \end_layout
 
@@ -687,6 +694,27 @@ acro{DoS}{Denial of Service}
   
 \backslash
 acro{APT}{Advanced Persistent Threat}
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+acro{VoIP}{Voice over IP}
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+acro{HVAC}{Heating, Ventilation and Air Conditioning}
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
+acro{NAC}{Network Access Control}
 \end_layout
 
 \begin_layout Plain Layout
