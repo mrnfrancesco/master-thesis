@@ -836,14 +836,14 @@ reference "ch:blueborne"
 Un esempio della complessità dello standard è il meccanismo di frammentazione,
  una tecnica comune in molti protocolli e un punto debole in ogni implementazion
 e.
- Le specifiche del Bluetooth presentano principalmente tre differenti livelli
- di frammentazione (
+ Le specifiche del Bluetooth presentano principalmente quattro differenti
+ livelli di frammentazione (
 \emph on
 L2CAP
 \emph default
 , 
 \emph on
-HCI
+HCI, HCI-USB
 \emph default
  e 
 \emph on
@@ -857,7 +857,7 @@ reference "fig:bluetooth-fragmentation"
 
 \end_inset
 
-), più altri livelli in diversi servizi specifici.
+).
 \end_layout
 
 \begin_layout Standard
@@ -914,7 +914,7 @@ La letteratura mostra che proprio questa complessità è stata oggetto di
  delle chiavi di cifratura.
  Nel momento in cui nello standard è stato introdotto il 
 \begin_inset Flex CT - acronym
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -929,11 +929,15 @@ pairing
 \emph default
 
 \begin_inset Foot
-status collapsed
+status open
 
 \begin_layout Plain Layout
-Processo di inizializzazione del collegamento tra due dispositivi al fine
- di permettere la comunicazione tra questi
+Processo di inizializzazione del collegamento sicuro tra due dispositivi
+ per permetterne la comunicazione cifrata.
+ È un processo che può essere richiesto esplicitamente dall'utente e in
+ questo caso è necessario inserire un PIN uguale su entrambi i dispositivi,
+ oppure avvenire automaticamente tra due dispositivi tra cui è già avvenuto
+ lo scambio di PIN
 \end_layout
 
 \end_inset
@@ -1491,7 +1495,7 @@ Service Attribute
 \end_layout
 
 \begin_layout Standard
-I valori degli attributi possono essere arbitrariamente complesse e contenere
+I valori degli attributi possono essere arbitrariamente complessi e contenere
  informazioni di vario tipo.
  SDP definisce un semplice meccanismo per descrivere i dati contenuti in
  un attributo: il 
@@ -1519,11 +1523,12 @@ reference "fig:sdp-service-attribute-data-element"
 \end_inset
 
 ) consiste di due campi: un campo header e un campo dati.
- A sua volta il campo header è composto di due parti che indicano tipo (
+ A sua volta il campo header è composto di due parti che indicano il tipo
+ (
 \begin_inset Formula $5$
 \end_inset
 
- bit) e dimensione (
+ bit) e la dimensione (
 \begin_inset Formula $3$
 \end_inset
 
