@@ -1450,9 +1450,9 @@ osi_malloc
 
 ) è un 
 \emph on
-wrap
+wrapper
 \emph default
-per
+
 \begin_inset Foot
 status collapsed
 
