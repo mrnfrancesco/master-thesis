@@ -4192,7 +4192,7 @@ bitbox{#2}{#3}}
 
 
 \backslash
-begin{bytefield}[bitwidth=1.5em, bitheight=2em]{22}
+begin{bytefield}[bitwidth=1.5em, bitheight=2em]{20}
 \end_layout
 
 \begin_layout Plain Layout
@@ -4201,7 +4201,7 @@ begin{bytefield}[bitwidth=1.5em, bitheight=2em]{22}
 \backslash
 bitbox{1}{
 \backslash
-(22
+(23
 \backslash
 )} &
 \end_layout
@@ -4247,15 +4247,7 @@ texttt{?? ?? ?? ??}} &
 
 	
 \backslash
-bitbox{3}{
-\backslash
-(22
-\backslash
-) 
-\backslash
-(3
-\backslash
-)B 
+bitbox{1}{
 \backslash
 (0
 \backslash
@@ -4399,14 +4391,16 @@ bitbox{#2}{#3}}
 
 
 \backslash
-begin{bytefield}[bitwidth=1.5em, bitheight=2em]{22}
+begin{bytefield}[bitwidth=1.5em, bitheight=2em]{20}
 \end_layout
 
 \begin_layout Plain Layout
 
 	
 \backslash
-bitbox{1}{"} &
+bitbox{1}{
+\backslash
+#} &
 \end_layout
 
 \begin_layout Plain Layout
@@ -4454,7 +4448,7 @@ texttt{?? ?? ?? ??}} &
 
 	
 \backslash
-bitbox{3}{";
+bitbox{1}{
 \backslash
 textbackslash n} &
 \end_layout
@@ -4528,17 +4522,16 @@ status open
 
 \begin_layout Plain Layout
 
-"
+#
 \backslash
-x17AAAAAA....";
+x17AAAAAA....
 \backslash
 n
 \end_layout
 
 \end_inset
 
-) lancia un comando che non sarà valido e che restituirà un errore subito
- prima di eseguire la seconda parte (
+) è un commento che verrà ignorato per poi eseguire la seconda parte (
 \begin_inset listings
 lstparams "tabsize=4"
 inline true
