@@ -166,22 +166,13 @@ Ringraziamenti
 \end_layout
 
 \begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-TODO: Rivedi i ringraziamenti
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
 Quello per i ringraziamenti è sempre uno spazio dovuto.
- Non è solo una pagina del template da riempire, è rendersi conto di quanto
- le persone che abbiamo accanto facciano per noi.
+ Non è solo una pagina del 
+\emph on
+template
+\emph default
+ da riempire, è rendersi conto di quanto le persone che abbiamo accanto
+ facciano per noi.
  Spesso non ce ne rendiamo conto finché non ci fermiamo a pensare a quali
  sono i nomi da includere nella nostra lista.
  Ebbene, questa è la mia:
@@ -245,7 +236,8 @@ Tiziana Michienzi
 
 \end_inset
 
- per aver svolto tutte le pratiche necessarie a svolgere il tirocinio, 
+ per aver seguito le pratiche burocratiche necessarie a svolgere il tirocinio,
+ 
 \begin_inset Flex CT - Spaced Low Small Caps
 status open
 
@@ -267,9 +259,93 @@ Lorenzo Bartoli
 \end_inset
 
  per aver portato un po' della sua (incomprensibile) allegria durante le
- giornate di lavoro e per i rimproveri sulla qualità del codice, e tutti
- i colleghi che sono stati presenti e che mi hanno accompagnato durante
- questo percorso.
+ giornate di lavoro che ha animato con le sue (scarse) doti canore, 
+\begin_inset Flex CT - Spaced Low Small Caps
+status open
+
+\begin_layout Plain Layout
+Francesca Pivanti
+\end_layout
+
+\end_inset
+
+ per l'analisi psicologica, senza dimenticare anche 
+\begin_inset Flex CT - Spaced Low Small Caps
+status open
+
+\begin_layout Plain Layout
+Angelo Di Marzio
+\end_layout
+
+\end_inset
+
+ (detto 
+\begin_inset Flex CT - Spaced Low Small Caps
+status open
+
+\begin_layout Plain Layout
+Giuseppe Di Marzo
+\end_layout
+
+\end_inset
+
+), 
+\begin_inset Flex CT - Spaced Low Small Caps
+status open
+
+\begin_layout Plain Layout
+Matteo Mariani
+\end_layout
+
+\end_inset
+
+, 
+\begin_inset Flex CT - Spaced Low Small Caps
+status open
+
+\begin_layout Plain Layout
+Marco Romano
+\end_layout
+
+\end_inset
+
+, 
+\begin_inset Flex CT - Spaced Low Small Caps
+status open
+
+\begin_layout Plain Layout
+Andrea Pompili
+\end_layout
+
+\end_inset
+
+ e tutti i colleghi che sono stati presenti e che mi hanno accompagnato
+ durante questo percorso.
+\end_layout
+
+\begin_layout Standard
+Un particolare ringraziamento anche a 
+\begin_inset Flex CT - Spaced Low Small Caps
+status open
+
+\begin_layout Plain Layout
+Jesus Anton
+\end_layout
+
+\end_inset
+
+ (
+\begin_inset Flex CT - Spaced Low Small Caps
+status open
+
+\begin_layout Plain Layout
+jesux
+\end_layout
+
+\end_inset
+
+) per la cortesia nel consigliarmi come superare le difficoltà del lavoro
+ che avrei dovuto svolgere.
 \end_layout
 
 \begin_layout Standard
@@ -324,7 +400,8 @@ amici
  che sono sempre presenti per accompagnarci in ogni impresa, non importa
  quanto folle; pronti a porgere la mano quando cadiamo, a starci vicino
  quando ci sentiamo soli, a confortarci quando siamo abbattuti, ad ascoltarci
- quando abbiamo bisogno di sfogarci.
+ quando abbiamo bisogno di sfogarci, ma anche a gioire dei nostri successi
+ e dei traguardi raggiunti.
  Perché loro ci sono, ci sono ora, ma ci saranno anche domani.
 \end_layout
 
