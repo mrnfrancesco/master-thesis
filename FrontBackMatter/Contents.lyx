@@ -460,6 +460,13 @@ begin{acronym}[UML]
 
   
 \backslash
+acro{FBI}{Federal Bureau of Investigation}
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
 acro{IPS}{Intrusion Prevention System}
 \end_layout
 

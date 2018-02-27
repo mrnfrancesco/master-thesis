@@ -169,19 +169,19 @@ Fare in modo che la sicurezza entri a far parte del normale ciclo di sviluppo
 
 Prendiamo ad esempio un edificio.
  Deve essere sicuro (non deve crollare), ma questo non è abbastanza.
- Deve anche essere utilizzabile, deve essere in grado di essere costruito
- e manutenuto con delle spese sostenibili per consentire al lavoro di essere
- redditizio, e infine dovrebbe essere anche attraente per riflettere lo
- stato dei suoi abitanti e il valore della proprietà.
+ Deve anche essere utilizzabile, deve poter essere costruito e manutenuto
+ con delle spese sostenibili per consentire al lavoro di essere redditizio,
+ e infine dovrebbe essere anche attraente per riflettere lo stato dei suoi
+ abitanti e il valore della proprietà.
  Ogni requisito ha la sua priorità, ma tutti hanno un posto nel progetto.
-\begin_inset Newline newline
-\end_inset
+\end_layout
 
+\begin_layout Standard
 La sicurezza delle persone non ha avuto molta influenza sull'informatica.
  Molti hanno affermato che un software, per quanto complesso esso sia, non
  può uccidere, quindi si è lasciata molta tolleranza verso principi di progettaz
 ione del codice opinabili.
- Dopo tutto, non importa quanto qualcosa sia scritto male, in ogni caso,
+ Dopotutto, non importa quanto un software sia scritto male, in ogni caso,
  nessuno morirà.
  Questo è parzialmente vero
 \begin_inset Foot
@@ -260,7 +260,7 @@ Fornitore di banda larga e di telecomunicazioni statunitense
  riporta che il numero di dati finanziari personali compromessi nel 2008
  superano quelli degli anni 2004, 2005, 2006 e 2007 messi assieme.
  Nel 2010 Stuxnet causa danni sostanziali al programma nucleare iraniano
- attaccando le centrifughe per separare materiali nucleari.
+ attaccando le centrifughe per separare materiali nucleari mostrando.
  Nel 2014 vengono resi pubblici Heartbleed e Shellshock, vulnerabilità di
  sicurezza tanto importanti da avere posto nei notiziari, anche quelli non
  specialistici.
@@ -285,6 +285,30 @@ ransom
 
 Le persone continuano a non morire per gli attacchi informatici, ma la sicurezza
  diventa un problema visibile alle persone, alle aziende, ai governi.
+ Ma è l'informatizzazione sempre più frequente di impianti e sistemi autonomi
+ a rendere il problema di interesse anche per le grandi industrie e per
+ la sicurezza pubblica.
+ È lo stesso 
+\begin_inset Flex CT - acronym
+status collapsed
+
+\begin_layout Plain Layout
+
+FBI
+\end_layout
+
+\end_inset
+
+ che dopo gli incidenti in Ucraina
+\begin_inset CommandInset citation
+LatexCommand citep
+key "analysis_of_the_cyber_attack_on_the_ukranian_power_grid"
+
+\end_inset
+
+, America, Russia e Irlanda allerta i fornitori di energia elettrica come
+ principali obiettivi degli attacchi informatici dei prossimi anni.
+ 
 \begin_inset VSpace medskip
 \end_inset
 
@@ -300,6 +324,13 @@ Perché allora i software continuano ad essere vulnerabili? Alla fine della
  Ognuno di questi ha in comune una caratteristica molto importante: il fatto
  che non vengano rispettati risulta ovvio anche agli occhi dell'utente medio.
  La sicurezza non condivide questo aspetto.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace defskip
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
