@@ -215,7 +215,7 @@ target "https://www.bluetooth.com/markets"
  stampanti e wearable per nominarne solo alcuni.
  Dopo l'introduzione del 
 \begin_inset Flex CT - acronym
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -228,7 +228,7 @@ BLE
  banda, il numero di dispositivi ad utilizzare il Bluetooth continua a diffonder
 si nel crescente mercato dell'
 \begin_inset Flex CT - acronym
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -788,7 +788,7 @@ SIG
 \end_layout
 
 \begin_layout Standard
-Nonostante quanto appena detto le recenti scoperte del gruppo Armis
+Nonostante quanto appena detto, le recenti scoperte del gruppo Armis
 \begin_inset Foot
 status collapsed
 
@@ -815,7 +815,7 @@ Startup che si occupa di sviluppare soluzioni per controllare e rilevare
 Questa complessità ha tenuto i ricercatori lontani dal revisionare e testare
  le diverse implementazioni dello standard.
  Il risultato di tutto questo è l'esistenza di un gran numero di vulnerabilità,
- tra cui quelle esposte nel capitolo 
+ tra cui quelle analizzate nel capitolo 
 \begin_inset CommandInset ref
 LatexCommand nameref
 reference "ch:blueborne"
@@ -972,10 +972,10 @@ key "blueborne_white_paper"
 
 \begin_layout Standard
 In un certo senso lo stack Bluetooth è l'equivalente dello stack TCP/IP,
- ma per comunicazioni Bluetooth; infatti a differenza di altri protocolli
+ ma per comunicazioni Bluetooth; infatti, a differenza di altri protocolli
  di comunicazione come Ethernet e WiFi, il Bluetooth non fa affidamento
  sullo stack TCP/IP per i protocolli applicativi di alto livello.
- Piuttosto sono stati definiti una gran varietà di protocolli e applicazioni
+ Piuttosto, sono stati definiti una gran varietà di protocolli e applicazioni
  a partire dal livello fisico fino al livello applicativo che nel complesso
  rappresentano lo stack Bluetooth (Fig.
  
@@ -1040,7 +1040,7 @@ host
 \emph default
 , che è il sistema operativo del dispositivo, tramite il protocollo 
 \begin_inset Flex CT - acronym
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -1052,7 +1052,7 @@ HCI
 .
  Tutti i protocolli al di sopra di questo livello (L2CAP, AMP, SMP, SDP
  e RFCOMM) sono invece implementati direttamente dall'host.
- A differenza dei driver degli adattatori Bluetooth che implementano diverse
+ A differenza dei driver degli adattatori Bluetooth, che implementano diverse
  versioni dello stack per ogni hardware, i moderni sistemi operativi hanno
  una sola implementazione dello stack.
  Questo significa che ogni vulnerabilità che viene trovata in uno stack
@@ -1107,7 +1107,7 @@ Blocchi fondamentali dello stack Bluetooth e vulnerabilità scoperte con
 \begin_layout Standard
 In Figura 
 \begin_inset CommandInset ref
-LatexCommand ref
+LatexCommand vref
 reference "fig:bluetooth-stack-blocks-and-vulnerabilities"
 
 \end_inset
@@ -1150,13 +1150,16 @@ SDP
 
 \end_inset
 
- è uno degli strati che fanno parte del core delle specifiche Bluetooth,
- quindi è presente in tutte le sue implementazioni.
+ è uno degli strati che fanno parte del 
+\emph on
+core
+\emph default
+ delle specifiche Bluetooth, quindi è presente in tutte le sue implementazioni.
  Il suo scopo è quello di fornire alle applicazioni client un meccanismo
  per scoprire l'esistenza di servizi forniti e relativi attributi dal server
  SDP interrogato.
  Gli attributi di un servizio includono il tipo e la classe di servizio
- offerti e il meccanismo o le informazioni di protocollo necessarie per
+ offerti, e il meccanismo o le informazioni di protocollo necessarie per
  utilizzare il servizio.
 \end_layout
 
@@ -1184,8 +1187,11 @@ service record
 
 \begin_layout Standard
 Se il client, o un'applicazione associata con esso, decide di utilizzare
- un servizio deve aprire una connessione separata al provider del servizio
- utilizzando le informazioni presenti nel 
+ un servizio, deve aprire una connessione separata al 
+\emph on
+provider
+\emph default
+ del servizio utilizzando le informazioni presenti nel 
 \emph on
 service record
 \emph default
@@ -1214,7 +1220,7 @@ service record
 che non è altro che una lista di attributi relativi al servizio, come mostrato
  in Figura 
 \begin_inset CommandInset ref
-LatexCommand ref
+LatexCommand vref
 reference "fig:sdp-service-record"
 
 \end_inset
@@ -1370,7 +1376,7 @@ Ogni attributo descrive una singola caratteristica di un servizio.
 Un attributo consiste di due componenti: un ID e un valore (vedi Fig.
  
 \begin_inset CommandInset ref
-LatexCommand ref
+LatexCommand vref
 reference "fig:sdp-service-attribute-general"
 
 \end_inset
@@ -1517,7 +1523,7 @@ Data Element
  (Fig.
  
 \begin_inset CommandInset ref
-LatexCommand ref
+LatexCommand vref
 reference "fig:sdp-service-attribute-data-element"
 
 \end_inset
@@ -1656,7 +1662,7 @@ Data Element
 Alcuni valori di tipo che saranno utili per la trattazione successiva sono
  riportati in Tabella 
 \begin_inset CommandInset ref
-LatexCommand ref
+LatexCommand vref
 reference "tab:sdp-data-element-type"
 
 \end_inset
@@ -1842,7 +1848,7 @@ Data Element
 
  bit a seconda del valore, come descritto in Tabella 
 \begin_inset CommandInset ref
-LatexCommand ref
+LatexCommand vref
 reference "tab:sdp-data-element-size"
 
 \end_inset
@@ -2521,7 +2527,7 @@ Continuation State
  byte (vedi Fig.
  
 \begin_inset CommandInset ref
-LatexCommand ref
+LatexCommand vref
 reference "fig:sdp-continuation-state-format"
 
 \end_inset
@@ -2647,7 +2653,7 @@ Dopo che un client riceve una risposta parziale contenente il
 \emph on
 Continuation State
 \emph default
- può re-inviare la richiesta originale (con un nuovo 
+, può re-inviare la richiesta originale (con un nuovo 
 \emph on
 Transaction ID
 \emph default
@@ -2670,7 +2676,7 @@ name "subsec:sdp-service-search"
 \end_layout
 
 \begin_layout Standard
-La richiesta SDP per la ricerca di un servizio da parte di un client permette
+La richiesta SDP per la ricerca di un servizio da parte di un client, permette
  di ottenere il 
 \emph on
 service record
@@ -2711,7 +2717,7 @@ Continuation State
 \emph default
  impostato sono illustrati in Figura 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:sdp-service-search-request-response-format"
 
 \end_inset
@@ -3439,7 +3445,7 @@ service record
 \end_layout
 
 \begin_layout Enumerate
-Alla ricezione della richiesta il server esamina i dati riguardanti i servizi
+Alla ricezione della richiesta, il server esamina i dati riguardanti i servizi
  disponibili e restituisce una risposta SDP contenente gli attributi dei
  
 \emph on
@@ -3460,7 +3466,7 @@ MTU
 
 \end_inset
 
- della connessione L2CAP sottostante verrà inviato solo un frammento della
+ della connessione L2CAP sottostante, verrà inviato solo un frammento della
  risposta SDP seguita dalla struttura 
 \begin_inset Flex CT - acronym
 status collapsed
@@ -5251,7 +5257,7 @@ reference "fig:bnep-extension-header-format"
 \emph on
  extension header
 \emph default
- allora il flag E (
+, allora il flag E (
 \emph on
 Extension
 \emph default
@@ -5286,7 +5292,17 @@ Extension Type
 \begin_inset Formula $0\text{x}00$
 \end_inset
 
- (BNEP_EXTENSION_CONTROL) utilizzato per inviare messaggi di controllo.
+ (
+\begin_inset Flex CT - Spaced Low Small Caps
+status open
+
+\begin_layout Plain Layout
+BNEP_EXTENSION_CONTROL
+\end_layout
+
+\end_inset
+
+) utilizzato per inviare messaggi di controllo.
 \end_layout
 
 \begin_layout Standard
