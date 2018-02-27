@@ -124,101 +124,6 @@ status open
 
 
 \backslash
-begingroup 
-\backslash
-color{Maroon} 
-\backslash
-spacedallcaps{
-\backslash
-myTitle} 
-\backslash
-endgroup
-\end_layout
-
-\end_inset
-
-
-\begin_inset Newline newline
-\end_inset
-
-
-\begin_inset VSpace bigskip
-\end_inset
-
-
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-spacedlowsmallcaps{
-\backslash
-myName}
-\end_layout
-
-\end_inset
-
-
-\begin_inset Newline newline
-\end_inset
-
-
-\begin_inset VSpace vfill
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\align center
-
-
-
-\begin_inset Newline newline
-\end_inset
-
- 
-\begin_inset VSpace medskip
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\align center
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-mySubtitle
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset VSpace medskip
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\align center
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
 myUni
 \end_layout
 
@@ -242,10 +147,23 @@ myDepartment
 \end_inset
 
 
-\begin_inset Newline newline
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "0.5pt"
+
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+\align center
 \begin_inset ERT
 status open
 
@@ -253,7 +171,7 @@ status open
 
 
 \backslash
-spacedlowsmallcaps{
+emph{
 \backslash
 myFaculty}
 \end_layout
@@ -265,7 +183,53 @@ myFaculty}
 
 \begin_layout Standard
 \align center
-\begin_inset VSpace medskip
+\begin_inset VSpace 3em
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+spacedallcaps{
+\backslash
+myTitle}
+\end_layout
+
+\end_inset
+
+
+\begin_inset VSpace vfill
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align left
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+noindent
+\backslash
+spacedlowsmallcaps{Relatore}:
+\end_layout
+
+\end_inset
+
+
+\begin_inset space \hfill{}
 \end_inset
 
 
@@ -276,7 +240,43 @@ status open
 
 
 \backslash
-myTime
+noindent
+\backslash
+spacedlowsmallcaps{Candidato}:
+\end_layout
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+myProf
+\end_layout
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+myName
 \end_layout
 
 \end_inset
@@ -285,7 +285,78 @@ myTime
 \end_layout
 
 \begin_layout Standard
-\begin_inset VSpace vfill
+\align left
+\begin_inset VSpace bigskip
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+noindent
+\backslash
+spacedlowsmallcaps{Supervisore}:
+\end_layout
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+mySupervisor
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset VSpace 3em
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "0.5pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+myTime
+\end_layout
+
 \end_inset
 
 
