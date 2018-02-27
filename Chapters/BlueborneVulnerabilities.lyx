@@ -132,6 +132,45 @@ name "ch:blueborne-vulnerabilities"
 
 \end_layout
 
+\begin_layout Standard
+I protocolli 
+\begin_inset Flex CT - acronym
+status collapsed
+
+\begin_layout Plain Layout
+
+SDP
+\end_layout
+
+\end_inset
+
+ e 
+\begin_inset Flex CT - acronym
+status collapsed
+
+\begin_layout Plain Layout
+
+BNEP
+\end_layout
+
+\end_inset
+
+ sono al centro dell'attenzione quando si parla delle vulnerabilità BlueBorne
+ su Android.
+ La loro (errata) implementazione ha permesso al gruppo Armis di costruire
+ un attacco che permette di ottenere il pieno controllo del dispositivo
+ 
+\emph on
+target
+\emph default
+, ma ancora prima di vedere come attaccare un 
+\emph on
+device
+\emph default
+ è necessario analizzare in dettaglio l'origine delle vulnerabilità scoperte,
+ scopo di questo capitolo.
+\end_layout
+
 \begin_layout Section
 Android Information Leak (CVE-2017-0785)
 \begin_inset CommandInset label
@@ -188,7 +227,7 @@ typedef struct {
 \end_layout
 
 \begin_layout Standard
-In questo caso la struttura presenta solamente un offset di 
+In questo caso, la struttura presenta solamente un offset di 
 \begin_inset Formula $16$
 \end_inset
 
@@ -646,7 +685,7 @@ for (xx = cont_offset; xx < cont_offset + cur_handles; xx++)
 \end_layout
 
 \begin_layout Standard
-Come si può notare il codice mantiene una copia del valore di 
+Come si può notare, il codice mantiene una copia del valore di 
 \begin_inset listings
 lstparams "language={C++},tabsize=4"
 inline true
@@ -676,9 +715,9 @@ p_ccb
 
 \end_inset
 
- che mantiene le informazioni di connessione, e controlla che il valore
- ricevuto sia uguale a quello atteso; se i due valori differiscono la funzione
- termina segnalando l'errore.
+ che mantiene le informazioni di connessione e controlla che il valore ricevuto
+ sia uguale a quello atteso; se i due valori differiscono la funzione termina
+ segnalando l'errore.
 \end_layout
 
 \begin_layout Standard
@@ -1497,9 +1536,9 @@ Vista dello stack SDP dopo una richiesta malformata
 
 \begin_layout Standard
 I dati ottenuti in questo modo potenzialmente potrebbero contenere chiavi
- di cifratura, puntatori a dati o a codice, o altri dati che possono essere
- utilizzati ad esempio per bypassare meccanismi di mitigazione del sistema
- operativo come l'
+ di cifratura, puntatori a dati o a codice, o altre informazioni che possono
+ essere utilizzate, ad esempio, per bypassare meccanismi di mitigazione
+ del sistema operativo come l'
 \begin_inset Flex CT - acronym
 status collapsed
 
@@ -1529,7 +1568,7 @@ Misura di protezione che consiste nel rendere (parzialmente) casuale l'indirizzo
 
 \begin_layout Standard
 Per ultima, ma non meno importante, è anche la possibilità di creare un
- disservizio facendo si che il puntatore ai dati da leggere per costruire
+ disservizio facendo sì che il puntatore ai dati da leggere per costruire
  la risposta SDP punti ad un'area riservata del sistema operativo.
  L'accesso a queste aree di memoria, infatti, portano generalmente al riavvio
  improvviso del dispositivo.
@@ -1726,7 +1765,7 @@ case BNEP_FRAME_CONTROL:
 \end_layout
 
 \begin_layout Standard
-Come si può vedere il codice dell'istruzione 
+Come si può vedere, il codice dell'istruzione 
 \size small
 
 \begin_inset listings
@@ -2298,9 +2337,9 @@ Formato del pacchetto BNEP che permette di raggiungere il codice vulnerabile
 \end_layout
 
 \begin_layout Standard
-Quando tutte queste condizioni si verificano simultaneamente il server BNEP
- avvia in modo asincrono la richiesta di connessione e mette in coda i messaggi
- di controllo successivi nel buffer 
+Quando tutte queste condizioni si verificano simultaneamente, il server
+ BNEP avvia in modo asincrono la richiesta di connessione e mette in coda
+ i messaggi di controllo successivi nel buffer 
 \size small
 
 \begin_inset listings
@@ -2318,12 +2357,12 @@ p_pending_data
 
 \size default
 .
- Questo avviene in quanto quando i messaggi di controllo presenti negli
+ Questo avviene in quanto, quando i messaggi di controllo presenti negli
  
 \emph on
 extension header
 \emph default
- seguono l'header BNEP per la richiesta di collegamento è possibile che
+ seguono l'header BNEP per la richiesta di collegamento, è possibile che
  questi richiedano una connessione già instaurata, quindi non possono essere
  processati subito.
 \end_layout
@@ -2363,7 +2402,7 @@ memcpy((UINT8 *)(p_bcb->p_pending_data + 1), p, rem_len);
 \end_layout
 
 \begin_layout Standard
-Come si può notare il buffer 
+Come si può notare, il buffer 
 \size small
 
 \begin_inset listings
