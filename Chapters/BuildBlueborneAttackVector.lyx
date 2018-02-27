@@ -152,9 +152,13 @@ name "sec:discoverable-mode-problem"
 \end_layout
 
 \begin_layout Standard
-Come impostazione predefinita in ormai tutti i dispositivi Android il Bluetooth
+Come impostazione predefinita in ormai tutti i dispositivi Android, il Bluetooth
  è acceso e molti utenti preferiscono lasciarlo tale in quanto è un modo
- comodo e veloce di connettere auricolari, smartwatch o altri dispositivi.
+ comodo e veloce di connettere auricolari, 
+\emph on
+smartwatch
+\emph default
+ o altri dispositivi.
 \end_layout
 
 \begin_layout Standard
@@ -164,7 +168,7 @@ In Android, durante tutto il tempo in cui un utente effettua una scansione
  In ogni altro caso il dispositivo non è visibile.
  Tuttavia un dispositivo con il Bluetooth attivo, seppur non visibile, è
  sempre in ascolto di traffico di cui è il destinatario.
- Per questa ragione se si vuole stabilire una connessione con un dispositivo
+ Per questa ragione, se si vuole stabilire una connessione con un dispositivo
  si ha la necessita di conoscere solamente il suo 
 \begin_inset Flex CT - acronym
 status collapsed
@@ -214,7 +218,11 @@ target "http://ubertooth.sourceforge.net/"
 , una piattaforma (software, hardware e firmware) open source di sviluppo
  wireless che supporta la tecnologia Bluetooth.
  Seguendo le istruzioni sul sito ufficiale del progetto è possibile ottenere
- un adattatore Bluetooth in grado di sniffare
+ un adattatore Bluetooth in grado di fare 
+\emph on
+sniffing
+\emph default
+
 \begin_inset Foot
 status collapsed
 
@@ -225,14 +233,14 @@ attività di intercettazione passiva dei dati che transitano in una rete
 
 \end_inset
 
- i pacchetti Bluetooth anche se diretti ad altri dispositivi.
+ di pacchetti Bluetooth anche se diretti ad altri dispositivi.
 \end_layout
 
 \begin_layout Standard
 Nonostante le connessioni Bluetooth siano cifrate, parti di pacchetto contenenti
  informazioni utili non lo sono.
- Guardando queste parti e attraverso alcune euristiche che sono state implementa
-te nel progetto è possibile ricavare parzialmente o totalmente il BDADDR
+ Guardando queste parti, e attraverso alcune euristiche che sono state implement
+ate nel progetto, è possibile ricavare parzialmente o totalmente il BDADDR
  dei dispositivi nelle vicinanze che stanno attivamente scambiando dei pacchetti
  Bluetooth.
 \end_layout
@@ -242,9 +250,9 @@ Sniffare il traffico WiFi
 \end_layout
 
 \begin_layout Standard
-Se il dispositivo vittima nonostante abbia il Bluetooth acceso non genera
- alcun traffico (non ha alcuna connessione attiva con altri dispositivi),
- è ancora possibile provare ad 
+Se il dispositivo vittima, nonostante abbia il Bluetooth acceso, non genera
+ alcun traffico (non ha connessioni attive con altri dispositivi), è ancora
+ possibile provare ad 
 \begin_inset Quotes eld
 \end_inset
 
@@ -285,7 +293,7 @@ Se il dispositivo vittima non ha connessioni Bluetooth né WiFi attive, o
  il dispositivo.
  Se il BDADDR generato coincide con quello associato a un dispositivo fisicament
 e nelle vicinanze, questo risponderà alla richiesta di connessione (eventualment
-e anche con un errore).
+e con un messaggio di errore).
 \end_layout
 
 \begin_layout Standard
@@ -300,7 +308,7 @@ Un BDADDR è un valore a
 \begin_inset Formula $48$
 \end_inset
 
- bit il che significa che il numero totale di combinazioni da testare è
+ bit il ché significa che il numero totale di combinazioni da testare è
  
 \begin_inset Formula $2^{48}=281474976710656$
 \end_inset
@@ -539,12 +547,12 @@ I
 \emph on
 canary
 \emph default
- sono un meccanismo di mitigazione alle vulnerabilità di tipo 
+ sono un meccanismo di mitigazione per vulnerabilità di tipo 
 \emph on
 overflow
 \emph default
 .
- Si tratta di parole il cui valore è noto che vengono aggiunte alle strutture
+ Si tratta di sequenze note di byte che vengono aggiunte alle strutture
  dati come gli 
 \emph on
 stack frame
@@ -1050,7 +1058,7 @@ reference "sec:Andorid-RCE-(CVE-2017-0781)"
 
 \end_inset
 
- è chiaro che è possibile inviare un pacchetto creato 
+, è chiaro che è possibile inviare un pacchetto creato 
 \emph on
 ad-hoc 
 \emph default
@@ -1069,9 +1077,9 @@ crash
 \emph default
  e viene automaticamente (e rapidamente) riavviato permettendoci di fare
  tentativi successivi fino al successo.
- Nonostante questo è conveniente avere un modo che permetta di aumentare
- il tasso di successo durante questa fase dell'attacco, soprattutto perchè
- la prossimità fisica di cui necessità l'attacco non è un qualcosa che possiamo
+ Nonostante questo, è conveniente avere un modo che permetta di aumentare
+ il tasso di successo durante questa fase dell'attacco, soprattutto perché
+ la prossimità fisica di cui necessita l'attacco non è un qualcosa che possiamo
  sempre garantire per lunghi periodi di tempo.
 \end_layout
 
@@ -1090,7 +1098,11 @@ btu_hci_msg_process
 
 \end_inset
 
- in modo da comprendere cosa stiamo sovrascrivendo durante l'heap overflow.
+ in modo da comprendere cosa stiamo sovrascrivendo durante l'
+\emph on
+heap overflow
+\emph default
+.
 \end_layout
 
 \begin_layout Standard
@@ -1242,7 +1254,7 @@ BTU_POST_TO_TASK_NO_GOOD_HORRIBLE_HACK
 
 \end_inset
 
- visto in precedenza utilizzano la stessa coda per messaggi di tipo diverso
+ visto in precedenza utilizzano la stessa coda per messaggi di tipo diverso,
  che contengono al loro interno una 
 \emph on
 callback
@@ -1435,7 +1447,11 @@ Non è un caso che un nodo della lista sia grande esattamente
 \emph on
 overflow
 \emph default
-; infatti la funzione invocata per allocare memoria nell'heap (
+; infatti, la funzione invocata per allocare memoria nell'
+\emph on
+heap
+\emph default
+ (
 \begin_inset listings
 lstparams "language={C++},tabsize=4"
 inline true
@@ -1485,7 +1501,7 @@ Ricapitolando di nuovo come avviene il
 \emph on
 crash
 \emph default
- del demone Bluetooth abbiamo i passi seguenti:
+ del demone Bluetooth, abbiamo i passi seguenti:
 \end_layout
 
 \begin_layout Enumerate
@@ -1540,7 +1556,8 @@ BT_HDR
 
 \end_inset
 
- viene allocato in un'area di memoria contigua e a causa dell'
+ viene allocato in un'area di memoria contigua.
+ A causa dell'
 \emph on
 overflow
 \emph default
@@ -2384,8 +2401,8 @@ list_node_t
 
 \end_inset
 
- possibile con dei buchi tra uno e l'altro.
- In questo modo al momento di allocare la memoria per il buffer 
+ possibile con degli spazi non allocati tra uno e l'altro.
+ In questo modo, al momento di allocare la memoria per il buffer 
 \begin_inset listings
 lstparams "language={C++},tabsize=4"
 inline true
@@ -2398,7 +2415,7 @@ p_pending_data
 
 \end_inset
 
- la scelta ricadrà su uno di questi buchi.
+, la scelta ricadrà su uno di questi spazi.
 \end_layout
 
 \begin_layout Standard
@@ -2487,11 +2504,11 @@ list_node_t
 \end_inset
 
 .
- Per far si che questo 
+ Per far sì che questo 
 \emph on
 layout
 \emph default
- occorra con maggiore probabilità è necessario che l'oggetto 
+ occorra con maggiore probabilità, è necessario che l'oggetto 
 \begin_inset listings
 lstparams "language={C++},tabsize=4"
 inline true
@@ -2505,7 +2522,7 @@ list_node_t
 \end_inset
 
  che vogliamo sovrascrivere tramite overflow risieda esattamente dopo il
- primo buco della 
+ primo spazio della 
 \begin_inset Quotes eld
 \end_inset
 
@@ -2562,7 +2579,7 @@ list_node_t
 \end_inset
 
  verrebbero allocati (e deallocati) in un ordine preciso non permettendo
- quindi di creare dei buchi come sperato.
+ quindi di creare degli spazi come sperato.
  Avremmo infatti una situazione come quella mostrata in Figura 
 \begin_inset CommandInset ref
 LatexCommand vref
@@ -2618,7 +2635,7 @@ Situazione dell'heap se semplicemente inviassimo tanti pacchetti che creano
 \end_layout
 
 \begin_layout Standard
-In questo caso gli oggetti 
+In questo caso, gli oggetti 
 \begin_inset listings
 lstparams "language={C++},tabsize=4"
 inline true
@@ -2680,7 +2697,7 @@ list_node_t
 \end_layout
 
 \begin_layout Standard
-I buchi tra gli oggetti 
+Gli spazi tra gli oggetti 
 \begin_inset listings
 lstparams "language={C++},tabsize=4"
 inline true
@@ -2761,7 +2778,7 @@ Situazione dell'heap dopo la deallocazione dei nodi gestiti
 \end_layout
 
 \begin_layout Standard
-In questa situazione è più probabile che un buco esista tra due oggetti
+In questa situazione, è più probabile che uno spazio esista tra due oggetti
  
 \begin_inset listings
 lstparams "language={C++},tabsize=4"
@@ -2788,7 +2805,7 @@ list_node_t
 
 \end_inset
 
-, quindi è necessaria una strategia che permetta di creare buchi casualmente
+, quindi è necessaria una strategia che permetta di creare spazi casualmente
  sull'heap tra due oggetti 
 \begin_inset listings
 lstparams "language={C++},tabsize=4"
@@ -2846,7 +2863,7 @@ COMMAND_NOT_UNDERSTOOD
 
 \end_inset
 
- come mostrato nel seguente estratto:
+, come mostrato nel seguente estratto:
 \end_layout
 
 \begin_layout Standard
@@ -3540,20 +3557,20 @@ void bnepu_check_send_packet (tBNEP_CONN *p_bcb, BT_HDR *p_buf)
 \end_layout
 
 \begin_layout Standard
-Questo significa che se subito prima di inviare i datagrammi che inducono
- l'overflow inviamo un pacchetto di controllo come quello mostrato in Figura
- 
+Questo significa che, se subito prima di inviare i datagrammi che inducono
+ l'overflow inviamo un pacchetto di controllo con un numero sufficientemente
+ elevato di 
+\emph on
+extension header
+\emph default
+ (vedi Figura 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:heap-shaping-packet-format"
 
 \end_inset
 
- con un numero sufficientemente elevato di 
-\emph on
-extension header
-\emph default
- la funzione 
+), la funzione 
 \begin_inset listings
 lstparams "language={C++},breaklines=true,tabsize=4"
 inline true
@@ -3566,8 +3583,8 @@ bnep_data_ind
 
 \end_inset
 
- gestirà per primi i messaggi di risposta, quindi prima di tutto verranno
- allocati gli oggetti 
+ gestirà per primi i messaggi di risposta.
+ Quindi, prima di tutto verranno allocati gli oggetti 
 \begin_inset listings
 lstparams "language={C++},breaklines=true,tabsize=4"
 inline true
@@ -3593,7 +3610,8 @@ xmit_q
 
 \end_inset
 
-; in secondo luogo dato che vengono tolti e deallocati nodi dalla coda 
+; in secondo luogo, dato che vengono tolti e deallocati nodi dalla coda
+ 
 \begin_inset listings
 lstparams "language={C++},breaklines=true,tabsize=4"
 inline true
@@ -3606,7 +3624,7 @@ xmit_q
 
 \end_inset
 
- in un thread differente, questo permette la costruzione di buchi in posizione
+ in un thread differente, questo permette la costruzione di spazi in posizione
  
 \begin_inset Quotes eld
 \end_inset
@@ -3664,7 +3682,7 @@ name "fig:heap-spraying-with-holes"
 
 \end_inset
 
-Layout dell'heap dopo la creazione di buchi casuali
+Layout dell'heap dopo la creazione di spazi casuali
 \end_layout
 
 \end_inset
@@ -3704,7 +3722,7 @@ p_pending_data
 
 \end_inset
 
- verrà allocato verosimilmente nel buco di 
+ verrà allocato verosimilmente nello spazio di 
 \begin_inset Formula $8$
 \end_inset
 
@@ -3738,7 +3756,7 @@ name "sec:payload-building"
 \end_layout
 
 \begin_layout Standard
-Da quanto spiegato finora capiamo che per ottenere una 
+Da quanto spiegato finora capiamo che, per ottenere una 
 \begin_inset Flex CT - acronym
 status collapsed
 
@@ -3749,7 +3767,7 @@ RCE
 
 \end_inset
 
- è necessario fare in modo che l'indirizzo utilizzato nell'
+, è necessario fare in modo che l'indirizzo utilizzato nell'
 \emph on
 overflow
 \emph default
@@ -4124,15 +4142,15 @@ system
 \end_inset
 
 .
- Questo significa che l'intero payload oltre che rispettare i vincoli evidenziat
-i in Tabella 
+ Questo significa che l'intero payload, oltre che rispettare i vincoli evidenzia
+ti in Tabella 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "tab:cve-2017-0781-payload-constraints"
 
 \end_inset
 
- deve anche contenere uno o più comandi bash validi.
+, deve anche contenere uno o più comandi bash validi.
 \end_layout
 
 \begin_layout Standard
@@ -4565,7 +4583,7 @@ status open
 
 \end_inset
 
- finale che serve a commentare tutto ciò che segue i nostri comandi così
+ finale che serve a commentare tutto ciò che segue i nostri comandi, così
  da non considerare dati spuri che possono derivare da aree di memoria contigue
  al 
 \emph on
@@ -4604,7 +4622,7 @@ reference "tab:cve-2017-0781-payload-sample"
 Esaminando il codice sorgente dello stack Bluetooth di Android si può notare
  come molte delle strutture dati correlate alle connesioni Bluetooth attualmente
  attive vengano memorizzate in strutture globali non esplicitamente inizializzat
-e quindi residenti nel segmento 
+e, quindi residenti nel segmento 
 \begin_inset Flex CT - acronym
 status collapsed
 
@@ -4619,8 +4637,11 @@ BSS
 \end_layout
 
 \begin_layout Standard
-Gli offset delle variabili globali nel segmento BSS sono costanti per compilazio
-ne.
+Gli offset delle variabili globali nel segmento BSS sono costanti per 
+\emph on
+build
+\emph default
+.
  L'unico elemento non deterministico è l'indirizzo di base, randomizzato
  tramite ASLR.
 \end_layout
@@ -4678,7 +4699,7 @@ user-friendly
 \end_inset
 
  ottetti.
- Se il nome è di lunghezza inferiore la fine della stringa è indicata con
+ Se il nome è di lunghezza inferiore, la fine della stringa è indicata con
  un ottetto nullo (
 \begin_inset Formula $0\text{x}00$
 \end_inset
@@ -4897,7 +4918,7 @@ exploit
 \begin_layout Standard
 L'ASLR è una tecnica di mitigazione che non permette di utilizzare questa
  facilitazione introducendo entropia nello spazio degli indirizzi di un
- processo di modo che ad ogni esecuzione del codice vulnerabile lo spazio
+ processo di modo che, ad ogni esecuzione del codice vulnerabile, lo spazio
  degli indirizzi del processo corrispondente risulti diverso (seppur all'interno
  di un 
 \emph on
@@ -4908,8 +4929,16 @@ range
 
 \begin_layout Standard
 Per comprendere meglio il funzionamento dell'ASLR vediamo due esecuzioni
- consecutive di un eseguibile prima su una vecchia versione di Android senza
- ASLR e lo stesso su una versione più recente:
+ consecutive di un eseguibile sia su una vecchia versione di Android senza
+ ASLR (
+\begin_inset Formula $1.5$
+\end_inset
+
+), sia su una versione più recente (
+\begin_inset Formula $7.1.2$
+\end_inset
+
+):
 \end_layout
 
 \begin_layout Standard
@@ -5045,7 +5074,7 @@ reference "tab:cve-2017-0781-payload-sample"
 
 \end_inset
 
- perché questo cambia ad ogni esecuzione così come anche quello del 
+ perché questo cambia ad ogni esecuzione, così come anche quello del 
 \emph on
 payload
 \emph default
@@ -5078,8 +5107,8 @@ offset
 \end_layout
 
 \begin_layout Itemize
-l'indirizzo relativo della funzione che ci interessa invocare o dei dati
- che ci interessa puntare
+l'indirizzo relativo della funzione che ci interessa invocare, o dei dati
+ che ci interessa puntare, rispetto allo stesso indirizzo di base precedente
 \end_layout
 
 \begin_layout Standard
@@ -5097,8 +5126,12 @@ reference "sec:android-information-leak-(CVE-2017-0785)"
 
 \end_inset
 
- con un dispositivo target fisicamente in nostro possesso e su cui possiamo
- operare con privilegi di 
+ con un dispositivo 
+\emph on
+target
+\emph default
+ fisicamente in nostro possesso e su cui possiamo operare con privilegi
+ di 
 \emph on
 root
 \emph default
@@ -5217,8 +5250,11 @@ not stripped
 
 \end_inset
 
-, cioè contiene tutti i simboli di debug tra cui quindi anche quelli relativi
- alla funzione 
+, cioè contiene tutti i simboli di 
+\emph on
+debug
+\emph default
+ tra cui, quindi, anche quelli relativi alla funzione 
 \begin_inset listings
 lstparams "tabsize=4"
 inline true
@@ -5474,7 +5510,7 @@ status open
 
 \begin_layout Standard
 In cui possiamo riconoscere all'offset 
-\begin_inset Formula $0\text{x}160$
+\begin_inset Formula $0\text{x}00000160$
 \end_inset
 
  un indirizzo valido (
@@ -5518,7 +5554,7 @@ libc
 
 \end_inset
 
- e quindi l'indirizzo della funzione 
+, quindi l'indirizzo della funzione 
 \begin_inset listings
 lstparams "tabsize=4"
 inline true
@@ -5676,12 +5712,11 @@ TEST_TEST_TEST_TEST
 
 \begin_layout Standard
 Ora, il problema che si pone è quello di essere in grado di bloccare l'esecuzion
-e del processo bluetooth dopo che il nome del dispositivo, quindi il nostro
- 
+e del processo bluetooth dopo che il nome del dispositivo (il nostro 
 \emph on
 payload
 \emph default
-, è stato caricato in memoria e mentre durante una connessione attiva.
+) è stato caricato in memoria e durante una connessione attiva.
  Non possiamo impostare un 
 \emph on
 breakpoint
@@ -5878,8 +5913,11 @@ TEST_TEST_TEST_TEST
 
 \end_inset
 
- impostata come nome del controller Bluetooth ottenendo così l'indirizzo
- cercato, quindi il suo offset:
+ impostata come nome del controller Bluetooth ottenendo così l'
+\emph on
+offset
+\emph default
+ cercato:
 \end_layout
 
 \begin_layout Standard
@@ -5890,12 +5928,12 @@ status open
 
 \begin_layout Plain Layout
 
-peda-arm > searchmem "TEST_TEST_TEST_TEST" 0xee66f000 0xee74b000
+peda-arm > searchmem "TEST_TEST_TEST_TEST" 0xee6a4000 0xee780000
 \end_layout
 
 \begin_layout Plain Layout
 
-[*] Searching for 'TEST_TEST_TEST_TEST' in range: ee6a4000 - ee780000
+[*] Searching for 'TEST_TEST_TEST_TEST' in range: 0xee6a4000 - 0xee780000
 \end_layout
 
 \begin_layout Plain Layout
@@ -6018,9 +6056,9 @@ shell
 \end_layout
 
 \begin_layout Standard
-In questo modo possiamo utilizzare la rete internet per continuare ad inviare
- comandi al dispositivo della vittima senza più avere bisogno di mantenere
- la prossimità fisica imposta dalla connessione Bluetooth.
+In questo modo possiamo utilizzare la rete internet per continuare a inviare
+ comandi al dispositivo vittima senza più avere bisogno di mantenere la
+ prossimità fisica imposta dalla connessione Bluetooth.
 \end_layout
 
 \begin_layout Standard
@@ -6041,7 +6079,7 @@ com.android.bluetooth
 
 \end_inset
 
- cioè con
+ cioè con:
 \end_layout
 
 \begin_layout Standard
@@ -6709,8 +6747,12 @@ user space
 \emph on
 kernel 
 \emph default
-ci sono i driver dei dispositivi e i file system virtuali, lato utente molte
- componenti, come servizi privilegiati, espongono funzionalità di 
+ci sono i driver dei dispositivi e i 
+\emph on
+file system
+\emph default
+ virtuali, lato utente molte componenti, come servizi privilegiati, espongono
+ funzionalità di 
 \begin_inset Flex CT - acronym
 status collapsed
 
@@ -6741,9 +6783,13 @@ tà di successo.
 \end_layout
 
 \begin_layout Standard
-Semplicemente esaminando il file system, manualmente o in modo automatico,
- è possibile trovare questi possibili punti d'ingresso per proseguire con
- la successiva fase di analisi ed eventualmente 
+Semplicemente esaminando il 
+\emph on
+file system
+\emph default
+, manualmente o in modo automatico, è possibile trovare questi possibili
+ punti d'ingresso per proseguire con la successiva fase di analisi ed eventualme
+nte 
 \emph on
 exploitation
 \emph default
@@ -6755,7 +6801,11 @@ Ogni
 \emph on
 entry
 \emph default
- nel file system ha differenti proprietà.
+ nel 
+\emph on
+file system
+\emph default
+ ha differenti proprietà.
  Prima e più importante è l'appartenenza a uno specifico utente/gruppo;
  in secondo luogo i permessi che l'utente o il gruppo hanno rispetto alla
  
@@ -6773,7 +6823,7 @@ entry
 \emph on
 set-user-id
 \emph default
- (o SETUID) che permettono a chiunque di eseguire un un programma elevando
+ (o SETUID) che permettono a chiunque di eseguire un programma elevando
  temporaneamente i propri privilegi a quelli del proprietario del file.
 \end_layout
 
@@ -6791,7 +6841,7 @@ set-user-id
 \end_layout
 
 \begin_layout Standard
-È possibile che un utente non privilegiato possa accedere ad un file che
+È possibile che un utente non privilegiato possa accedere a un file che
  però si trova in una cartella di cui gli è impossibile mostrare il contenuto.
  In questa situazione è possibile non avere una visione completa della superfici
 e d'attacco a disposizione.
@@ -6805,7 +6855,11 @@ root
 \emph on
 entry
 \emph default
- che siano di interesse durante una reale fase di post-exploitation.
+ che siano di interesse durante una reale fase di 
+\emph on
+post-exploitation
+\emph default
+.
 \end_layout
 
 \begin_layout Standard
@@ -6816,16 +6870,19 @@ entry
 \end_layout
 
 \begin_layout Standard
-Non tutta la superficie d'attacco è esposta tramite il file system.
+Non tutta la superficie d'attacco è esposta tramite il 
+\emph on
+file system
+\emph default
+.
  Altre superfici d'attacco esposte dal kernel Linux includono le chiamate
- di sistema, l'implementazione dei socket, porzioni di memoria condivisa,
- ecc.
+ di sistema, l'implementazione dei 
+\emph on
+socket
+\emph default
+, porzioni di memoria condivisa, ecc.
  C'è poi da considerare la parte più strettamente legata all'hardware e
  ai servizi che permettono di dialogarci.
-\begin_inset Newline newline
-\end_inset
-
-
 \begin_inset VSpace defskip
 \end_inset
 
@@ -6833,8 +6890,12 @@ Non tutta la superficie d'attacco è esposta tramite il file system.
 \end_layout
 
 \begin_layout Standard
-Una trattazione completa sulla fase di post-exploitation, tuttavia, va oltre
- lo scopo di questo testo, perciò non verrà ulteriormente approfondita.
+Una trattazione completa sulla fase di 
+\emph on
+post-exploitation
+\emph default
+, tuttavia, va oltre lo scopo di questo testo, perciò non verrà ulteriormente
+ approfondita.
 \end_layout
 
 \begin_layout Section
@@ -6842,9 +6903,25 @@ Workflow del Proof of Concept (PoC)
 \end_layout
 
 \begin_layout Standard
+Supponiamo che in qualche modo abbiamo ottenuto il BDADDR del dispositivo
+ vittima, che abbiamo calcolato la posizione in memoria di indirizzi validi
+ da sfruttare per bypassare l'ASLR, e che ci troviamo in prossimità fisica
+ del dispositivo da attaccare.
+ Date queste premesse e quanto detto nelle sezioni precedenti un attacco
+ d'esempio si presenta come in Figura 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:blueborne-demo"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
 \align center
 \begin_inset Float figure
-placement H
+placement h
 wide false
 sideways false
 status open
@@ -6885,12 +6962,27 @@ Schema esemplificativo dell'attacco BlueBorne
 \end_layout
 
 \begin_layout Standard
-Supponiamo che in qualche modo abbiamo ottenuto il BDADDR del dispositivo
- vittima, che abbiamo calcolato la posizione in memoria di indirizzi validi
- da sfruttare per bypassare l'ASLR e che ci troviamo in prossimità fisica
- del dispositivo da attaccare.
- Date queste premesse il workflow del PoC di un attacco che sfrutta BlueBorne
- è quello mostrato a seguire in Figura 
+Riepilogando, quello che vogliamo fare come attaccanti è collegarci tramite
+ Bluetooth e, sfruttando le vulnerabilità descritte, aprire una connessione
+ TCP/IP verso una macchina sotto il nostro controllo per poter lanciare
+ comandi 
+\emph on
+bash
+\emph default
+ al dispositivo vittima.
+\end_layout
+
+\begin_layout Standard
+La figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:blueborne-demo"
+
+\end_inset
+
+ è chiara, ma semplifica eccessivamente il processo di attacco.
+ Il workflow dettagliato del PoC di un attacco che sfrutta BlueBorne utilizzando
+ quanto detto finora è quello mostrato a seguire in Figura 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "fig:poc-workflow"
@@ -6903,7 +6995,7 @@ reference "fig:poc-workflow"
 \begin_layout Standard
 \align center
 \begin_inset Float figure
-placement H
+placement h
 wide false
 sideways false
 status open
@@ -7089,8 +7181,8 @@ text{ATT}
 
 	
 \backslash
-node (closeConnection) [blueProcess, below of=sendSdpMaliciousReq] {Close
- connection};
+node (closeConnection) [blueProcess, below of=sendSdpMaliciousReq] {Chiusura
+ connessione};
 \end_layout
 
 \begin_layout Plain Layout
