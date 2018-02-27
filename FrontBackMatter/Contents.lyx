@@ -467,6 +467,13 @@ acro{FBI}{Federal Bureau of Investigation}
 
   
 \backslash
+acro{DDoS}{Distributed Denial of Service}
+\end_layout
+
+\begin_layout Plain Layout
+
+  
+\backslash
 acro{IPS}{Intrusion Prevention System}
 \end_layout
 

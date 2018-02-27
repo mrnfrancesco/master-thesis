@@ -516,8 +516,28 @@ Infrastruttura informatica
 unmanaged
 \emph default
 , sono stati aggiunti in quanto condividono con essi la mancanza di supporto
- per i tradizionali sistemi di sicurezza e per questo sono spesso scelti
- come obiettivi dagli attaccanti.
+ per i tradizionali sistemi di sicurezza (
+\emph on
+antivirus
+\emph default
+, 
+\emph on
+antispyware
+\emph default
+, 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+dots
+\end_layout
+
+\end_inset
+
+) e per questo sono spesso scelti come obiettivi dagli attaccanti.
 \end_layout
 
 \begin_layout Standard
@@ -612,8 +632,19 @@ di sicurezza per eliminare una vulnerabilità nota.
 \end_layout
 
 \begin_layout Standard
-Mentre i pc possono essere facilmente aggiornati automaticamente, per gli
- altri device questo processo può essere molto complesso.
+Mentre singoli pc possono essere facilmente aggiornati automaticamente,
+ non si può dire la stessa cosa quando si hanno centinaia o migliaia di
+ pc a causa di problemi di retrocompatibilità; problema ancora più grave
+ nei server che supportano applicativi fondamentali per l'azienda.
+\end_layout
+
+\begin_layout Standard
+Problemi si hanno soprattutto per le altre tipologie di device in cui il
+ processo di 
+\emph on
+patching
+\emph default
+ può essere molto complesso se non impossibile.
  Gli aggiornamenti del sistema operativo di uno smartphone ad esempio sono
  per lo più sotto il controllo del vendor, quindi possono essere forniti
  in ritardo o addirittura non essere forniti per dispositivi più vecchi
@@ -718,8 +749,8 @@ i al pubblico i risultati della loro ricerca.
 \end_layout
 
 \begin_layout Standard
-Non solo questi dispositivi sono visibili a un attaccante, ma possono veicolare
- loro stessi un attacco creando una mesh
+Non è da sottovalutare che non solo questi dispositivi sono visibili a un
+ attaccante, ma possono veicolare loro stessi un attacco creando una mesh
 \begin_inset Foot
 status collapsed
 
@@ -743,7 +774,34 @@ target "https://en.wikipedia.org/wiki/Mirai_(malware)"
 
 \end_inset
 
-.
+, un 
+\emph on
+malware
+\emph default
+ progettato per operare su dispositivi 
+\begin_inset Flex CT - acronym
+status collapsed
+
+\begin_layout Plain Layout
+
+IoT
+\end_layout
+
+\end_inset
+
+ connessi a Internet e utilizzato per condurre alcune delle maggiori e più
+ devastanti campagne d'attacco 
+\begin_inset Flex CT - acronym
+status collapsed
+
+\begin_layout Plain Layout
+
+DDoS
+\end_layout
+
+\end_inset
+
+ su larga scala.
  A conferma di questo è stato studiato che il 
 \begin_inset Formula $46\%$
 \end_inset
@@ -941,7 +999,7 @@ unmanaged
  anomali o pattern d'attacco riconoscibili.
  A questo scopo spesso vengono installati firewall e soluzioni di IDS/IPS
  sia sul perimetro della rete, sia in specifici segmenti.
- Nonostante questo l'installazione avviene generalmente di fronte a punti
+ Nonostante questo, l'installazione avviene generalmente di fronte a punti
  in cui i requisiti di sicurezza sono cruciali, dimenticando o lasciando
  scoperti i dispositivi 
 \emph on
