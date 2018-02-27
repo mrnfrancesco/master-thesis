@@ -129,27 +129,7 @@ pagestyle{plain}
 \begin_layout Standard
 \begin_inset CommandInset include
 LatexCommand include
-filename "FrontBackMatter/DirtyTitlepage.lyx"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset CommandInset include
-LatexCommand include
 filename "FrontBackMatter/Titlepage.lyx"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset CommandInset include
-LatexCommand include
-filename "FrontBackMatter/Titleback.lyx"
 
 \end_inset
 
