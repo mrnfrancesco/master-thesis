@@ -5049,8 +5049,66 @@ Questo estratto mostra chiaramente che la randomizzazione degli indirizzi
 \end_layout
 
 \begin_layout Standard
-Questo significa che non possiamo inserire in maniera statica l'indirizzo
- della chiamata 
+\align center
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /home/mrnfrancesco/git/master-thesis/gfx/payload-and-system-addresses.png
+	display false
+	width 100col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:payload-and-system-addresses"
+
+\end_inset
+
+Indirizzi del 
+\emph on
+payload
+\emph default
+ e della funzione system nello schema di attacco con BlueBorne
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In Figura 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:payload-and-system-addresses"
+
+\end_inset
+
+ è mostrato lo schema di attacco che viene utilizzato con BlueBorne, evidenziand
+o come vengono utilizzati gli indirizzi del 
+\emph on
+payload
+\emph default
+ e della funzione 
 \begin_inset listings
 lstparams "tabsize=4"
 inline true
@@ -5063,22 +5121,27 @@ system
 
 \end_inset
 
- nel 
-\emph on
-payload
-\emph default
- mostrato in Tabella 
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "tab:cve-2017-0781-payload-sample"
+.
+ Quanto detto riguardo la randomizzazione degli indirizzi, però, implica
+ che non possiamo inserire in maniera statica né l'indirizzo della chiamata
+ 
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+system
+\end_layout
 
 \end_inset
 
- perché questo cambia ad ogni esecuzione, così come anche quello del 
+ né quello del 
 \emph on
 payload
 \emph default
- stesso.
+ perché questi cambiano ad ogni esecuzione.
 \end_layout
 
 \begin_layout Standard
@@ -5161,6 +5224,83 @@ tool
 
 \end_inset
 
+.
+\end_layout
+
+\begin_layout Standard
+Graficamente, possiamo rappresentare il meccanismo di randomizzazione degli
+ indirizzi e il metodo per bypassarlo nel modo mostrato in Figura 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:aslr-bypass"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /home/mrnfrancesco/git/master-thesis/gfx/aslr-bypass-using-info-leak.png
+	display false
+	width 100col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:aslr-bypass"
+
+\end_inset
+
+Calcolo indirizzi di base delle librerie in memoria bypassando l'ASLR
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+A seguire il metodo sistematico da seguire per il calcolo degli indirizzi
+ della funzione 
+\begin_inset listings
+lstparams "tabsize=4"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+system
+\end_layout
+
+\end_inset
+
+ e del 
+\emph on
+payload
+\emph default
 .
 \end_layout
 
