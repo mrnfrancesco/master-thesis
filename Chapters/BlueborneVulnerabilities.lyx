@@ -122,10 +122,10 @@ relax
 \end_layout
 
 \begin_layout Chapter
-BlueBorne
+Vulnerabilità BlueBorne
 \begin_inset CommandInset label
 LatexCommand label
-name "ch:blueborne"
+name "ch:blueborne-vulnerabilities"
 
 \end_inset
 

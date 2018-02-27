@@ -304,7 +304,7 @@ filename "Chapters/BluetoothIntroduction.lyx"
 \begin_layout Standard
 \begin_inset CommandInset include
 LatexCommand include
-filename "Chapters/Blueborne.lyx"
+filename "Chapters/BlueborneVulnerabilities.lyx"
 
 \end_inset
 
