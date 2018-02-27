@@ -5477,7 +5477,7 @@ status open
 
 \begin_layout Plain Layout
 
-shell@android:/ # cat /proc/$(pidof com.android.bluetooth)/maps | grep libc.so
+root@android:/ # cat /proc/$(pidof com.android.bluetooth)/maps | grep libc.so
 \end_layout
 
 \begin_layout Plain Layout
@@ -5804,27 +5804,27 @@ gdbserver: 1 file pushed.
 
 \begin_layout Plain Layout
 
-shell@android:/ # mount -t ext4 -o rw,remount /system
+root@android:/ # mount -t ext4 -o rw,remount /system
 \end_layout
 
 \begin_layout Plain Layout
 
-shell@android:/ # cp /sdcard/Download/gdbserver /system/bin/
+root@android:/ # cp /sdcard/Download/gdbserver /system/bin/
 \end_layout
 
 \begin_layout Plain Layout
 
-shell@android:/ # chown root:shell /system/bin/gdbserver
+root@android:/ # chown root:shell /system/bin/gdbserver
 \end_layout
 
 \begin_layout Plain Layout
 
-shell@android:/ # chmod 0755 /system/bin/gdbserver
+root@android:/ # chmod 0755 /system/bin/gdbserver
 \end_layout
 
 \begin_layout Plain Layout
 
-shell@android:/ # mount -t ext4 -o ro,remount /system
+root@android:/ # mount -t ext4 -o ro,remount /system
 \end_layout
 
 \end_inset
@@ -5898,12 +5898,12 @@ status open
 
 \begin_layout Plain Layout
 
-shell@android:/ # forward tcp:5039 tcp:5039
+shell@linux:/ $ adb forward tcp:5039 tcp:5039
 \end_layout
 
 \begin_layout Plain Layout
 
-shell@android:/ # gdbserver :5039 --attach $(pidof com.android.bluetooth)
+root@android:/ # gdbserver :5039 --attach $(pidof com.android.bluetooth)
 \end_layout
 
 \begin_layout Plain Layout
@@ -6020,7 +6020,7 @@ status open
 
 \begin_layout Plain Layout
 
-shell@android:/ # cat /proc/$(pidof com.android.bluetooth)/maps | grep -A1
+root@android:/ # cat /proc/$(pidof com.android.bluetooth)/maps | grep -A1
  bluetooth.default.so
 \end_layout
 
