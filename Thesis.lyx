@@ -357,7 +357,7 @@ filename "Chapters/SoftwareReviewCaseStudy.lyx"
 \begin_layout Standard
 \begin_inset CommandInset include
 LatexCommand include
-filename "Chapters/BriefEconomicalAnalysis.lyx"
+filename "Chapters/EconomicalAnalysis.lyx"
 
 \end_inset
 
