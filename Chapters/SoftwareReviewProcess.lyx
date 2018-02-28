@@ -2646,6 +2646,19 @@ fuzzing
  l'errore, richiedendo quindi più tempo per individuare il problema.
 \end_layout
 
+\begin_layout Section
+Conclusioni
+\end_layout
+
+\begin_layout Standard
+In questo capitolo sono state introdotte alcune delle tecniche più comuni
+ per la revisione del software.
+ È chiaro che la trattazione non aveva l'intenzione di essere esaustiva,
+ ma è sicuramente utile per comprendere a fondo il capitolo successivo in
+ cui vengono mostrati alcuni dei processi utilizzati per trovare vulnerabilità
+ note, tra cui BlueBorne.
+\end_layout
+
 \begin_layout Standard
 \begin_inset ERT
 status open
