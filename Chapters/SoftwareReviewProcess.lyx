@@ -231,13 +231,12 @@ Fase preliminare
 
 \begin_layout Standard
 Prima di analizzare il codice sorgente (o il disassemblato dei binari) è
- necessario pianificare e definire l'ambito di ricerca in modo da supportare
+ necessario pianificare e definire l'ambito di ricerca così da supportare
  le fasi successive del processo.
- Raccogliendo più informazioni possibili prima di iniziare la fase di analisi
- è possibile costruire un miglior piano d'attacco che permetta di analizzare
- solo le parti del software che risultano essere di qualche interesse ai
- fini della ricerca, ad esempio perché sono le migliori candidate a contenere
- un certo tipo di vulnerabilità che si sta cercando.
+ Raccogliere molte informazioni permette di costruire un miglior piano d'attacco
+ che permetta di analizzare solo le parti del software di qualche interesse
+ per la ricerca, ad esempio perché è più probabile che contengano un certo
+ tipo di vulnerabilità.
 \end_layout
 
 \begin_layout Subsection
@@ -249,23 +248,22 @@ Prima di iniziare qualunque attività è necessario chiedersi qual'è l'obiettiv
  finale.
  Nonostante la domanda possa sembrare semplice il numero di risposte possibili
  è piuttosto elevato e deve tenere in considerazioni diversi fattori.
- Generalmente l'obiettivo di un ricercatore è quello di trovare la vulnerabilità
- considerata più di valore nel minor tempo possibile.
- Al contrario un consulente che si occupa di sicurezza delle applicazioni
- è interessato a ottenere la percentuale di codice analizzato maggiore possibile
- nei limiti del budget.
+ Generalmente, l'obiettivo di un ricercatore è quello di trovare la vulnerabilit
+à considerata più di valore nel minor tempo possibile.
+ Al contrario, un consulente che si occupa della sicurezza delle applicazioni
+ dell'azienda è interessato a ottenere la percentuale di codice analizzato
+ maggiore possibile nei limiti del budget.
  Infine, uno sviluppatore potrebbe voler andare più a fondo possibile nell'anali
-si avendo come vincolo principale il rispetto della scadenza per il rilascio
- del prodotto.
+si avendo come vincolo principale la data di rilascio del prodotto.
 \end_layout
 
 \begin_layout Standard
-Non è però da dimenticare l'aspetto economico, per cui un'azienda potrebbe
- essere più interessata ad eliminare le vulnerabilità considerate più semplici
- da trovare piuttosto che quelle più pericolose, ma difficili da trovare.
- Questo perché dal punto di vista dell'attaccante l'investimento necessario
- per ricercare vulnerabilità pericolose potrebbe non essere compensato dal
- guadagno che se ne potrebbe trarre.
+Non è però da dimenticare l'aspetto economico.
+ Un'azienda potrebbe essere interessata ad eliminare le vulnerabilità innocue,
+ ma facili da trovare piuttosto che quelle pericolose, ma difficili da trovare.
+ Questo perché, dal punto di vista dell'attaccante l'investimento necessario
+ per ricercare vulnerabilità ad alto impatto potrebbe non essere compensato
+ dal guadagno che se ne potrebbe trarre.
  Lo scopo della maggior parte delle aziende non è infatti quello di scoprire
  l'ultima frontiera tecnologica in campo 
 \emph on
@@ -558,17 +556,17 @@ memory-safe
 \family typewriter
 Java
 \family default
- è più facile che abbiano errori ad alto livello nella logica applicativa.
+ è più facile che abbiano errori nella logica applicativa.
  Fattori indipendenti dal linguaggio che comunque possono influenzare fortemente
- la velocità di analisi sono la qualità della documentazione interna e la
- presenza o meno di commenti nel codice.
- Per questa ragione è consigliato analizzare alcuni campioni di codice del
- software così da poter stimare il tempo necessario all'analisi.
+ la velocità di analisi sono la qualità della documentazione e la presenza
+ o meno di commenti nel codice.
+ Per questa ragione, è consigliato analizzare alcuni campioni di codice
+ per poter stimare il tempo necessario all'analisi.
 \end_layout
 
 \begin_layout Standard
 È importante notare che la dimensione totale dell'applicazione impatta sul
- tempo necessario all'analisi in modo non lineare, cioè analizzare un software
+ tempo necessario all'analisi in modo non lineare; cioè, analizzare un software
  da 
 \begin_inset Formula $100\text{\,KLOC}$
 \end_inset
@@ -605,15 +603,15 @@ KLOC
 \end_inset
 
 , ma meno.
- Il motivo di questo è che dopo l'analisi delle prime 
+ Questo perché dopo l'analisi delle prime 
 \begin_inset Formula $50\text{\,KLOC}$
 \end_inset
 
- il ricercatore acquisisce familiarità con il codice e con 
+ si acquisisce familiarità con il codice e con 
 \emph on
 pattern
 \emph default
- comuni ripetuti più volte.
+ ripetuti più volte.
  È importante tenere in considerazione anche queste economie di scala al
  momento di stabilire le tempistiche dell'analisi.
 \end_layout
@@ -636,10 +634,10 @@ a cascata
  Questo tipo di approccio dovrebbe dare al ricercatore tutte le informazioni
  necessarie per pianificare ed eseguire un'analisi efficace e mirata del
  software in esame.
- Tuttavia questo approccio non porta necessariamente ad identificare nel
- minor tempo possibile vulnerabilità di medio e alto livello che riguardano
- la progettazione e la logica applicativa in quanto non viene preso in considera
-zione un semplice fatto riguardo la fase di analisi: 
+ Tuttavia, questo non porta necessariamente ad identificare nel minor tempo
+ possibile vulnerabilità di medio e alto livello che riguardano la progettazione
+ e la logica applicativa in quanto non viene preso in considerazione un
+ semplice fatto riguardo la fase di analisi: 
 \emph on
 il momento in cui sappiamo meno riguardo un'applicazione è durante la fase
  iniziale dell'analisi
@@ -649,9 +647,10 @@ il momento in cui sappiamo meno riguardo un'applicazione è durante la fase
  quanto si possa imparare durante il corso dell'analisi.
  Durante il primo approccio al codice non si conosce come questo sia stato
  organizzato né da dove cominciare.
- Alla fine dell'analisi l'applicazione risulta familiare al punto tale da
- carpire le personalità e l'esperienza degli sviluppatori così come le parti
- di codice da cui tutti si tengono lontani e ovviamente la logica generale.
+ Alla fine dell'analisi, l'applicazione risulta familiare al punto tale
+ da carpire le personalità e l'esperienza degli sviluppatori così come le
+ parti di codice da cui tutti si tengono lontani, e ovviamente la logica
+ generale.
 \end_layout
 
 \begin_layout Standard
@@ -678,11 +677,11 @@ L'analisi della progettazione è ottima per iniziare il processo, per stabilire
 \end_layout
 
 \begin_layout Itemize
-Non sono stati forniti documenti di progetto da analizzare
+Non sono stati forniti documenti di progetto
 \end_layout
 
 \begin_layout Itemize
-La documentazione è non aggiornata, tanto da renderla inutile
+La documentazione è tanto obsoleta da essere inutile
 \end_layout
 
 \begin_layout Itemize
@@ -707,9 +706,9 @@ Tenendo sempre in considerazione i punti precedenti, eseguire un'analisi
 \end_layout
 
 \begin_layout Standard
-A questo punto si dovrebbero avere molte informazioni, ma comunque spesso
- queste potrebbero non essere sufficienti per sapere con esattezza da dove
- cominciare l'analisi del codice.
+A questo punto si dovrebbero avere molte informazioni, ma spesso queste
+ potrebbero non essere sufficienti per sapere con esattezza da dove cominciare
+ l'analisi del codice.
 \end_layout
 
 \begin_layout Standard
@@ -721,8 +720,15 @@ Nel caso non si abbia documentazione sufficiente la decisione è semplice:
 \end_layout
 
 \begin_layout Standard
-Esistono tre approcci generali da poter seguire a questo punto: top-down,
- bottom-up e ibrido.
+Esistono tre approcci generali da poter seguire a questo punto: 
+\emph on
+top-down
+\emph default
+, 
+\emph on
+bottom-up
+\emph default
+ e ibrido.
 \end_layout
 
 \begin_layout Subsection
@@ -730,18 +736,30 @@ Approccio top-down
 \end_layout
 
 \begin_layout Standard
-L'approccio top-down (o 
+L'approccio 
+\emph on
+top-down
+\emph default
+ (o 
 \series bold
 specializzazione
 \series default
-) rispecchia il classico processo di sviluppo a cascata.
+) rispecchia il classico processo di sviluppo 
+\begin_inset Quotes eld
+\end_inset
+
+a cascata
+\begin_inset Quotes erd
+\end_inset
+
+.
  Quando si utilizza questo approccio si parte da una conoscenza generale
  dell'applicazione che va ad ampliarsi man mano che si conduce l'analisi
  dell'applicativo.
 \end_layout
 
 \begin_layout Standard
-Questo approccio permette di identificare in ordine:
+Con questo approccio si identificano in ordine:
 \end_layout
 
 \begin_layout Enumerate
@@ -759,11 +777,13 @@ vulnerabilità nell'implementazione di funzionalità a basso livello
 \begin_layout Standard
 Questo approccio risulta accurato se la documentazione è completa; tuttavia,
  qualcunque discrepanza tra progetto e implementazione potrebbe portare
- il ricercatore a ignorare del codice rilevante dal punto di vista dell'analisi
- di sicurezza.
+ il ricercatore a ignorare del codice rilevante per l'analisi.
  Nella pratica discrepanze di questo tipo sono frequenti, quindi se si decide
- di utilizzare l'approccio top-down bisogna predisporre ulteriori controlli
- per evitare questo genere di mancanze.
+ di utilizzare l'approccio 
+\emph on
+top-down
+\emph default
+ bisogna predisporre ulteriori controlli per evitare questo genere di mancanze.
 \end_layout
 
 \begin_layout Subsection
@@ -771,7 +791,11 @@ Approccio bottom-up
 \end_layout
 
 \begin_layout Standard
-Utilizzando l'approccio bottom-up (o 
+Utilizzando l'approccio 
+\emph on
+bottom-up
+\emph default
+ (o 
 \series bold
 generalizzazione
 \series default
@@ -780,7 +804,7 @@ generalizzazione
  Andando avanti con l'analisi si costruisce una più ampia conoscenza della
  logica applicativa e della progettazione, anche se non si ha a disposizione
  alcuna documentazione.
- In questo modo man mano che si acquisisce conoscenza si possono costruire
+ In questo modo, man mano che si acquisisce conoscenza si possono costruire
  dei modelli di rischio 
 \emph on
 ad-hoc
@@ -791,9 +815,8 @@ ad-hoc
 \begin_layout Standard
 Lo svantaggio di questo approccio sta nella sua lentezza; infatti, iniziando
  l'analisi dall'implementazione, è possibile che si perda molto tempo su
- del codice che si rivela successivamente non essere rilevante ai fini della
- sicurezza.
- D'altra parte non è suscettibile a problemi legati all'inconsistenza tra
+ del codice che si rivela successivamente non essere rilevante.
+ D'altra parte, non è suscettibile a problemi legati all'inconsistenza tra
  implementazione e documentazione.
 \end_layout
 
@@ -802,12 +825,19 @@ Approccio ibrido
 \end_layout
 
 \begin_layout Standard
-L'approccio ibrido è semplicemente la combinazione dei due approcci top-down
- e bottom-up che vengono alternati in base alle necessità.
+L'approccio ibrido è semplicemente la combinazione dei due approcci 
+\emph on
+top-down
+\emph default
+ e 
+\emph on
+bottom-up
+\emph default
+ che vengono alternati in base alle necessità.
  Questo tipo di approccio è la migliore opzione quando non si hanno le basi
  per una progettazione accurata del metodo di analisi.
  In questi casi si utilizzano le informazioni che si raccolgono man mano
- per individuare dettagli dell'applicazione che si rivelano essere critici.
+ per individuare dettagli critici dell'applicazione.
 \end_layout
 
 \begin_layout Standard
@@ -869,8 +899,8 @@ dots
 Questi punti possono sembrare fin troppo generici quando si incontrano la
  prima volta, soprattutto rispetto ad applicazioni di dimensione elevata,
  ma nel procedere con l'analisi si vanno a dettagliare sempre di più.
- In questo modo ad ogni iterazione si hanno dettagli in più che possono
- dare una direzione all'analisi.
+ In questo modo ad ogni iterazione si acquisiscono dettagli utili a dare
+ una direzione all'analisi.
 \end_layout
 
 \begin_layout Section
@@ -887,7 +917,7 @@ reference "tab:application-review-documentation-example"
 
 \end_inset
 
- che risulta essere funzionale nella maggior parte dei casi.
+ che si adatta bene alla maggior parte dei casi.
 \end_layout
 
 \begin_layout Standard
@@ -1238,7 +1268,7 @@ Approccio che funziona dividendo ricorsivamente un problema in due o più
  Uno dei modi più semplici di fare questo è di isolare il flusso di codice
  esterno, cioè come l'esecuzione procede da funzione a funzione, ma non
  all'interno delle funzioni.
- È possibile fare questo in due modi differenti: 
+ È possibile fare questo in due modi: 
 \emph on
 control-flow sensitive
 \emph default
@@ -1426,7 +1456,7 @@ bar()
 \end_inset
 
  prima, cominciamo ad analizzare ricorsivamente la sua implementazione.
- Finito questo, tornati alla funzione 
+ Una volta finito, tornati alla funzione 
 \begin_inset listings
 lstparams "tabsize=4"
 inline true
@@ -1650,12 +1680,14 @@ qux()
 \end_layout
 
 \begin_layout Standard
-Nonostante entrambi gli approcci appena illustrati siano piuttosto efficaci
- e possono essere combinati per ottenere risultati migliori, è da notare
- come questi vengano utilizzati solo dopo analisi condotte con altri metodi.
- Il motivo di questo è limitare il più possibile il campo d'indagine e soprattut
-to i cambi di contesto che il ricercatore è obbligato a seguire per ottimizzare
- l'uso del proprio tempo e semplificare l'analisi.
+Entrambi gli approcci appena illustrati siano piuttosto efficaci e possono
+ essere combinati per ottenere risultati migliori.
+ È importante notare, però, che entrambi vengono utilizzati solo dopo analisi
+ condotte con altri metodi.
+ Il motivo di questa scelta è limitare il più possibile il campo d'indagine
+ e soprattutto i cambi di contesto che il ricercatore è obbligato a seguire;
+ in questo modo si riesce a ottimizzare l'uso del proprio tempo e semplificare
+ l'analisi.
  In generale, quindi, dà risultati più efficaci analizzare ogni funzione
  in modo indipendente e seguire il flusso (di controllo o di dati) solo
  quando strettamente necessario.
@@ -1694,9 +1726,9 @@ Nota
 \end_layout
 
 \begin_layout Plain Layout
-L'analisi del flusso è un concetto complesso molto importante ad esempio
- nella progettazione dei compilatori e la caratterizzazione che è stata
- appena fatta è stata volutamente semplificata per lo scopo della trattazione.
+L'analisi del flusso è un concetto complesso molto importante nella progettazion
+e dei compilatori e la caratterizzazione che è stata appena fatta è stata
+ volutamente semplificata per lo scopo della trattazione.
 \end_layout
 
 \end_inset
@@ -1718,7 +1750,7 @@ forward-tracing
 \emph on
 back-tracing
 \emph default
-, utilizzata invece per valutare la raggiungibilità del codice.
+, utilizzata per valutare la raggiungibilità del codice.
 \end_layout
 
 \begin_layout Description
@@ -1767,8 +1799,8 @@ Back-tracing generalmente si inizia l'analisi da una porzione di codice
  identificato come un candidato potenziale che si ritiene possa contenere
  delle vulnerabilità.
  Possibili candidati sono istruzioni SQL create dinamicamente e senza controlli
- di sorta sulle stringhe utilizzate, accesso a file di cui è l'utente a
- specificare il percorso, funzioni che effettuano 
+ di sorta sulle stringhe, accesso a file di cui è l'utente a specificare
+ il percorso, funzioni che effettuano 
 \emph on
 parsing
 \emph default
@@ -1783,8 +1815,8 @@ I candidati potenziali sono generalmente identificati tramite qualche forma
 \emph on
 pattern
 \emph default
- noti per essere vulnerabili.
- Una volta identificati l'analisi prosegue all'indietro fino a individuare
+ vulnerabili noti.
+ Una volta identificati, l'analisi prosegue all'indietro fino a individuare
  gli 
 \emph on
 entry point
@@ -1803,7 +1835,7 @@ forward-tracing
 \emph default
 .
  Lo svantaggio, d'altra parte, è che come metodologia è tanto valida quanto
- sono validi i candidati potenziali scelti.
+ sono validi i candidati scelti.
  In questo modo, infatti, si corre il rischio di non considerare tutte quelle
  vulnerabilità legate alla logica applicativa che difficilmente si mappano
  uno-a-uno con chiamate a funzioni o 
@@ -1818,14 +1850,14 @@ Automazione
 \end_layout
 
 \begin_layout Standard
-Le tecniche e gli approcci discussi finora unitamente all'esperienza maturata
+Le tecniche e gli approcci discussi finora, unitamente all'esperienza maturata,
  portano il ricercatore stesso ad essere il miglior strumento per individuare
  nuove vulnerabilità in un software.
  Tuttavia nel fare questo bisogna tener conto alcuni fattori importanti:
 \end_layout
 
 \begin_layout Enumerate
-Leggere tutto il codice dall'inizio alla fine non è generalmente praticabile
+Leggere tutto il codice dall'inizio alla fine non è generalmente praticabile,
  se non per piccoli progetti.
  Questa considerazione risulta più evidente se si analizzano i dati in Figura
  
@@ -1984,7 +2016,7 @@ memory leak
 build
 \emph default
 .
- Questo perché mentre un compilatore può segnalare tramite 
+ Questo perché, mentre un compilatore può segnalare tramite 
 \emph on
 warning
 \emph default
@@ -2090,7 +2122,8 @@ dots
 \end_layout
 
 \begin_layout Standard
-Gli analizzatori statici inoltre hanno conoscenza del comportamento a 
+Gli analizzatori statici, inoltre, hanno conoscenza del comportamento a
+ 
 \emph on
 runtime 
 \emph default
@@ -2124,8 +2157,7 @@ malloc
 
 .
  Gli analizzatori utilizzano queste informazioni per individuare errori
- legati all'invocazione errata di queste funzioni o all'utilizzo dei valori
- restituiti.
+ legati all'invocazione errata di funzioni o all'utilizzo dei valori restituiti.
  Lo stesso principio viene poi utilizzato anche per funzioni non standard
  scritte dal programmatore.
 \end_layout
@@ -2579,16 +2611,19 @@ Pro e contro dell'analisi dinamica tramite fuzzing
 
 \begin_layout Standard
 Un punto a favore dell'analisi dinamica è che permette di testare un'applicazion
-e anche quando non si ha a disposizione il codice sorgente o i binari precompila
-ti.
- Se usata congiuntamente all'analisi statica permette di verificare i bug
+e anche quando non si hanno a disposizione il codice sorgente o i binari
+ precompilati.
+ Se usata congiuntamente all'analisi statica, permette di verificare i bug
  segnalati e di trovare quelli presenti, ma non segnalati.
 \end_layout
 
 \begin_layout Standard
-D'altro canto il fuzzing tende a scalfire solo la superficie del software
- in esame mantenendo una percentuale di copertura che in molti casi rimane
- al di sotto del 
+D'altro canto il 
+\emph on
+fuzzing
+\emph default
+ tende a scalfire solo la superficie del software mantenendo una percentuale
+ di copertura che in molti casi rimane al di sotto del 
 \begin_inset Formula $10\%$
 \end_inset
 
@@ -2596,12 +2631,19 @@ D'altro canto il fuzzing tende a scalfire solo la superficie del software
 \end_layout
 
 \begin_layout Standard
-Come nel caso dell'analisi statica, anche con il fuzzing la bontà dei risultati
- è strettamente correlata alla bontà delle regole con cui vengono generati
- i dati di test, ma mentre con l'analisi statica possiamo individuare con
- precisione la posizione del bug, nel caso del fuzzing può essere difficile
- risalire all'esatta posizione nel codice che ha generato l'errore, richiedendo
- quindi più tempo per individuare il problema.
+Come nel caso dell'analisi statica, anche con il 
+\emph on
+fuzzing
+\emph default
+ la bontà dei risultati è strettamente correlata alla bontà delle regole
+ con cui vengono generati i dati di test, ma mentre con l'analisi statica
+ possiamo individuare con precisione la posizione del bug, nel caso del
+ 
+\emph on
+fuzzing
+\emph default
+ può essere difficile risalire all'esatta posizione nel codice che ha generato
+ l'errore, richiedendo quindi più tempo per individuare il problema.
 \end_layout
 
 \begin_layout Standard
